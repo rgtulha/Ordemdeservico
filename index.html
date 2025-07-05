@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SUPPORTA O.S: __________</title> <!-- Título inicial/placeholder para a aba -->
-    <link rel="icon" href="https://rgtulha.github.io/Ordemdeservico/favicon.ico" type="image/x-icon"> <!-- Favicon adicionado -->
+    <title>SUPPORTA O.S: __________</title>
+    <link rel="icon" href="https://rgtulha.github.io/Ordemdeservico/favicon.ico" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css"> <!-- Link para o arquivo CSS externo -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header class="header">
-            <!-- Dados da empresa Supporta Tecnologia (top-right) -->
-            <div class="company-details-header-wrapper">
+            <!-- Linha superior do cabeçalho: O.S. à esquerda, Detalhes da Empresa à direita -->
+            <div class="header-top-info-row">
+                <h1 class="os-main-title">O.S. nº <span id="os-number-display">__________</span></h1>
                 <div class="company-details-header">
                     <p><strong>Supporta Tecnologia LTDA.</strong></p>
                     <p>CNPJ: 45.258.581/0001-02</p>
@@ -22,10 +23,9 @@
                 </div>
             </div>
 
-            <!-- Logo centralizada e título da O.S. ao lado -->
-            <div class="header-main-branding-os">
+            <!-- Container apenas para a logo, centralizada abaixo da linha de informações -->
+            <div class="header-logo-container">
                 <img src="https://rgtulha.github.io/Ordemdeservico/logo-nova.png" alt="Logo Supporta Tecnologia" class="logo-main-header">
-                <h1 class="os-main-title">O.S. nº <span id="os-number-display">__________</span></h1>
             </div>
         </header>
 
@@ -99,6 +99,6 @@
         <button id="emailBtn" class="action-btn email-btn">Enviar por Email</button>
     </footer>
 
-    <script src="script.js"></script> <!-- Link para o arquivo JavaScript -->
+    <script src="script.js"></script>
 </body>
 </html>
