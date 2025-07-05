@@ -13,29 +13,45 @@ body {
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    padding-bottom: 80px; /* Espaço para o footer */
 }
 .header {
     display: flex;
-    flex-direction: column; /* Coloca os elementos em coluna (linha superior, depois logo) */
-    align-items: center; /* Centraliza todo o conteúdo do cabeçalho */
+    flex-direction: column;
+    align-items: center; /* Centraliza verticalmente e horizontalmente */
     margin-bottom: 30px;
     border-bottom: 2px solid #e9ecef;
     padding-bottom: 20px;
 }
 
-/* Nova linha superior do cabeçalho: O.S. (esquerda) e Detalhes da Empresa (direita) */
-.header-top-info-row {
+/* Container central para a logo (nova ordem) */
+.header-logo-container {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Centraliza a logo horizontalmente */
+    margin-bottom: 15px; /* Espaço entre a logo e a linha de informações */
+}
+
+/* Estilo para a logo principal (maior) */
+.logo-main-header {
+    max-width: 400px; /* Logo ainda maior */
+    height: auto;
+    object-fit: contain;
+}
+
+/* Linha inferior do cabeçalho: O.S. (esquerda) e Detalhes da Empresa (direita) */
+.header-bottom-info-row {
     width: 100%; /* Ocupa toda a largura do cabeçalho */
     display: flex;
     justify-content: space-between; /* Espaço entre os itens (OS e detalhes da empresa) */
     align-items: flex-start; /* Alinha os itens ao topo */
-    margin-bottom: 20px; /* Espaço entre esta linha e a logo abaixo */
+    margin-top: 10px; /* Espaço entre a logo e esta linha */
 }
 
-/* Estilo para o número da O.S. (agora no canto superior esquerdo) */
+/* Estilo para o número da O.S. (no canto inferior esquerdo do cabeçalho) */
 .os-main-title {
     color: #D17400;
-    font-size: 1.8em; /* Ajustado para caber no canto */
+    font-size: 1.8em;
     margin: 0;
     font-weight: 700;
     white-space: nowrap;
@@ -43,7 +59,7 @@ body {
     flex-shrink: 0; /* Não permite que este item encolha */
 }
 
-/* Detalhes da empresa (agora no canto superior direito) */
+/* Detalhes da empresa (no canto inferior direito do cabeçalho) */
 .company-details-header {
     font-size: 0.85em;
     color: #555;
@@ -60,19 +76,14 @@ body {
     color: #D17400;
 }
 
-/* Container para a logo (centralizada) */
-.header-logo-container {
-    width: 100%;
-    display: flex;
-    justify-content: center; /* Centraliza a logo horizontalmente */
-    margin-bottom: 15px; /* Espaço abaixo da logo */
-}
-
-/* Estilo para a logo principal (maior) */
-.logo-main-header {
-    max-width: 350px; /* Logo maior */
-    height: auto;
-    object-fit: contain;
+/* Estilo para o texto de garantia adicionado */
+.warranty-note {
+    font-style: italic;
+    color: #666;
+    font-size: 0.9em;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed #eee; /* Linha divisória sutil */
 }
 
 /* O restante dos estilos permanece igual */
@@ -175,19 +186,21 @@ a:hover {
     color: #2b2d42;
 }
 
-/* Estilos para os botões de ação no rodapé */
+/* Estilos para os botões de ação no rodapé (agora dentro do container) */
 .action-buttons-footer {
     display: flex;
     justify-content: center;
     gap: 15px;
-    padding: 20px;
-    margin-top: 20px;
+    padding: 15px 0;
+    margin-top: 25px;
     background-color: #f1f3f5;
     border-top: 1px solid #e9ecef;
     border-radius: 0 0 10px 10px;
 }
 .action-btn {
-    padding: 12px 25px;
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
     border: none;
     border-radius: 5px;
     font-size: 1em;
@@ -195,135 +208,124 @@ a:hover {
     transition: background-color 0.3s ease, transform 0.2s ease;
     color: #ffffff;
     font-weight: bold;
+    background-color: #555; /* Cor padrão, será sobrescrita pelos IDs */
+}
+.button-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
 }
 .action-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-.print-btn {
-    background-color: #D17400;
-}
-.print-btn:hover {
-    background-color: #e08e1a;
-}
-.whatsapp-btn {
-    background-color: #25D366;
-}
-.whatsapp-btn:hover {
-    background-color: #1DA851;
-}
-.email-btn {
-    background-color: #007BFF;
-}
-.email-btn:hover {
-    background-color: #0056b3;
-}
+#printBtn { background-color: #D17400; }
+#printBtn:hover { background-color: #e08e1a; }
+#whatsappBtn { background-color: #25D366; }
+#whatsappBtn:hover { background-color: #1DA851; }
+#emailBtn { background-color: #007BFF; }
+#emailBtn:hover { background-color: #0056b3; }
+
 
 /* --- ESTILOS DE IMPRESSÃO (media print) --- */
 @media print {
+    /* Força que tudo se ajuste a uma única página se possível */
+    @page {
+        size: A4 portrait;
+        margin: 10mm; /* Margens mínimas para impressão */
+    }
     body {
         background-color: #fff;
         padding: 0;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact !important; /* Força cores para impressão */
+        print-color-adjust: exact !important;
         color: #000;
+        font-size: 0.85em; /* Reduz o tamanho da fonte geral para impressão */
+        line-height: 1.3; /* Compacta o espaçamento entre linhas */
     }
     .container {
         box-shadow: none;
         margin: 0;
-        padding: 15mm;
+        padding: 5mm; /* Reduz padding do container */
         width: 100%;
         border-radius: 0;
     }
     .header {
         border-bottom: 1px solid #ccc;
-        padding-bottom: 10px;
-        margin-bottom: 20px;
-        flex-direction: column; /* Em coluna na impressão */
-        align-items: center; /* Centraliza */
+        padding-bottom: 5mm; /* Reduz padding */
+        margin-bottom: 10mm; /* Reduz margem */
+        flex-direction: column;
+        align-items: center;
     }
-    .header-top-info-row { /* Mantém a disposição lado a lado na impressão */
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 10px;
-    }
-    .os-main-title {
-        font-size: 1.4em; /* Ajusta tamanho para impressão */
-        color: #000;
-        flex-shrink: 0;
-    }
-    .company-details-header {
-        font-size: 0.7em;
-        color: #333;
-        text-align: right;
-        margin-left: 10px; /* Reduz espaço para impressão */
-    }
-    .company-details-header p {
-        line-height: 1.2;
-    }
-    .header-logo-container { /* Centraliza a logo na impressão */
-        margin-bottom: 10px;
+    .header-logo-container {
+        margin-bottom: 5mm; /* Reduz margem */
     }
     .logo-main-header {
-        max-width: 200px; /* Ajusta tamanho da logo para impressão */
+        max-width: 250px; /* Ajusta logo para impressão */
     }
-    .action-buttons-footer { /* Esconde os botões na impressão */
-        display: none;
+    .header-bottom-info-row {
+        margin-top: 5mm;
+    }
+    .os-main-title {
+        font-size: 1.2em; /* Reduz fonte da OS */
+        color: #000;
+    }
+    .company-details-header {
+        font-size: 0.7em; /* Reduz fonte dos detalhes da empresa */
+        color: #333;
+        margin-left: 10mm; /* Mantém um bom espaçamento */
+    }
+    .company-details-header p {
+        line-height: 1.1; /* Compacta ainda mais o endereço */
+    }
+    .action-buttons-footer, .primary-btn { /* Esconde botões */
+        display: none !important;
     }
     .section {
         border: 1px solid #eee;
         box-shadow: none;
-        margin-bottom: 15px;
-        padding: 15px;
+        margin-bottom: 10mm; /* Reduz espaçamento entre seções */
+        padding: 10mm; /* Reduz padding */
     }
     h2 {
         color: #000;
         border-bottom: 1px dashed #ddd;
-        font-size: 1.4em;
-        margin-bottom: 10px;
-        padding-bottom: 5px;
+        font-size: 1.2em; /* Reduz subtítulos */
+        margin-bottom: 8mm;
+        padding-bottom: 4mm;
+    }
+    .input-group {
+        margin-bottom: 10mm; /* Reduz espaçamento entre grupos de input */
+    }
+    .input-group label {
+        font-size: 0.9em; /* Reduz label */
     }
     .input-group input[type="text"],
     .input-group textarea,
     .input-group select {
         border: none;
         border-bottom: 1px dashed #999;
-        padding: 5px 0;
-        border-radius: 0;
-        box-shadow: none;
-        background-color: transparent;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
+        padding: 3mm 0; /* Reduz padding */
+        font-size: 0.9em; /* Reduz input font size */
         color: #000;
     }
     textarea {
-        min-height: 80px;
-    }
-    hr {
-        border-top: 1px dashed #ccc;
-        margin: 20px 0;
-    }
-    p strong {
-        color: #000;
-    }
-    a {
-        color: #000;
-        text-decoration: none;
-    }
-    .checkbox-group input[type="checkbox"] {
-        transform: scale(1);
-        accent-color: #000;
-    }
-    .checkbox-group label {
-        color: #000;
+        min-height: 60px; /* Reduz altura mínima da textarea */
     }
     .quadro4 p {
         background-color: #f0f0f0;
         border-left-color: #999;
         color: #000;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
+        font-size: 0.8em; /* Reduz fonte das observações */
+        padding: 10mm; /* Reduz padding */
+    }
+    .warranty-note { /* Estilo para o texto de garantia na impressão */
+        font-size: 0.8em; /* Reduz fonte */
+        margin-top: 5mm;
+        padding-top: 5mm;
+    }
+    /* Força quebras de página para evitar quebra de conteúdo indesejada (opcional, pode ajustar) */
+    .section {
+        page-break-inside: avoid;
     }
 }
