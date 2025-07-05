@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SUPPORTA O.S: __________</title>
-    <link rel="icon" href="https://ordemservico.supporta.tec.br/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://rgtulha.github.io/Ordemdeservico/favicon.ico" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -44,6 +44,12 @@
             <div class="input-group">
                 <label for="cliente-nome">Nome da Empresa:</label>
                 <input type="text" id="cliente-nome" name="cliente-nome" placeholder="Nome da empresa do cliente">
+                <!-- NOVO: Contêiner para as sugestões de pesquisa -->
+                <div id="suggestions-container" class="suggestions-container" style="display: none;">
+                    <ul id="suggestions-list" class="suggestions-list">
+                        <!-- Sugestões serão inseridas aqui via JavaScript -->
+                    </ul>
+                </div>
             </div>
             <!-- Estes campos serão preenchidos automaticamente e serão somente leitura -->
             <div class="input-group">
