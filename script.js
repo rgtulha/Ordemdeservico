@@ -9,22 +9,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const clienteEnderecoInput = document.getElementById('cliente-endereco');
     const addClientBtn = document.getElementById('addClientBtn');
 
-    // Elementos do Modal
+    // Elementos do Modal de Adicionar Cliente
     const addClientModal = document.getElementById('addClientModal');
-    const closeButton = addClientModal.querySelector('.close-button');
+    const closeAddClientModalBtn = addClientModal.querySelector('.close-button'); // Renomeado para evitar conflito
     const modalClienteNome = document.getElementById('modal-cliente-nome');
     const modalClienteCnpj = document.getElementById('modal-cliente-cnpj');
     const modalClienteContato = document.getElementById('modal-cliente-contato');
     const modalClienteEndereco = document.getElementById('modal-cliente-endereco');
     const saveClientModalBtn = document.getElementById('saveClientModalBtn');
 
-    // Elementos da Seção de Autenticação
+    // NOVO: Elementos do Modal de Autenticação
+    const authModal = document.getElementById('authModal');
+    const closeAuthModalBtn = authModal.querySelector('.close-button'); // Botão de fechar do modal de auth
     const authEmailInput = document.getElementById('auth-email');
     const authPasswordInput = document.getElementById('auth-password');
     const loginBtn = document.getElementById('loginBtn');
     const registerBtn = document.getElementById('registerBtn');
+
+    // Botões de Acesso e Logout na página principal
+    const accessAuthBtn = document.getElementById('accessAuthBtn');
     const logoutBtn = document.getElementById('logoutBtn');
-    const authStatus = document.getElementById('auth-status');
+    const authStatus = document.getElementById('auth-status'); // Mensagem de status de login
 
     // Seções da O.S. que só aparecem para usuários logados
     const clientDataSection = document.getElementById('client-data-section');
@@ -80,9 +85,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (user) {
             // Usuário logado
             authStatus.textContent = `Logado como: ${user.email}`;
-            loginBtn.style.display = 'none';
-            registerBtn.style.display = 'none';
-            logoutBtn.style.display = 'inline-block'; // Mostra o botão de sair
+            accessAuthBtn.style.display = 'none'; // Esconde o botão "Acessar"
+            logoutBtn.style.display = 'inline-block'; // Mostra o botão "Sair"
 
             // Mostra as seções da O.S.
             clientDataSection.style.display = 'block';
@@ -93,9 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             // Usuário deslogado
             authStatus.textContent = 'Por favor, faça login para acessar a O.S.';
-            loginBtn.style.display = 'inline-block';
-            registerBtn.style.display = 'inline-block';
-            logoutBtn.style.display = 'none';
+            accessAuthBtn.style.display = 'inline-block'; // Mostra o botão "Acessar"
+            logoutBtn.style.display = 'none'; // Esconde o botão "Sair"
 
             // Esconde as seções da O.S.
             clientDataSection.style.display = 'none';
@@ -106,26 +109,48 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Evento de registro
+    // Abre o modal de autenticação
+    accessAuthBtn.addEventListener('click', () => {
+        authModal.style.display = 'flex'; // Usa flex para centralizar
+        // Limpa os campos do modal ao abrir
+        authEmailInput.value = '';
+        authPasswordInput.value = '';
+    });
+
+    // Fecha o modal de autenticação pelo botão 'X'
+    closeAuthModalBtn.addEventListener('click', () => {
+        authModal.style.display = 'none';
+    });
+
+    // Fecha o modal de autenticação clicando fora dele
+    window.addEventListener('click', (event) => {
+        if (event.target == authModal) {
+            authModal.style.display = 'none';
+        }
+    });
+
+    // Evento de registro (dentro do modal de autenticação)
     registerBtn.addEventListener('click', async () => {
         const email = authEmailInput.value;
         const password = authPasswordInput.value;
         try {
             await auth.createUserWithEmailAndPassword(email, password);
             alert('Usuário cadastrado e logado com sucesso!');
+            authModal.style.display = 'none'; // Fecha o modal após o cadastro/login
         } catch (error) {
             console.error("Erro ao cadastrar:", error.code, error.message);
             alert(`Erro ao cadastrar: ${error.message}`);
         }
     });
 
-    // Evento de login
+    // Evento de login (dentro do modal de autenticação)
     loginBtn.addEventListener('click', async () => {
         const email = authEmailInput.value;
         const password = authPasswordInput.value;
         try {
             await auth.signInWithEmailAndPassword(email, password);
             alert('Login realizado com sucesso!');
+            authModal.style.display = 'none'; // Fecha o modal após o login
         } catch (error) {
             console.error("Erro ao fazer login:", error.code, error.message);
             alert(`Erro ao fazer login: ${error.message}`);
@@ -152,7 +177,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Listener para mudanças no estado da autenticação
-    auth.onAuthStateChanged(updateUI); // Chama updateUI sempre que o estado de login mudar
+    // Esta função é chamada na inicialização e em qualquer mudança de estado (login/logout)
+    auth.onAuthStateChanged(updateUI);
 
     // --- Lógica de Autopreenchimento de Cliente (Firebase) ---
 
@@ -220,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Fecha o modal pelo botão 'X'
-    closeButton.addEventListener('click', () => {
+    closeAddClientModalBtn.addEventListener('click', () => {
         addClientModal.style.display = 'none';
     });
 
