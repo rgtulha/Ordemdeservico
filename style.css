@@ -22,7 +22,7 @@ body {
     margin-bottom: 30px;
     border-bottom: 2px solid #e9ecef;
     padding-bottom: 20px;
-    background-color: #2b2d42; /* COR DO CABEÇALHO */
+    background-color: #EAEAEA; /* NOVA COR DO CABEÇALHO (cinza claro) */
     border-radius: 10px 10px 0 0; /* Borda arredondada no topo */
     padding-top: 20px;
 }
@@ -60,7 +60,7 @@ body {
 
 /* Estilo para o número da O.S. */
 .os-main-title {
-    color: #ffffff; /* COR DA FONTE NO CABEÇALHO */
+    color: #2b2d42; /* NOVA COR DA FONTE NO CABEÇALHO (escuro) */
     font-size: 1.4em; /* Fonte ajustada para caber na linha */
     margin: 0;
     font-weight: 700;
@@ -70,7 +70,7 @@ body {
 /* Detalhes da empresa */
 .company-details-header {
     font-size: 0.75em; /* Fonte ajustada para caber na linha */
-    color: #ffffff; /* COR DA FONTE NO CABEÇALHO */
+    color: #2b2d42; /* NOVA COR DA FONTE NO CABEÇALHO (escuro) */
 }
 .company-details-header p {
     margin: 0;
@@ -78,7 +78,7 @@ body {
     word-break: break-word;
 }
 .company-details-header a {
-    color: #ffd700; /* Cor do link no cabeçalho */
+    color: #D17400; /* Cor do link no cabeçalho (cor da Supporta) */
 }
 
 /* Estilo para o texto de garantia adicionado */
@@ -380,7 +380,7 @@ a:hover {
         border-radius: 0;
     }
     .header {
-        background-color: #2b2d42 !important; /* COR DO CABEÇALHO NA IMPRESSÃO */
+        background-color: #EAEAEA !important; /* COR DO CABEÇALHO NA IMPRESSÃO */
         border-bottom: 1px solid #ccc;
         padding-bottom: 2mm; /* Reduz padding */
         margin-bottom: 8mm; /* Reduz margem */
@@ -407,17 +407,17 @@ a:hover {
     }
     .os-main-title {
         font-size: 1em; /* Reduz fonte da OS para impressão */
-        color: #ffffff !important; /* COR DA FONTE NA IMPRESSÃO */
+        color: #2b2d42 !important; /* COR DA FONTE NA IMPRESSÃO */
     }
     .company-details-header {
         font-size: 0.6em; /* Reduz fonte dos detalhes da empresa para impressão */
-        color: #ffffff !important; /* COR DA FONTE NA IMPRESSÃO */
+        color: #2b2d42 !important; /* COR DA FONTE NA IMPRESSÃO */
     }
     .company-details-header p {
         line-height: 1.1; /* Compacta ainda mais o endereço */
     }
     .company-details-header a {
-        color: #ffd700 !important; /* Cor do link na impressão */
+        color: #D17400 !important; /* Cor do link na impressão */
     }
     .logo-main-header {
         max-width: 180px; /* Ajusta logo para impressão */
