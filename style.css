@@ -1,6 +1,261 @@
-/* ... (Seu CSS anterior para body, container, header, etc. permanece o mesmo) ... */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f8f9fa;
+    color: #2b2d42;
+    line-height: 1.6;
+}
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    padding-bottom: 80px; /* Espaço para o footer */
+}
+.header {
+    display: flex; /* Transforma o cabeçalho em um container flex */
+    align-items: center; /* Alinha verticalmente todos os itens filhos ao centro */
+    justify-content: space-between; /* Distribui os itens (left, center, right) no espaço */
+    margin-bottom: 30px;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 20px;
+    background-color: #f8f9fa; /* COR DO CABEÇALHO */
+    border-radius: 10px 10px 0 0; /* Borda arredondada no topo */
+    padding-top: 20px;
+}
 
-/* Adicionado para a nova seção de autenticação */
+/* Os três blocos do cabeçalho */
+.header-left, .header-center, .header-right {
+    display: flex; /* Para alinhar o conteúdo dentro de cada bloco */
+    align-items: center;
+    padding: 0 15px; /* Adiciona padding interno */
+}
+
+.header-left {
+    flex-basis: 25%; /* Reserva uma base para o bloco esquerdo */
+    justify-content: flex-start; /* Alinha o conteúdo à esquerda */
+}
+
+.header-center {
+    flex-basis: 50%; /* Reserva uma base para o bloco central (logo) */
+    justify-content: center; /* Centraliza a logo dentro do seu bloco */
+}
+
+.header-right {
+    flex-basis: 25%; /* Reserva uma base para o bloco direito */
+    justify-content: flex-end; /* Alinha o conteúdo à direita */
+    text-align: right; /* Garante que o texto se alinhe à direita */
+}
+
+/* Estilo para a logo principal */
+.logo-main-header {
+    max-width: 250px; /* Tamanho da logo ajustado para caber na linha */
+    height: auto;
+    object-fit: contain;
+    /* SEM FILTER para manter a cor original */
+}
+
+/* Estilo para o número da O.S. */
+.os-main-title {
+    color: #2b2d42; /* COR DA FONTE NO CABEÇALHO (escuro para contraste) */
+    font-size: 1.4em; /* Fonte ajustada para caber na linha */
+    margin: 0;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* Detalhes da empresa */
+.company-details-header {
+    font-size: 0.75em; /* Fonte ajustada para caber na linha */
+    color: #2b2d42; /* COR DA FONTE NO CABEÇALHO (escuro para contraste) */
+}
+.company-details-header p {
+    margin: 0;
+    line-height: 1.3;
+    word-break: break-word;
+}
+.company-details-header a {
+    color: #D17400; /* Cor do link no cabeçalho (cor da Supporta) */
+}
+
+/* Estilo para o texto de garantia adicionado */
+.warranty-note {
+    font-style: italic;
+    color: #2b2d42; /* COR DA FRASE DE GARANTIA */
+    font-size: 0.9em;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed #eee; /* Linha divisória sutil */
+}
+
+/* Novo estilo para o header da seção com botão */
+.section-header-with-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.section-header-with-button h2 {
+    margin-bottom: 0; /* Remove margem inferior padrão */
+}
+.section-action-btn {
+    padding: 8px 15px;
+    background-color: #D17400; /* Cor do botão Add Cliente */
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.section-action-btn:hover {
+    background-color: #e08e1a;
+}
+
+/* O restante dos estilos permanece igual */
+.section {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 25px;
+    background-color: #fdfdfe;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+h2 {
+    color: #D17400;
+    font-size: 1.6em;
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(43, 45, 66, 0.2);
+    padding-bottom: 10px;
+    font-weight: 700;
+}
+.input-group {
+    margin-bottom: 18px;
+}
+/* Estilo para campos readonly */
+.input-group input[type="text"][readonly] {
+    background-color: #e9ecef; /* Um cinza claro para indicar readonly */
+    cursor: default; /* Remove o cursor de texto editável */
+    border-color: #ced4da; /* Borda normal */
+}
+.input-group input[type="text"][readonly]:focus {
+    box-shadow: none; /* Remove o shadow de foco */
+    outline: none;
+}
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #2b2d42;
+    font-size: 0.95em;
+}
+.input-group input[type="text"],
+.input-group textarea,
+.input-group select {
+    width: calc(100% - 24px);
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    color: #2b2d42;
+    background-color: #fff;
+}
+.input-group input[type="text"]:focus,
+.input-group textarea:focus,
+.input-group select:focus {
+    border-color: #D17400;
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(209, 116, 0, 0.25);
+}
+textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+hr {
+    border: 0;
+    border-top: 1px dashed rgba(43, 45, 66, 0.2);
+    margin: 30px 0;
+}
+p strong {
+    color: #D17400;
+}
+a {
+    color: #D17400;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+.checkbox-group {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+.checkbox-group input[type="checkbox"] {
+    margin-right: 12px;
+    transform: scale(1.3);
+    accent-color: #D17400;
+}
+.checkbox-group label {
+    color: #2b2d42;
+    font-size: 1.05em;
+    cursor: pointer;
+}
+.quadro4 p {
+    background-color: rgba(209, 116, 0, 0.08);
+    border-left: 6px solid #D17400;
+    padding: 18px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    font-size: 0.95em;
+    color: #2b2d42;
+}
+
+/* Estilos para o botão de imprimir no rodapé */
+.action-buttons-footer {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding: 15px 0;
+    margin-top: 25px;
+    background-color: #f1f3f5;
+    border-top: 1px solid #e9ecef;
+    border-radius: 0 0 10px 10px;
+}
+.action-btn {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    color: #ffffff;
+    font-weight: bold;
+    background-color: #2b2d42; /* COR DO BOTÃO IMPRIMIR */
+}
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #3f4a56; /* Cor no hover */
+}
+
+/* Estilo para o ícone dentro do botão */
+.button-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    filter: brightness(0) invert(1); /* Deixa o ícone branco para contraste com o botão escuro */
+}
+
+/* Estilos da nova seção de autenticação */
 .auth-section .auth-buttons {
     display: flex;
     justify-content: center;
@@ -12,22 +267,223 @@
     font-size: 1em;
 }
 
-/* Garante que o modal comece escondido */
+
+/* --- Media Query para telas menores e responsividade do cabeçalho --- */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column; /* Em telas menores, volta a ser coluna */
+        align-items: center;
+    }
+    .header-left, .header-center, .header-right {
+        flex-basis: auto; /* Remove a base fixa */
+        width: 100%; /* Ocupa a largura total */
+        justify-content: center; /* Centraliza o conteúdo dentro de cada bloco */
+        margin-bottom: 10px; /* Espaçamento entre os blocos */
+        padding: 0 5px; /* Reduz padding */
+    }
+    .header-right {
+        text-align: center; /* Centraliza o texto dos detalhes da empresa */
+    }
+    .os-main-title {
+        font-size: 1.6em; /* Aumenta um pouco a fonte da OS em telas menores */
+    }
+    .company-details-header {
+        font-size: 0.8em; /* Ajusta a fonte dos detalhes da empresa */
+    }
+    .logo-main-header {
+        max-width: 200px; /* Ajusta o tamanho da logo em telas menores */
+    }
+}
+
+
+/* --- ESTILOS DO MODAL --- */
 .modal {
-    display: none; 
-    /* ... (restante do estilo do modal) ... */
+    display: none; /* Escondido por padrão, para que não apareça ao carregar a página */
+    position: fixed; /* Fixo na tela */
+    z-index: 1000; /* Fica acima de outros elementos */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Habilita scroll se o conteúdo for muito grande */
+    background-color: rgba(0,0,0,0.4); /* Fundo escuro semi-transparente */
+    /* display: flex; REMOVIDO: Este é ativado via JS */
+    justify-content: center; /* Mantido para quando for display: flex */
+    align-items: center; /* Mantido para quando for display: flex */
 }
 
-/* ... (O restante do seu CSS permanece o mesmo, incluindo os estilos de impressão) ... */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto; /* Centraliza o modal verticalmente */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    max-width: 500px; /* Largura máxima do modal */
+    width: 90%; /* Largura responsiva */
+    position: relative;
+    animation-name: animatetop;
+    animation-duration: 0.4s;
+}
 
-/* Exemplo:
-Seção de Autenticação
-.auth-section {
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    padding: 25px;
+/* Animação de entrada do modal */
+@keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-content h3 {
+    color: #D17400;
+    margin-top: 0;
     margin-bottom: 25px;
-    background-color: #fdfdfe;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(43, 45, 66, 0.2);
+    padding-bottom: 10px;
+    text-align: center;
 }
-*/
+
+/* Estilo para os inputs dentro do modal */
+.modal-content .input-group input[type="text"] {
+    width: 100%; /* Ocupa a largura total do modal-content */
+}
+/* Remove o padding lateral da .input-group-row */
+.modal-content .input-group-row {
+    padding: 0;
+}
+
+
+/* --- ESTILOS DE IMPRESSÃO (media print) --- */
+@media print {
+    /* Força que tudo se ajuste a uma única página se possível */
+    @page {
+        size: A4 portrait;
+        margin: 5mm; /* Margens mínimas para impressão */
+    }
+    body {
+        background-color: #fff;
+        padding: 0;
+        -webkit-print-color-adjust: exact !important; /* Força cores para impressão */
+        print-color-adjust: exact !important;
+        color: #000;
+        font-size: 0.7em; /* Reduz o tamanho da fonte geral para impressão */
+        line-height: 1.2; /* Compacta o espaçamento entre linhas */
+    }
+    .container {
+        box-shadow: none;
+        margin: 0;
+        padding: 2mm; /* Reduz padding do container */
+        width: 100%;
+        border-radius: 0;
+    }
+    .header {
+        background-color: #f8f9fa !important; /* COR DO CABEÇALHO NA IMPRESSÃO */
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 2mm; /* Reduz padding */
+        margin-bottom: 8mm; /* Reduz margem */
+        flex-direction: row; /* Mantém em linha para impressão */
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 5mm !important; /* Ajusta padding superior para impressão */
+    }
+    .header-left, .header-center, .header-right {
+        padding: 0 2mm !important; /* Reduz padding para impressão */
+    }
+    .header-left {
+        flex-basis: auto; /* Deixa o conteúdo definir a largura */
+        flex-shrink: 0; /* Não permite que encolha */
+        justify-content: flex-start;
+    }
+    .header-center {
+        flex-grow: 1; /* Permite que o centro cresça */
+        justify-content: center;
+    }
+    .header-right {
+        justify-content: flex-end;
+        text-align: right;
+    }
+    .os-main-title {
+        font-size: 1em; /* Reduz fonte da OS para impressão */
+        color: #2b2d42 !important; /* COR DA FONTE NA IMPRESSÃO */
+    }
+    .company-details-header {
+        font-size: 0.6em; /* Reduz fonte dos detalhes da empresa para impressão */
+        color: #2b2d42 !important; /* COR DA FONTE NA IMPRESSÃO */
+    }
+    .company-details-header p {
+        line-height: 1.1; /* Compacta ainda mais o endereço */
+    }
+    .company-details-header a {
+        color: #D17400 !important; /* Cor do link na impressão */
+    }
+    .logo-main-header {
+        max-width: 180px; /* Ajusta logo para impressão */
+        filter: none !important; /* Mantém a cor original da logo na impressão */
+    }
+    .action-buttons-footer, .section-action-btn, .modal, .auth-section { /* Esconde botões, modal e seção de autenticação na impressão */
+        display: none !important;
+    }
+    .section {
+        border: 1px solid #eee;
+        box-shadow: none;
+        margin-bottom: 8mm; /* Reduz espaçamento entre seções */
+        padding: 8mm; /* Reduz padding */
+    }
+    h2 {
+        color: #000;
+        border-bottom: 1px dashed #ddd;
+        font-size: 1.1em; /* Reduz subtítulos */
+        margin-bottom: 6mm;
+        padding-bottom: 3mm;
+    }
+    .input-group {
+        margin-bottom: 8mm; /* Reduz espaçamento entre grupos de input */
+    }
+    .input-group label {
+        font-size: 0.8em; /* Reduz label */
+    }
+    .input-group input[type="text"],
+    .input-group textarea,
+    .input-group select {
+        border: none;
+        border-bottom: 1px dashed #999;
+        padding: 2mm 0; /* Reduz padding */
+        font-size: 0.8em; /* Reduz input font size */
+        color: #000;
+    }
+    textarea {
+        min-height: 50px; /* Reduz altura mínima da textarea */
+    }
+    .quadro4 p {
+        background-color: #f0f0f0;
+        border-left-color: #999;
+        color: #000;
+        font-size: 0.75em; /* Reduz fonte das observações */
+        padding: 8mm; /* Reduz padding */
+    }
+    .warranty-note { /* Estilo para o texto de garantia na impressão */
+        font-size: 0.7em; /* Reduz fonte */
+        margin-top: 4mm;
+        padding-top: 4mm;
+        color: #2b2d42 !important; /* Garante a cor na impressão */
+    }
+    /* Evitar quebras de página dentro de seções importantes */
+    .section {
+        page-break-inside: avoid;
+    }
+}
