@@ -17,30 +17,30 @@ body {
 }
 .header {
     display: flex;
-    flex-direction: column;
-    align-items: center; /* Centraliza verticalmente e horizontalmente */
+    flex-direction: column; /* Organiza logo e linha de info em coluna */
+    align-items: center; /* Centraliza horizontalmente os elementos */
     margin-bottom: 30px;
     border-bottom: 2px solid #e9ecef;
     padding-bottom: 20px;
 }
 
-/* Container central para a logo (nova ordem) */
+/* Container central para a logo */
 .header-logo-container {
-    width: 100%;
+    width: 100%; /* Ocupa a largura total para centralização */
     display: flex;
-    justify-content: center; /* Centraliza a logo horizontalmente */
+    justify-content: center; /* Centraliza a logo */
     margin-bottom: 15px; /* Espaço entre a logo e a linha de informações */
 }
 
 /* Estilo para a logo principal (maior) */
 .logo-main-header {
-    max-width: 400px; /* Logo ainda maior */
+    max-width: 400px; /* Logo maior */
     height: auto;
     object-fit: contain;
 }
 
-/* Linha inferior do cabeçalho: O.S. (esquerda) e Detalhes da Empresa (direita) */
-.header-bottom-info-row {
+/* Linha de informações abaixo da logo: O.S. à esquerda, Detalhes da Empresa à direita */
+.header-info-line {
     width: 100%; /* Ocupa toda a largura do cabeçalho */
     display: flex;
     justify-content: space-between; /* Espaço entre os itens (OS e detalhes da empresa) */
@@ -186,11 +186,11 @@ a:hover {
     color: #2b2d42;
 }
 
-/* Estilos para os botões de ação no rodapé (agora dentro do container) */
+/* Estilos para o botão de imprimir no rodapé */
 .action-buttons-footer {
     display: flex;
-    justify-content: center;
-    gap: 15px;
+    justify-content: center; /* Centraliza o botão */
+    gap: 15px; /* Espaçamento entre os botões */
     padding: 15px 0;
     margin-top: 25px;
     background-color: #f1f3f5;
@@ -208,23 +208,20 @@ a:hover {
     transition: background-color 0.3s ease, transform 0.2s ease;
     color: #ffffff;
     font-weight: bold;
-    background-color: #555; /* Cor padrão, será sobrescrita pelos IDs */
+    background-color: #D17400; /* Cor da Supporta */
 }
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #e08e1a; /* Cor no hover */
+}
+
+/* Estilo para o ícone dentro do botão */
 .button-icon {
     width: 24px;
     height: 24px;
     margin-right: 8px;
 }
-.action-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-#printBtn { background-color: #D17400; }
-#printBtn:hover { background-color: #e08e1a; }
-#whatsappBtn { background-color: #25D366; }
-#whatsappBtn:hover { background-color: #1DA851; }
-#emailBtn { background-color: #007BFF; }
-#emailBtn:hover { background-color: #0056b3; }
 
 
 /* --- ESTILOS DE IMPRESSÃO (media print) --- */
@@ -232,7 +229,7 @@ a:hover {
     /* Força que tudo se ajuste a uma única página se possível */
     @page {
         size: A4 portrait;
-        margin: 10mm; /* Margens mínimas para impressão */
+        margin: 5mm; /* Margens mínimas para impressão */
     }
     body {
         background-color: #fff;
@@ -240,91 +237,91 @@ a:hover {
         -webkit-print-color-adjust: exact !important; /* Força cores para impressão */
         print-color-adjust: exact !important;
         color: #000;
-        font-size: 0.85em; /* Reduz o tamanho da fonte geral para impressão */
-        line-height: 1.3; /* Compacta o espaçamento entre linhas */
+        font-size: 0.75em; /* Reduz o tamanho da fonte geral para impressão */
+        line-height: 1.2; /* Compacta o espaçamento entre linhas */
     }
     .container {
         box-shadow: none;
         margin: 0;
-        padding: 5mm; /* Reduz padding do container */
+        padding: 2mm; /* Reduz padding do container */
         width: 100%;
         border-radius: 0;
     }
     .header {
         border-bottom: 1px solid #ccc;
-        padding-bottom: 5mm; /* Reduz padding */
-        margin-bottom: 10mm; /* Reduz margem */
+        padding-bottom: 2mm; /* Reduz padding */
+        margin-bottom: 8mm; /* Reduz margem */
         flex-direction: column;
         align-items: center;
     }
     .header-logo-container {
-        margin-bottom: 5mm; /* Reduz margem */
+        margin-bottom: 3mm; /* Reduz margem */
     }
     .logo-main-header {
-        max-width: 250px; /* Ajusta logo para impressão */
+        max-width: 200px; /* Ajusta logo para impressão */
     }
-    .header-bottom-info-row {
-        margin-top: 5mm;
+    .header-info-line {
+        margin-top: 3mm;
     }
     .os-main-title {
-        font-size: 1.2em; /* Reduz fonte da OS */
+        font-size: 1.1em; /* Reduz fonte da OS */
         color: #000;
     }
     .company-details-header {
-        font-size: 0.7em; /* Reduz fonte dos detalhes da empresa */
+        font-size: 0.65em; /* Reduz fonte dos detalhes da empresa */
         color: #333;
-        margin-left: 10mm; /* Mantém um bom espaçamento */
+        margin-left: 8mm; /* Mantém um bom espaçamento */
     }
     .company-details-header p {
         line-height: 1.1; /* Compacta ainda mais o endereço */
     }
-    .action-buttons-footer, .primary-btn { /* Esconde botões */
+    .action-buttons-footer { /* Esconde o rodapé de botões na impressão */
         display: none !important;
     }
     .section {
         border: 1px solid #eee;
         box-shadow: none;
-        margin-bottom: 10mm; /* Reduz espaçamento entre seções */
-        padding: 10mm; /* Reduz padding */
+        margin-bottom: 8mm; /* Reduz espaçamento entre seções */
+        padding: 8mm; /* Reduz padding */
     }
     h2 {
         color: #000;
         border-bottom: 1px dashed #ddd;
-        font-size: 1.2em; /* Reduz subtítulos */
-        margin-bottom: 8mm;
-        padding-bottom: 4mm;
+        font-size: 1.1em; /* Reduz subtítulos */
+        margin-bottom: 6mm;
+        padding-bottom: 3mm;
     }
     .input-group {
-        margin-bottom: 10mm; /* Reduz espaçamento entre grupos de input */
+        margin-bottom: 8mm; /* Reduz espaçamento entre grupos de input */
     }
     .input-group label {
-        font-size: 0.9em; /* Reduz label */
+        font-size: 0.8em; /* Reduz label */
     }
     .input-group input[type="text"],
     .input-group textarea,
     .input-group select {
         border: none;
         border-bottom: 1px dashed #999;
-        padding: 3mm 0; /* Reduz padding */
-        font-size: 0.9em; /* Reduz input font size */
+        padding: 2mm 0; /* Reduz padding */
+        font-size: 0.8em; /* Reduz input font size */
         color: #000;
     }
     textarea {
-        min-height: 60px; /* Reduz altura mínima da textarea */
+        min-height: 50px; /* Reduz altura mínima da textarea */
     }
     .quadro4 p {
         background-color: #f0f0f0;
         border-left-color: #999;
         color: #000;
-        font-size: 0.8em; /* Reduz fonte das observações */
-        padding: 10mm; /* Reduz padding */
+        font-size: 0.75em; /* Reduz fonte das observações */
+        padding: 8mm; /* Reduz padding */
     }
     .warranty-note { /* Estilo para o texto de garantia na impressão */
-        font-size: 0.8em; /* Reduz fonte */
-        margin-top: 5mm;
-        padding-top: 5mm;
+        font-size: 0.7em; /* Reduz fonte */
+        margin-top: 4mm;
+        padding-top: 4mm;
     }
-    /* Força quebras de página para evitar quebra de conteúdo indesejada (opcional, pode ajustar) */
+    /* Evitar quebras de página dentro de seções importantes */
     .section {
         page-break-inside: avoid;
     }
