@@ -2,15 +2,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const osNumberDisplay = document.getElementById('os-number-display');
     const printBtn = document.getElementById('printBtn');
 
-    // Campos do cliente
+    // Campos do cliente no formulário principal
     const clienteNomeInput = document.getElementById('cliente-nome');
     const clienteCnpjInput = document.getElementById('cliente-cnpj');
     const clienteContatoInput = document.getElementById('cliente-contato');
     const clienteEnderecoInput = document.getElementById('cliente-endereco');
     const addClientBtn = document.getElementById('addClientBtn');
 
+    // Elementos do Modal
+    const addClientModal = document.getElementById('addClientModal');
+    const closeButton = addClientModal.querySelector('.close-button');
+    const modalClienteNome = document.getElementById('modal-cliente-nome');
+    const modalClienteCnpj = document.getElementById('modal-cliente-cnpj');
+    const modalClienteContato = document.getElementById('modal-cliente-contato');
+    const modalClienteEndereco = document.getElementById('modal-cliente-endereco');
+    const saveClientModalBtn = document.getElementById('saveClientModalBtn');
+
     // --- Configuração Firebase ---
-    // Substitua PELAS SUAS CREDENCIAIS DO FIREBASE
     const firebaseConfig = {
         apiKey: "AIzaSyCmUoU3I9VXjL7YbT95EfUSBnxX3ZzXTII",
         authDomain: "ordemservico-6ddca.firebaseapp.com",
@@ -49,14 +57,23 @@ document.addEventListener('DOMContentLoaded', () => {
         window.print();
     });
 
-    // --- Lógica de Autopreenchimento e Adição de Cliente (Firebase) ---
+    // --- Lógica de Autopreenchimento de Cliente (Firebase) ---
+
+    // Função para limpar e (re)habilitar/desabilitar campos do cliente no formulário principal
+    function resetClientFields(readonly = false) {
+        clienteCnpjInput.value = '';
+        clienteContatoInput.value = '';
+        clienteEnderecoInput.value = '';
+        clienteCnpjInput.readOnly = readonly;
+        clienteContatoInput.readOnly = readonly;
+        clienteEnderecoInput.readOnly = readonly;
+    }
 
     // Evento para buscar cliente ao sair do campo "Nome da Empresa"
     clienteNomeInput.addEventListener('blur', async () => {
         const clienteNome = clienteNomeInput.value.trim();
         if (clienteNome) {
             try {
-                // Normaliza o nome para busca (ex: tudo minúsculas)
                 const docRef = db.collection('clientes').doc(clienteNome.toLowerCase());
                 const doc = await docRef.get();
 
@@ -65,52 +82,74 @@ document.addEventListener('DOMContentLoaded', () => {
                     clienteCnpjInput.value = data.cnpj || '';
                     clienteContatoInput.value = data.contato || '';
                     clienteEnderecoInput.value = data.endereco || '';
-                    alert(`Cliente "${clienteNome}" encontrado e dados preenchidos!`);
+                    resetClientFields(true); // Deixa os campos como somente leitura
+                    console.log(`Cliente "${clienteNome}" encontrado e dados preenchidos.`);
                 } else {
-                    // Se não encontrou, limpa os campos para indicar que é um novo cliente
-                    clienteCnpjInput.value = '';
-                    clienteContatoInput.value = '';
-                    clienteEnderecoInput.value = '';
-                    alert(`Cliente "${clienteNome}" não encontrado. Preencha os dados e adicione-o.`);
+                    resetClientFields(true); // Limpa e mantém como readonly
+                    console.log(`Cliente "${clienteNome}" não encontrado. Use "Adicionar Novo Cliente".`);
+                    alert(`Cliente "${clienteNome}" não encontrado. Por favor, adicione-o através do botão "Adicionar Novo Cliente".`);
                 }
             } catch (error) {
                 console.error("Erro ao buscar cliente:", error);
+                resetClientFields(false); // Em caso de erro, permite edição para o usuário tentar novamente ou adicionar
                 alert("Erro ao buscar cliente. Verifique o console para mais detalhes.");
             }
         } else {
-            // Se o campo de nome estiver vazio, limpa os outros campos
-            clienteCnpjInput.value = '';
-            clienteContatoInput.value = '';
-            clienteEnderecoInput.value = '';
+            resetClientFields(true); // Se o campo de nome estiver vazio, limpa e deixa readonly
         }
     });
 
-    // Evento para o botão "Adicionar Novo Cliente"
-    addClientBtn.addEventListener('click', async () => {
-        const clienteNome = clienteNomeInput.value.trim();
-        const clienteCnpj = clienteCnpjInput.value.trim();
-        const clienteContato = clienteContatoInput.value.trim();
-        const clienteEndereco = clienteEnderecoInput.value.trim();
+    // --- Lógica do Modal "Adicionar Novo Cliente" ---
 
-        if (!clienteNome) {
-            alert('Por favor, preencha o "Nome da Empresa" para adicionar o cliente.');
+    // Abre o modal
+    addClientBtn.addEventListener('click', () => {
+        addClientModal.style.display = 'flex'; // Usa flex para centralizar
+        // Limpa os campos do modal ao abrir
+        modalClienteNome.value = '';
+        modalClienteCnpj.value = '';
+        modalClienteContato.value = '';
+        modalClienteEndereco.value = '';
+    });
+
+    // Fecha o modal pelo botão 'X'
+    closeButton.addEventListener('click', () => {
+        addClientModal.style.display = 'none';
+    });
+
+    // Fecha o modal clicando fora dele
+    window.addEventListener('click', (event) => {
+        if (event.target == addClientModal) {
+            addClientModal.style.display = 'none';
+        }
+    });
+
+    // Salva o novo cliente no Firebase e fecha o modal
+    saveClientModalBtn.addEventListener('click', async () => {
+        const nome = modalClienteNome.value.trim();
+        const cnpj = modalClienteCnpj.value.trim();
+        const contato = modalClienteContato.value.trim();
+        const endereco = modalClienteEndereco.value.trim();
+
+        if (!nome) {
+            alert('O "Nome da Empresa" é obrigatório!');
             return;
         }
 
         try {
-            // Salva os dados do cliente no Firestore
-            // Usa o nome da empresa (em minúsculas) como ID do documento para facilitar a busca
-            await db.collection('clientes').doc(clienteNome.toLowerCase()).set({
-                nome: clienteNome,
-                cnpj: clienteCnpj,
-                contato: clienteContato,
-                endereco: clienteEndereco,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp() // Adiciona um timestamp
+            await db.collection('clientes').doc(nome.toLowerCase()).set({
+                nome: nome,
+                cnpj: cnpj,
+                contato: contato,
+                endereco: endereco,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
             });
-            alert(`Cliente "${clienteNome}" adicionado com sucesso ao banco de dados!`);
+            alert(`Cliente "${nome}" salvo com sucesso!`);
+            addClientModal.style.display = 'none'; // Fecha o modal
+            clienteNomeInput.value = nome; // Preenche o campo principal com o nome
+            clienteNomeInput.dispatchEvent(new Event('blur')); // Dispara o evento blur para autopreencher os outros campos
         } catch (error) {
-            console.error("Erro ao adicionar cliente:", error);
-            alert("Erro ao adicionar cliente. Verifique o console para mais detalhes.");
+            console.error("Erro ao salvar cliente:", error);
+            alert("Erro ao salvar cliente. Verifique o console para mais detalhes.");
         }
     });
 
