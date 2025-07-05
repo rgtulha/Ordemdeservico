@@ -55,7 +55,7 @@ body {
     max-width: 250px; /* Tamanho da logo ajustado para caber na linha */
     height: auto;
     object-fit: contain;
-    filter: brightness(0) invert(1); /* Deixa a logo branca para contraste */
+    /* REMOVIDO: filter: brightness(0) invert(1); para manter a cor original */
 }
 
 /* Estilo para o número da O.S. */
@@ -250,7 +250,7 @@ a:hover {
     width: 24px;
     height: 24px;
     margin-right: 8px;
-    filter: brightness(0) invert(1); /* Deixa o ícone branco */
+    filter: brightness(0) invert(1); /* Deixa o ícone branco para contraste com o botão escuro */
 }
 
 
@@ -347,7 +347,7 @@ a:hover {
     }
     .logo-main-header {
         max-width: 180px; /* Ajusta logo para impressão */
-        filter: brightness(0) invert(1) !important; /* Mantém a logo branca na impressão */
+        filter: none !important; /* Mantém a cor original da logo na impressão */
     }
     .action-buttons-footer, .section-action-btn { /* Esconde botões e o botão de adicionar cliente na impressão */
         display: none !important;
