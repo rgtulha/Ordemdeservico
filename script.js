@@ -18,6 +18,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalClienteEndereco = document.getElementById('modal-cliente-endereco');
     const saveClientModalBtn = document.getElementById('saveClientModalBtn');
 
+    // Elementos da Seção de Autenticação
+    const authEmailInput = document.getElementById('auth-email');
+    const authPasswordInput = document.getElementById('auth-password');
+    const loginBtn = document.getElementById('loginBtn');
+    const registerBtn = document.getElementById('registerBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const authStatus = document.getElementById('auth-status');
+
+    // Seções da O.S. que só aparecem para usuários logados
+    const clientDataSection = document.getElementById('client-data-section');
+    const aparelhoProblemaSection = document.getElementById('aparelho-problema-section');
+    const garantiaSection = document.getElementById('garantia-section');
+    const observacoesSection = document.getElementById('observacoes-section');
+    const footerButtons = document.getElementById('footer-buttons');
+
     // --- Configuração Firebase ---
     const firebaseConfig = {
         apiKey: "AIzaSyCmUoU3I9VXjL7YbT95EfUSBnxX3ZzXTII",
@@ -31,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inicializa o Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
+    const auth = firebase.auth(); // Inicializa o Firebase Authentication
 
     // --- Funções de Geração de OS ---
     function formatDateAsDDMMYY(date) {
@@ -57,6 +73,87 @@ document.addEventListener('DOMContentLoaded', () => {
         window.print();
     });
 
+    // --- Lógica de Autenticação ---
+
+    // Função para atualizar a visibilidade da interface
+    function updateUI(user) {
+        if (user) {
+            // Usuário logado
+            authStatus.textContent = `Logado como: ${user.email}`;
+            loginBtn.style.display = 'none';
+            registerBtn.style.display = 'none';
+            logoutBtn.style.display = 'inline-block'; // Mostra o botão de sair
+
+            // Mostra as seções da O.S.
+            clientDataSection.style.display = 'block';
+            aparelhoProblemaSection.style.display = 'block';
+            garantiaSection.style.display = 'block';
+            observacoesSection.style.display = 'block';
+            footerButtons.style.display = 'flex'; // Exibe o footer com os botões
+        } else {
+            // Usuário deslogado
+            authStatus.textContent = 'Por favor, faça login para acessar a O.S.';
+            loginBtn.style.display = 'inline-block';
+            registerBtn.style.display = 'inline-block';
+            logoutBtn.style.display = 'none';
+
+            // Esconde as seções da O.S.
+            clientDataSection.style.display = 'none';
+            aparelhoProblemaSection.style.display = 'none';
+            garantiaSection.style.display = 'none';
+            observacoesSection.style.display = 'none';
+            footerButtons.style.display = 'none'; // Esconde o footer
+        }
+    }
+
+    // Evento de registro
+    registerBtn.addEventListener('click', async () => {
+        const email = authEmailInput.value;
+        const password = authPasswordInput.value;
+        try {
+            await auth.createUserWithEmailAndPassword(email, password);
+            alert('Usuário cadastrado e logado com sucesso!');
+        } catch (error) {
+            console.error("Erro ao cadastrar:", error.code, error.message);
+            alert(`Erro ao cadastrar: ${error.message}`);
+        }
+    });
+
+    // Evento de login
+    loginBtn.addEventListener('click', async () => {
+        const email = authEmailInput.value;
+        const password = authPasswordInput.value;
+        try {
+            await auth.signInWithEmailAndPassword(email, password);
+            alert('Login realizado com sucesso!');
+        } catch (error) {
+            console.error("Erro ao fazer login:", error.code, error.message);
+            alert(`Erro ao fazer login: ${error.message}`);
+        }
+    });
+
+    // Evento de logout
+    logoutBtn.addEventListener('click', async () => {
+        try {
+            await auth.signOut();
+            alert('Logout realizado com sucesso!');
+            // Limpa os campos da O.S. após o logout
+            clienteNomeInput.value = '';
+            resetClientFields(true);
+            document.getElementById('aparelho-marca-modelo').value = '';
+            document.getElementById('aparelho-imei').value = '';
+            document.getElementById('observacoes-cliente').value = '';
+            document.getElementById('problema-tecnico').value = '';
+            document.getElementById('garantia-peca').value = '';
+        } catch (error) {
+            console.error("Erro ao fazer logout:", error.code, error.message);
+            alert(`Erro ao fazer logout: ${error.message}`);
+        }
+    });
+
+    // Listener para mudanças no estado da autenticação
+    auth.onAuthStateChanged(updateUI); // Chama updateUI sempre que o estado de login mudar
+
     // --- Lógica de Autopreenchimento de Cliente (Firebase) ---
 
     // Função para limpar e (re)habilitar/desabilitar campos do cliente no formulário principal
@@ -72,6 +169,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Evento para buscar cliente ao sair do campo "Nome da Empresa"
     clienteNomeInput.addEventListener('blur', async () => {
         const clienteNome = clienteNomeInput.value.trim();
+        if (!auth.currentUser) { // Verifica se há usuário logado
+            alert('Por favor, faça login para buscar informações de clientes.');
+            resetClientFields(true);
+            return;
+        }
+
         if (clienteNome) {
             try {
                 const docRef = db.collection('clientes').doc(clienteNome.toLowerCase());
@@ -91,8 +194,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (error) {
                 console.error("Erro ao buscar cliente:", error);
-                resetClientFields(false); // Em caso de erro, permite edição para o usuário tentar novamente ou adicionar
-                alert("Erro ao buscar cliente. Verifique o console para mais detalhes.");
+                // Permite ao usuário editar se o erro for por outro motivo que não a autenticação
+                resetClientFields(false);
+                alert("Erro ao buscar cliente. Verifique o console para mais detalhes. As regras de segurança podem estar impedindo o acesso.");
             }
         } else {
             resetClientFields(true); // Se o campo de nome estiver vazio, limpa e deixa readonly
@@ -103,6 +207,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Abre o modal
     addClientBtn.addEventListener('click', () => {
+        if (!auth.currentUser) { // Verifica se há usuário logado
+            alert('Por favor, faça login para adicionar um novo cliente.');
+            return;
+        }
         addClientModal.style.display = 'flex'; // Usa flex para centralizar
         // Limpa os campos do modal ao abrir
         modalClienteNome.value = '';
@@ -125,6 +233,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Salva o novo cliente no Firebase e fecha o modal
     saveClientModalBtn.addEventListener('click', async () => {
+        if (!auth.currentUser) { // Verifica se há usuário logado
+            alert('Você precisa estar logado para salvar um cliente.');
+            return;
+        }
+
         const nome = modalClienteNome.value.trim();
         const cnpj = modalClienteCnpj.value.trim();
         const contato = modalClienteContato.value.trim();
@@ -141,7 +254,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 cnpj: cnpj,
                 contato: contato,
                 endereco: endereco,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                addedBy: auth.currentUser.email // Opcional: Registra quem adicionou o cliente
             });
             alert(`Cliente "${nome}" salvo com sucesso!`);
             addClientModal.style.display = 'none'; // Fecha o modal
@@ -149,20 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
             clienteNomeInput.dispatchEvent(new Event('blur')); // Dispara o evento blur para autopreencher os outros campos
         } catch (error) {
             console.error("Erro ao salvar cliente:", error);
-            alert("Erro ao salvar cliente. Verifique o console para mais detalhes.");
+            alert("Erro ao salvar cliente. Verifique o console para mais detalhes. Certifique-se de estar logado e com permissão.");
         }
     });
-
-    // **IMPORTANTE SOBRE REGRAS DE SEGURANÇA DO FIRESTORE:**
-    // Para que a busca e adição de clientes funcionem, você precisa configurar as regras de segurança do Firestore.
-    // Exemplo de regras (para desenvolvimento - **NÃO USE EM PRODUÇÃO SEM REVISÃO CUIDADOSA!**):
-    // service cloud.firestore {
-    //   match /databases/{database}/documents {
-    //     match /clientes/{clientId} {
-    //       allow read, write: if true; // Permite leitura e escrita para qualquer um (inseguro para produção)
-    //     }
-    //   }
-    // }
-    // Para um ambiente de produção, você precisaria de regras mais restritivas,
-    // por exemplo, permitindo escrita apenas para usuários autenticados.
 });
