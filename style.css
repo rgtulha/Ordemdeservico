@@ -1,3 +1,4 @@
+/* Estilos Gerais (existentes) */
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
@@ -43,7 +44,6 @@ body {
 .company-details-header p {
     margin: 0;
     line-height: 1.4;
-    /* Adiciona word-break para garantir que o texto quebre em qualquer ponto se necessário */
     word-break: break-word;
 }
 .company-details-header a {
@@ -173,4 +173,115 @@ a:hover {
     border-radius: 6px;
     font-size: 0.95em;
     color: #2b2d42; /* Cor do texto no quadro de observações */
+}
+
+/* --- ESTILOS DE IMPRESSÃO (media print) --- */
+@media print {
+    body {
+        background-color: #fff;
+        padding: 0;
+        /* Garante que cores de fundo sejam impressas */
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        color: #000; /* Força texto preto para impressão */
+    }
+    .container {
+        box-shadow: none; /* Remove sombras */
+        margin: 0; /* Remove margem */
+        padding: 15mm; /* Adiciona padding para margens da página */
+        width: 100%;
+        border-radius: 0;
+    }
+    .header {
+        border-bottom: 1px solid #ccc; /* Linha mais fina */
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        flex-direction: row; /* Volta a alinhar logo e dados da empresa lado a lado */
+        align-items: flex-end; /* Alinha ao fundo para dados da empresa */
+    }
+    .header-top-row {
+        flex-grow: 1; /* Permite que a linha superior ocupe espaço */
+        justify-content: space-between; /* Mantém logo e detalhes espaçados */
+        align-items: flex-end; /* Alinha ao fundo da logo */
+        margin-bottom: 0; /* Remove margem para não ter espaço extra */
+    }
+    .header .logo {
+        max-width: 150px; /* Ajusta logo para impressão */
+        margin-right: 10px; /* Reduz espaço */
+    }
+    .company-details-header {
+        font-size: 0.75em; /* Fonte um pouco menor */
+        color: #333;
+        text-align: right;
+    }
+    .company-details-header p {
+        line-height: 1.2; /* Espaçamento menor */
+    }
+    .os-main-title {
+        font-size: 1.8em; /* Título menor */
+        margin-top: 15px; /* Adiciona espaço acima do título */
+        color: #000; /* Força preto */
+    }
+    .primary-btn {
+        display: none; /* Esconde o botão "Gerar Nova OS" na impressão */
+    }
+    .section {
+        border: 1px solid #eee; /* Borda mais suave */
+        box-shadow: none; /* Remove sombras */
+        margin-bottom: 15px; /* Espaçamento menor entre seções */
+        padding: 15px;
+    }
+    h2 {
+        color: #000; /* Força subtítulos pretos */
+        border-bottom: 1px dashed #ddd; /* Borda tracejada */
+        font-size: 1.4em;
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+    }
+    .input-group input[type="text"],
+    .input-group textarea,
+    .input-group select {
+        border: none; /* Remove a borda padrão do input */
+        border-bottom: 1px dashed #999; /* Adiciona uma linha tracejada para indicar o campo */
+        padding: 5px 0;
+        border-radius: 0;
+        box-shadow: none;
+        background-color: transparent;
+        /* Garante que os valores preenchidos sejam impressos */
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        color: #000; /* Garante que o texto dos inputs seja preto */
+    }
+    textarea {
+        min-height: 80px; /* Ajusta altura para impressão */
+    }
+    hr {
+        border-top: 1px dashed #ccc;
+        margin: 20px 0;
+    }
+    p strong {
+        color: #000; /* Força negrito preto */
+    }
+    a {
+        color: #000; /* Links pretos na impressão */
+        text-decoration: none;
+    }
+    /* Opcional: Mostrar URL de links impressos */
+    /* a[href]:after {
+        content: " (" attr(href) ")";
+    } */
+    .checkbox-group input[type="checkbox"] {
+        transform: scale(1); /* Volta ao tamanho normal */
+        accent-color: #000; /* Checkbox preto */
+    }
+    .checkbox-group label {
+        color: #000; /* Label do checkbox preto */
+    }
+    .quadro4 p {
+        background-color: #f0f0f0; /* Fundo cinza claro */
+        border-left-color: #999; /* Borda cinza */
+        color: #000; /* Texto preto */
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
 }
