@@ -22,7 +22,7 @@ body {
     margin-bottom: 30px;
     border-bottom: 2px solid #e9ecef;
     padding-bottom: 20px;
-    background-color: #FFFFFF; /* NOVA COR DO CABEÇALHO (branco) */
+    background-color: #f8f9fa; /* NOVA COR DO CABEÇALHO */
     border-radius: 10px 10px 0 0; /* Borda arredondada no topo */
     padding-top: 20px;
 }
@@ -60,7 +60,7 @@ body {
 
 /* Estilo para o número da O.S. */
 .os-main-title {
-    color: #2b2d42; /* COR DA FONTE NO CABEÇALHO (escuro para contraste com branco) */
+    color: #2b2d42; /* COR DA FONTE NO CABEÇALHO (escuro para contraste) */
     font-size: 1.4em; /* Fonte ajustada para caber na linha */
     margin: 0;
     font-weight: 700;
@@ -70,7 +70,7 @@ body {
 /* Detalhes da empresa */
 .company-details-header {
     font-size: 0.75em; /* Fonte ajustada para caber na linha */
-    color: #2b2d42; /* COR DA FONTE NO CABEÇALHO (escuro para contraste com branco) */
+    color: #2b2d42; /* COR DA FONTE NO CABEÇALHO (escuro para contraste) */
 }
 .company-details-header p {
     margin: 0;
@@ -84,7 +84,7 @@ body {
 /* Estilo para o texto de garantia adicionado */
 .warranty-note {
     font-style: italic;
-    color: #2b2d42; /* NOVA COR DA FRASE DE GARANTIA */
+    color: #2b2d42; /* COR DA FRASE DE GARANTIA */
     font-size: 0.9em;
     margin-top: 10px;
     padding-top: 10px;
@@ -286,7 +286,7 @@ a:hover {
 
 /* --- ESTILOS DO MODAL --- */
 .modal {
-    display: none; /* Escondido por padrão */
+    display: none; /* Escondido por padrão, para que não apareça ao carregar a página */
     position: fixed; /* Fixo na tela */
     z-index: 1000; /* Fica acima de outros elementos */
     left: 0;
@@ -295,9 +295,9 @@ a:hover {
     height: 100%;
     overflow: auto; /* Habilita scroll se o conteúdo for muito grande */
     background-color: rgba(0,0,0,0.4); /* Fundo escuro semi-transparente */
-    display: flex; /* Para centralizar o conteúdo do modal */
-    justify-content: center;
-    align-items: center;
+    /* Removido o display: flex; daqui. Ele é adicionado via JS quando o modal é aberto. */
+    justify-content: center; /* Mantido para quando for display: flex */
+    align-items: center; /* Mantido para quando for display: flex */
 }
 
 .modal-content {
@@ -380,7 +380,7 @@ a:hover {
         border-radius: 0;
     }
     .header {
-        background-color: #FFFFFF !important; /* COR DO CABEÇALHO NA IMPRESSÃO */
+        background-color: #f8f9fa !important; /* COR DO CABEÇALHO NA IMPRESSÃO */
         border-bottom: 1px solid #ccc;
         padding-bottom: 2mm; /* Reduz padding */
         margin-bottom: 8mm; /* Reduz margem */
