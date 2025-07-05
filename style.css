@@ -135,6 +135,7 @@ h2 {
 }
 .input-group {
     margin-bottom: 18px;
+    position: relative; /* Adicionado para posicionamento absoluto das sugestões */
 }
 /* Estilo para campos readonly */
 .input-group input[type="text"][readonly] {
@@ -156,7 +157,7 @@ h2 {
 .input-group input[type="text"],
 .input-group textarea,
 .input-group select {
-    width: calc(100% - 24px);
+    width: 100%; /* Ajustado para 100% para o container de sugestões */
     padding: 12px;
     border: 1px solid #ced4da;
     border-radius: 5px;
@@ -369,6 +370,44 @@ a:hover {
     flex: 1; /* Faz com que os botões ocupem o espaço disponível */
 }
 
+/* --- NOVOS ESTILOS PARA AUTOCOMPLETE --- */
+.suggestions-container {
+    position: absolute; /* Para flutuar sobre o conteúdo */
+    width: calc(100% - 24px); /* Largura do input - padding */
+    top: calc(100% + 5px); /* Abaixo do input, com uma pequena margem */
+    left: 12px; /* Alinha com o padding do input */
+    z-index: 10; /* Garante que a lista apareça sobre outros elementos */
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: none; /* Escondido por padrão, mostrado via JS */
+}
+
+.suggestions-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 200px; /* Limita a altura e adiciona scroll */
+    overflow-y: auto;
+}
+
+.suggestions-list li {
+    padding: 10px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    color: #2b2d42;
+    font-size: 0.95em;
+}
+
+.suggestions-list li:last-child {
+    border-bottom: none; /* Remove a borda do último item */
+}
+
+.suggestions-list li:hover {
+    background-color: #f1f1f1;
+}
+
 
 /* --- ESTILOS DE IMPRESSÃO (media print) --- */
 @media print {
@@ -437,7 +476,7 @@ a:hover {
         max-width: 180px; /* Ajusta logo para impressão */
         filter: none !important; /* Mantém a cor original da logo na impressão */
     }
-    .action-buttons-footer, .section-action-btn, .modal, .auth-access-buttons { /* Esconde botões, modal e botões de acesso/logout na impressão */
+    .action-buttons-footer, .section-action-btn, .modal, .auth-access-buttons, .suggestions-container { /* Esconde botões, modal e botões de acesso/logout e sugestões na impressão */
         display: none !important;
     }
     .section {
