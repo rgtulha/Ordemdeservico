@@ -34,25 +34,22 @@
                 <h2>Dados Cliente</h2>
                 <button id="addClientBtn" class="section-action-btn">Adicionar Novo Cliente</button>
             </div>
-            <div class="input-group-row">
-                <div class="input-group">
-                    <label for="cliente-nome">Nome da Empresa:</label>
-                    <input type="text" id="cliente-nome" name="cliente-nome" placeholder="Nome da empresa do cliente">
-                </div>
+            <div class="input-group">
+                <label for="cliente-nome">Nome da Empresa:</label>
+                <input type="text" id="cliente-nome" name="cliente-nome" placeholder="Nome da empresa do cliente">
             </div>
-            <div class="input-group-row">
-                <div class="input-group flex-item">
-                    <label for="cliente-cnpj">CNPJ:</label>
-                    <input type="text" id="cliente-cnpj" name="cliente-cnpj" placeholder="00.000.000/0000-00">
-                </div>
-                <div class="input-group flex-item">
-                    <label for="cliente-contato">Contato:</label>
-                    <input type="text" id="cliente-contato" name="cliente-contato" placeholder="(XX) XXXXX-XXXX">
-                </div>
+            <!-- Estes campos serão preenchidos automaticamente e serão somente leitura -->
+            <div class="input-group">
+                <label for="cliente-cnpj">CNPJ:</label>
+                <input type="text" id="cliente-cnpj" name="cliente-cnpj" placeholder="00.000.000/0000-00" readonly>
+            </div>
+            <div class="input-group">
+                <label for="cliente-contato">Contato:</label>
+                <input type="text" id="cliente-contato" name="cliente-contato" placeholder="(XX) XXXXX-XXXX" readonly>
             </div>
             <div class="input-group">
                 <label for="cliente-endereco">Endereço:</label>
-                <input type="text" id="cliente-endereco" name="cliente-endereco" placeholder="Endereço completo do cliente">
+                <input type="text" id="cliente-endereco" name="cliente-endereco" placeholder="Endereço completo do cliente" readonly>
             </div>
         </section>
 
@@ -63,7 +60,6 @@
                 <label for="aparelho-marca-modelo">Marca e Modelo do Aparelho:</label>
                 <input type="text" id="aparelho-marca-modelo" name="aparelho-marca-modelo" placeholder="Ex: Notebook Dell Inspiron 15, Impressora HP LaserJet">
             </div>
-            <!-- NOVO CAMPO: IMEI -->
             <div class="input-group">
                 <label for="aparelho-imei">IMEI:</label>
                 <input type="text" id="aparelho-imei" name="aparelho-imei" placeholder="IMEI do aparelho (opcional)">
@@ -99,7 +95,7 @@
             <p>Privacidade: A Supporta tecnologia mantém sigilo e confidencialidade de todas as informações disponíveis em seu equipamento.</p>
         </section>
 
-        <!-- Seção de botões no rodapé - APENAS O BOTÃO DE IMPRIMIR -->
+        <!-- Seção de botões no rodapé -->
         <footer class="action-buttons-footer">
             <button id="printBtn" class="action-btn">
                 <img src="https://rgtulha.github.io/Ordemdeservico/imprimir.png" alt="Imprimir" class="button-icon">
@@ -108,6 +104,31 @@
         </footer>
 
     </div> <!-- Fim do div.container -->
+
+    <!-- Modal para Adicionar Novo Cliente -->
+    <div id="addClientModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Adicionar Novo Cliente</h3>
+            <div class="input-group">
+                <label for="modal-cliente-nome">Nome da Empresa:</label>
+                <input type="text" id="modal-cliente-nome" name="modal-cliente-nome" placeholder="Nome da empresa" required>
+            </div>
+            <div class="input-group">
+                <label for="modal-cliente-cnpj">CNPJ:</label>
+                <input type="text" id="modal-cliente-cnpj" name="modal-cliente-cnpj" placeholder="00.000.000/0000-00">
+            </div>
+            <div class="input-group">
+                <label for="modal-cliente-contato">Contato:</label>
+                <input type="text" id="modal-cliente-contato" name="modal-cliente-contato" placeholder="(XX) XXXXX-XXXX">
+            </div>
+            <div class="input-group">
+                <label for="modal-cliente-endereco">Endereço:</label>
+                <input type="text" id="modal-cliente-endereco" name="modal-cliente-endereco" placeholder="Endereço completo">
+            </div>
+            <button id="saveClientModalBtn" class="section-action-btn" style="margin-top: 20px;">Salvar Cliente</button>
+        </div>
+    </div>
 
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
