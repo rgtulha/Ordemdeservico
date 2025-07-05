@@ -1,4 +1,3 @@
-/* Estilos Gerais (existentes) */
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
@@ -31,7 +30,7 @@ body {
     justify-content: space-between; /* Logo à esquerda, detalhes à direita */
 }
 .header .logo {
-    max-width: 250px; /* Aumentado o tamanho máximo da logo */
+    max-width: 250px; /* Tamanho da logo: 250px */
     height: auto;
     object-fit: contain;
     margin-right: 20px; /* Espaço entre a logo e os detalhes da empresa */
@@ -58,23 +57,11 @@ body {
     text-align: center; /* Centraliza o título da OS */
     margin-bottom: 15px; /* Espaço entre o título e o botão */
 }
-/* Estilo do botão de gerar OS */
+/* Estilo do botão de gerar OS (removido, mas mantendo a classe vazia caso queira adicionar novamente) */
 .primary-btn {
-    background-color: #D17400; /* Cor primária */
-    color: #ffffff;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 5px;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    align-self: center; /* Centraliza o botão no cabeçalho */
+    /* Removido: display: none; etc. */
 }
 
-.primary-btn:hover {
-    background-color: #e08e1a; /* Tom mais escuro no hover */
-    transform: translateY(-2px); /* Pequeno efeito de elevação */
-}
 
 .section {
     border: 1px solid #dee2e6;
@@ -221,6 +208,8 @@ a:hover {
         font-size: 1.8em; /* Título menor */
         margin-top: 15px; /* Adiciona espaço acima do título */
         color: #000; /* Força preto */
+        text-align: left; /* Alinha o título da OS à esquerda na impressão */
+        width: auto; /* Permite que o título ocupe apenas o espaço necessário */
     }
     .primary-btn {
         display: none; /* Esconde o botão "Gerar Nova OS" na impressão */
