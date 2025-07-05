@@ -10,43 +10,43 @@
 <body>
     <div class="container">
         <header class="header">
-            <!-- Para uma imagem de logo real, substitua o src pela URL da sua imagem -->
-            <img src="https://rgtulha.github.io/Ordemdeservico/logo-supporta.png" alt="Logo Supporta Tecnologia" class="logo">
-            <h1>Ordem de Serviço</h1>
+            <div class="header-top-row">
+                <!-- URL da sua logo corrigida aqui -->
+                <img src="https://rgtulha.github.io/Ordemdeservico/logo-nova.png" alt="Logo Supporta Tecnologia" class="logo">
+                <div class="company-details-header">
+                    <p><strong>Supporta Tecnologia LTDA.</strong></p>
+                    <p>CNPJ: 45.258.581/0001-02</p>
+                    <p>Contato: (62) 98179-5686</p>
+                    <p>Endereço: Av. Portugal, 1148, Sala C2501, Cond. Orion Business. - Setor Marista, CEP: 74.150-030</p>
+                    <p>Site: <a href="https://site.supporta.tec.br" >https://site.supporta.tec.br</a></p>
+                </div>
+            </div>
+            <h1 class="os-main-title">Ordem de Serviço nº <span id="os-number-display">[Número da OS]</span></h1>
         </header>
 
-        <!-- Quadro 1: Dados do Cliente e da Supporta Tecnologia -->
+        <!-- Quadro 1: Dados do Cliente -->
         <section class="section quadro1">
-            <h2>Dados da Empresa Cliente</h2>
-            <div class="input-group">
-                <label for="cliente-nome">Nome da Empresa:</label>
-                <input type="text" id="cliente-nome" name="cliente-nome" placeholder="Nome da empresa do cliente">
+            <h2>Dados Cliente</h2>
+            <div class="input-group-row">
+                <div class="input-group">
+                    <label for="cliente-nome">Nome da Empresa:</label>
+                    <input type="text" id="cliente-nome" name="cliente-nome" placeholder="Nome da empresa do cliente">
+                </div>
             </div>
-            <div class="input-group">
-                <label for="cliente-cnpj">CNPJ:</label>
-                <input type="text" id="cliente-cnpj" name="cliente-cnpj" placeholder="00.000.000/0000-00">
+            <div class="input-group-row">
+                <div class="input-group flex-item">
+                    <label for="cliente-cnpj">CNPJ:</label>
+                    <input type="text" id="cliente-cnpj" name="cliente-cnpj" placeholder="00.000.000/0000-00">
+                </div>
+                <div class="input-group flex-item">
+                    <label for="cliente-contato">Contato:</label>
+                    <input type="text" id="cliente-contato" name="cliente-contato" placeholder="(XX) XXXXX-XXXX">
+                </div>
             </div>
             <div class="input-group">
                 <label for="cliente-endereco">Endereço:</label>
                 <input type="text" id="cliente-endereco" name="cliente-endereco" placeholder="Endereço completo do cliente">
             </div>
-            <div class="input-group">
-                <label for="cliente-contato">Contato:</label>
-                <input type="text" id="cliente-contato" name="cliente-contato" placeholder="(XX) XXXXX-XXXX">
-            </div>
-            <div class="input-group">
-                <label for="os-numero">Número da OS:</label>
-                <input type="text" id="os-numero" name="os-numero" placeholder="Ex: OS-2025-001">
-            </div>
-
-            <hr>
-
-            <h2>Dados da Minha Empresa</h2>
-            <p><strong>Supporta Tecnologia LTDA.</strong></p>
-            <p>CNPJ: 45.258.581/0001-02</p>
-            <p>Endereço: Av. Portugal, 1148, Sala C2501, Cond. Orion Business. - Setor Marista, CEP: 74.150-030</p>
-            <p>Contato: (62) 98179-5686</p>
-            <p>Site: <a href="https://site.supporta.tec.br" >https://site.supporta.tec.br</a></p>
         </section>
 
         <!-- Quadro 2: Detalhes do Aparelho e Problema -->
@@ -73,13 +73,13 @@
                 <input type="checkbox" id="garantia-servico-90" name="garantia-servico-90">
                 <label for="garantia-servico-90">Garantia de 90 dias serviço de manutenção</label>
             </div>
-            <div class="checkbox-group">
-                <input type="checkbox" id="garantia-peca-1ano" name="garantia-peca-1ano">
-                <label for="garantia-peca-1ano">Garantia de 1 ano na peça</label>
-            </div>
-            <div class="checkbox-group">
-                <input type="checkbox" id="garantia-peca-90dias" name="garantia-peca-90dias">
-                <label for="garantia-peca-90dias">Garantia de 90 dias na peça</label>
+            <div class="input-group">
+                <label for="garantia-peca">Garantia da Peça:</label>
+                <select id="garantia-peca" name="garantia-peca">
+                    <option value="">Selecione uma opção</option>
+                    <option value="1-ano">Garantia de 1 ano na peça</option>
+                    <option value="90-dias">Garantia de 90 dias na peça</option>
+                </select>
             </div>
         </section>
 
