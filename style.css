@@ -255,18 +255,14 @@ a:hover {
     filter: brightness(0) invert(1); /* Deixa o ícone branco para contraste com o botão escuro */
 }
 
-/* Estilos da nova seção de autenticação */
-.auth-section .auth-buttons {
+/* Estilos para a seção de botões de acesso/logout */
+.auth-access-buttons {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 15px;
+    margin-bottom: 25px;
+    align-items: center;
 }
-.auth-section .section-action-btn {
-    padding: 10px 20px;
-    font-size: 1em;
-}
-
 
 /* --- Media Query para telas menores e responsividade do cabeçalho --- */
 @media (max-width: 768px) {
@@ -296,9 +292,9 @@ a:hover {
 }
 
 
-/* --- ESTILOS DO MODAL --- */
+/* --- ESTILOS GERAIS DO MODAL --- */
 .modal {
-    display: none; /* Escondido por padrão, para que não apareça ao carregar a página */
+    display: none; /* Escondido por padrão, ativado via JS */
     position: fixed; /* Fixo na tela */
     z-index: 1000; /* Fica acima de outros elementos */
     left: 0;
@@ -307,9 +303,8 @@ a:hover {
     height: 100%;
     overflow: auto; /* Habilita scroll se o conteúdo for muito grande */
     background-color: rgba(0,0,0,0.4); /* Fundo escuro semi-transparente */
-    /* display: flex; REMOVIDO: Este é ativado via JS */
-    justify-content: center; /* Mantido para quando for display: flex */
-    align-items: center; /* Mantido para quando for display: flex */
+    justify-content: center; /* Para centralizar o conteúdo do modal */
+    align-items: center; /* Para centralizar o conteúdo do modal */
 }
 
 .modal-content {
@@ -359,12 +354,19 @@ a:hover {
 }
 
 /* Estilo para os inputs dentro do modal */
-.modal-content .input-group input[type="text"] {
+.modal-content .input-group input[type="text"],
+.modal-content .input-group input[type="email"],
+.modal-content .input-group input[type="password"] {
     width: 100%; /* Ocupa a largura total do modal-content */
 }
 /* Remove o padding lateral da .input-group-row */
 .modal-content .input-group-row {
     padding: 0;
+}
+
+/* Estilos específicos para os botões do modal de autenticação */
+.auth-modal-buttons button {
+    flex: 1; /* Faz com que os botões ocupem o espaço disponível */
 }
 
 
@@ -435,7 +437,7 @@ a:hover {
         max-width: 180px; /* Ajusta logo para impressão */
         filter: none !important; /* Mantém a cor original da logo na impressão */
     }
-    .action-buttons-footer, .section-action-btn, .modal, .auth-section { /* Esconde botões, modal e seção de autenticação na impressão */
+    .action-buttons-footer, .section-action-btn, .modal, .auth-access-buttons { /* Esconde botões, modal e botões de acesso/logout na impressão */
         display: none !important;
     }
     .section {
