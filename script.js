@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const osNumberDisplay = document.getElementById('os-number-display');
-    const generateOsBtn = document.getElementById('generateOsBtn');
+    // const generateOsBtn = document.getElementById('generateOsBtn'); // Removido
 
     // Função para formatar a data e hora
     function formatDateTime(date) {
@@ -17,20 +17,20 @@ document.addEventListener('DOMContentLoaded', () => {
     function generateOsNumber() {
         const now = new Date();
         const dateTimeFormatted = formatDateTime(now);
-        const randomSuffix = Math.floor(1000 + Math.random() * 9000); // Gera um número de 4 dígitos
+        // Gera um número de 4 dígitos aleatório
+        const randomSuffix = Math.floor(1000 + Math.random() * 9000);
 
         return `OS-${dateTimeFormatted}-${randomSuffix}`;
     }
 
-    // Event listener para o botão
-    generateOsBtn.addEventListener('click', () => {
-        const newOsNumber = generateOsNumber();
-        osNumberDisplay.textContent = newOsNumber;
-        alert(`Novo número de OS gerado: ${newOsNumber}`); // Alerta para o usuário
-    });
+    // Geração automática do número da OS ao carregar a página
+    const initialOsNumber = generateOsNumber();
+    osNumberDisplay.textContent = initialOsNumber;
 
-    // Opcional: Gerar um número de OS automaticamente ao carregar a página
-    // Isso é útil se você quer que uma OS já comece com um número
-    // const initialOsNumber = generateOsNumber();
-    // osNumberDisplay.textContent = initialOsNumber;
+    // Removido: Event listener para o botão
+    // generateOsBtn.addEventListener('click', () => {
+    //     const newOsNumber = generateOsNumber();
+    //     osNumberDisplay.textContent = newOsNumber;
+    //     alert(`Novo número de OS gerado: ${newOsNumber}`);
+    // });
 });
