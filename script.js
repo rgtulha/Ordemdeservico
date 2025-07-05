@@ -29,20 +29,56 @@ document.addEventListener('DOMContentLoaded', () => {
     // Atualiza o título da aba do navegador
     document.title = `SUPPORTA O.S: ${initialOsNumber}`;
 
-    // --- Lógica para os novos botões ---
+    // --- Lógica para os botões ---
 
     // Botão Imprimir
     printBtn.addEventListener('click', () => {
         window.print();
     });
 
-    // Botão WhatsApp
+    // Botão WhatsApp com geração de PDF
     whatsappBtn.addEventListener('click', () => {
         const osNumber = osNumberDisplay.textContent;
-        const phoneNumber = '5562981795686'; // Adicionado o código do país (55)
+        const phoneNumber = '5562981795686';
         const message = encodeURIComponent(`Olá! Estou enviando a Ordem de Serviço de número ${osNumber}.`);
-        window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+
+        // Elemento a ser convertido para PDF (o container principal)
+        const element = document.querySelector('.container');
+        const footer = document.querySelector('.action-buttons-footer');
+
+        // Configurações para o PDF
+        const options = {
+            margin: [10, 10, 10, 10], // Margens: top, left, bottom, right em mm
+            filename: `OS_${osNumber}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, logging: false, dpi: 192, letterRendering: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        // 1. Temporariamente aplicar estilos de impressão e esconder footer para a geração do PDF
+        //    (html2pdf.js renderiza o que está visível na tela e estilizado, então usamos os estilos de @media print)
+        //    Este é um truque para 'simular' o modo de impressão para o html2pdf.js
+        document.body.classList.add('is-generating-pdf'); // Adiciona classe para ativar estilos print-like
+        if (footer) footer.style.display = 'none'; // Esconde o footer na versão PDF
+
+        html2pdf().set(options).from(element).save().then(() => {
+            // 2. Após a geração e download do PDF:
+            //    Remover a classe e mostrar o footer novamente
+            document.body.classList.remove('is-generating-pdf');
+            if (footer) footer.style.display = 'flex';
+
+            // 3. Informar o usuário e abrir o WhatsApp
+            alert('A Ordem de Serviço foi baixada como PDF. Agora, você precisará anexá-la manualmente na conversa do WhatsApp. A janela do WhatsApp será aberta.');
+            window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+        }).catch(error => {
+            // Em caso de erro, remover a classe e mostrar o footer
+            console.error('Erro ao gerar PDF:', error);
+            document.body.classList.remove('is-generating-pdf');
+            if (footer) footer.style.display = 'flex';
+            alert('Não foi possível gerar o PDF da O.S. Por favor, tente novamente.');
+        });
     });
+
 
     // Botão Email
     emailBtn.addEventListener('click', () => {
