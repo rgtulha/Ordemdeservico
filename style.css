@@ -166,6 +166,56 @@ a:hover {
     color: #2b2d42; /* Cor do texto no quadro de observações */
 }
 
+/* Estilos para os novos botões de ação no rodapé */
+.action-buttons-footer {
+    display: flex;
+    justify-content: center; /* Centraliza os botões */
+    gap: 15px; /* Espaçamento entre os botões */
+    padding: 20px;
+    margin-top: 20px; /* Espaçamento acima do rodapé */
+    background-color: #f1f3f5; /* Um fundo suave para o rodapé */
+    border-top: 1px solid #e9ecef;
+    border-radius: 0 0 10px 10px; /* Arredonda apenas os cantos inferiores */
+}
+
+.action-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    color: #ffffff; /* Cor do texto padrão para os botões */
+    font-weight: bold;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px); /* Pequeno efeito de elevação */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.print-btn {
+    background-color: #D17400; /* Cor da Supporta */
+}
+.print-btn:hover {
+    background-color: #e08e1a;
+}
+
+.whatsapp-btn {
+    background-color: #25D366; /* Cor do WhatsApp */
+}
+.whatsapp-btn:hover {
+    background-color: #1DA851;
+}
+
+.email-btn {
+    background-color: #007BFF; /* Azul para Email */
+}
+.email-btn:hover {
+    background-color: #0056b3;
+}
+
+
 /* --- ESTILOS DE IMPRESSÃO (media print) --- */
 @media print {
     body {
@@ -217,7 +267,7 @@ a:hover {
         color: #000;
         white-space: nowrap; /* Garante que não quebre */
     }
-    .primary-btn {
+    .primary-btn, .action-buttons-footer { /* Esconde a nova seção de botões na impressão */
         display: none;
     }
     .section {
