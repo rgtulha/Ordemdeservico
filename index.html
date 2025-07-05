@@ -28,25 +28,11 @@
             </div>
         </header>
 
-        <!-- Seção de Autenticação - Adicionada -->
-        <section class="section auth-section">
-            <h2>Acesso</h2>
-            <div id="auth-controls">
-                <div class="input-group">
-                    <label for="auth-email">E-mail:</label>
-                    <input type="email" id="auth-email" placeholder="seuemail@exemplo.com">
-                </div>
-                <div class="input-group">
-                    <label for="auth-password">Senha:</label>
-                    <input type="password" id="auth-password" placeholder="********">
-                </div>
-                <div class="auth-buttons">
-                    <button id="loginBtn" class="section-action-btn">Entrar</button>
-                    <button id="registerBtn" class="section-action-btn">Cadastrar</button>
-                    <button id="logoutBtn" class="section-action-btn" style="display: none;">Sair</button>
-                </div>
-                <p id="auth-status" style="margin-top: 15px; text-align: center; font-weight: bold;"></p>
-            </div>
+        <!-- Botões de Acesso/Logout visíveis sempre que necessário -->
+        <section class="section auth-access-buttons" style="text-align: center;">
+            <button id="accessAuthBtn" class="section-action-btn">Acessar</button>
+            <button id="logoutBtn" class="section-action-btn" style="display: none;">Sair</button>
+            <p id="auth-status" style="margin-top: 15px; font-weight: bold;"></p>
         </section>
 
         <!-- Quadro 1: Dados do Cliente -->
@@ -149,10 +135,31 @@
         </div>
     </div>
 
+    <!-- NOVO: Modal para Autenticação (Login/Cadastro) -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Acessar O.S.</h3>
+            <div class="input-group">
+                <label for="auth-email">E-mail:</label>
+                <input type="email" id="auth-email" placeholder="seuemail@exemplo.com">
+            </div>
+            <div class="input-group">
+                <label for="auth-password">Senha:</label>
+                <input type="password" id="auth-password" placeholder="********">
+            </div>
+            <div class="auth-modal-buttons" style="display: flex; justify-content: space-around; margin-top: 20px;">
+                <button id="loginBtn" class="section-action-btn">Entrar</button>
+                <button id="registerBtn" class="section-action-btn">Cadastrar</button>
+            </div>
+        </div>
+    </div>
+
+
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script> <!-- NOVO: Firebase Auth SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
