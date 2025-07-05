@@ -12,9 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Configuração Firebase ---
     // Substitua PELAS SUAS CREDENCIAIS DO FIREBASE
     const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
+        apiKey: "AIzaSyCmUoU3I9VXjL7YbT95EfUSBnxX3ZzXTII",
         authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-        projectId: "YOUR_PROJECT_ID",
+        projectId: "ordemservico-6ddca",
         storageBucket: "YOUR_PROJECT_ID.appspot.com",
         messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
         appId: "YOUR_APP_ID"
