@@ -28,8 +28,29 @@
             </div>
         </header>
 
+        <!-- Seção de Autenticação - Adicionada -->
+        <section class="section auth-section">
+            <h2>Acesso</h2>
+            <div id="auth-controls">
+                <div class="input-group">
+                    <label for="auth-email">E-mail:</label>
+                    <input type="email" id="auth-email" placeholder="seuemail@exemplo.com">
+                </div>
+                <div class="input-group">
+                    <label for="auth-password">Senha:</label>
+                    <input type="password" id="auth-password" placeholder="********">
+                </div>
+                <div class="auth-buttons">
+                    <button id="loginBtn" class="section-action-btn">Entrar</button>
+                    <button id="registerBtn" class="section-action-btn">Cadastrar</button>
+                    <button id="logoutBtn" class="section-action-btn" style="display: none;">Sair</button>
+                </div>
+                <p id="auth-status" style="margin-top: 15px; text-align: center; font-weight: bold;"></p>
+            </div>
+        </section>
+
         <!-- Quadro 1: Dados do Cliente -->
-        <section class="section quadro1">
+        <section class="section quadro1" id="client-data-section" style="display: none;">
             <div class="section-header-with-button">
                 <h2>Dados Cliente</h2>
                 <button id="addClientBtn" class="section-action-btn">Adicionar Novo Cliente</button>
@@ -53,8 +74,8 @@
             </div>
         </section>
 
-        <!-- Quadro 2: Detalhes do Aparelho e Problema -->
-        <section class="section quadro2">
+        <!-- Os outros quadros também só serão exibidos para usuários autenticados -->
+        <section class="section quadro2" id="aparelho-problema-section" style="display: none;">
             <h2>Detalhes do Aparelho e Problema</h2>
             <div class="input-group">
                 <label for="aparelho-marca-modelo">Marca e Modelo do Aparelho:</label>
@@ -74,8 +95,7 @@
             </div>
         </section>
 
-        <!-- Quadro 3: Opções de Garantia -->
-        <section class="section quadro3">
+        <section class="section quadro3" id="garantia-section" style="display: none;">
             <h2>Garantia</h2>
             <div class="input-group">
                 <label for="garantia-peca">Garantia da Peça:</label>
@@ -88,15 +108,14 @@
             <p class="warranty-note"><strong>90 dias de garantia no reparo de placas e componentes.</strong></p>
         </section>
 
-        <!-- Quadro 4: Observações Importantes -->
-        <section class="section quadro4">
+        <section class="section quadro4" id="observacoes-section" style="display: none;">
             <h2>Observações Importantes</h2>
             <p>A Supporta tecnologia não se responsabiliza sobre a perda de dados, deste modo sempre faça o backup dos dados.</p>
             <p>Privacidade: A Supporta tecnologia mantém sigilo e confidencialidade de todas as informações disponíveis em seu equipamento.</p>
         </section>
 
         <!-- Seção de botões no rodapé -->
-        <footer class="action-buttons-footer">
+        <footer class="action-buttons-footer" id="footer-buttons" style="display: none;">
             <button id="printBtn" class="action-btn">
                 <img src="https://rgtulha.github.io/Ordemdeservico/imprimir.png" alt="Imprimir" class="button-icon">
                 Imprimir O.S.
@@ -133,6 +152,7 @@
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script> <!-- NOVO: Firebase Auth SDK -->
     <script src="script.js"></script>
 </body>
 </html>
