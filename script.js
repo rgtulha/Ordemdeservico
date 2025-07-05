@@ -22,4 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Geração automática do número da OS ao carregar a página
     const initialOsNumber = generateOsNumber();
     osNumberDisplay.textContent = initialOsNumber;
+
+    // Atualiza o título da aba do navegador
+    document.title = `SUPPORTA O.S: ${initialOsNumber}`;
 });
