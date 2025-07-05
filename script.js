@@ -11,16 +11,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Elementos do Modal de Adicionar Cliente
     const addClientModal = document.getElementById('addClientModal');
-    const closeAddClientModalBtn = addClientModal.querySelector('.close-button'); // Renomeado para evitar conflito
+    const closeAddClientModalBtn = addClientModal.querySelector('.close-button');
     const modalClienteNome = document.getElementById('modal-cliente-nome');
     const modalClienteCnpj = document.getElementById('modal-cliente-cnpj');
     const modalClienteContato = document.getElementById('modal-cliente-contato');
     const modalClienteEndereco = document.getElementById('modal-cliente-endereco');
     const saveClientModalBtn = document.getElementById('saveClientModalBtn');
 
-    // NOVO: Elementos do Modal de Autenticação
+    // Elementos do Modal de Autenticação
     const authModal = document.getElementById('authModal');
-    const closeAuthModalBtn = authModal.querySelector('.close-button'); // Botão de fechar do modal de auth
+    const closeAuthModalBtn = authModal.querySelector('.close-button');
     const authEmailInput = document.getElementById('auth-email');
     const authPasswordInput = document.getElementById('auth-password');
     const loginBtn = document.getElementById('loginBtn');
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Botões de Acesso e Logout na página principal
     const accessAuthBtn = document.getElementById('accessAuthBtn');
     const logoutBtn = document.getElementById('logoutBtn');
-    const authStatus = document.getElementById('auth-status'); // Mensagem de status de login
+    const authStatus = document.getElementById('auth-status');
 
     // Seções da O.S. que só aparecem para usuários logados
     const clientDataSection = document.getElementById('client-data-section');
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inicializa o Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
-    const auth = firebase.auth(); // Inicializa o Firebase Authentication
+    const auth = firebase.auth();
 
     // --- Funções de Geração de OS ---
     function formatDateAsDDMMYY(date) {
@@ -79,90 +79,76 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Lógica de Autenticação ---
-
-    // Função para atualizar a visibilidade da interface
     function updateUI(user) {
         if (user) {
-            // Usuário logado
             authStatus.textContent = `Logado como: ${user.email}`;
-            accessAuthBtn.style.display = 'none'; // Esconde o botão "Acessar"
-            logoutBtn.style.display = 'inline-block'; // Mostra o botão "Sair"
+            accessAuthBtn.style.display = 'none';
+            logoutBtn.style.display = 'inline-block';
 
-            // Mostra as seções da O.S.
             clientDataSection.style.display = 'block';
             aparelhoProblemaSection.style.display = 'block';
             garantiaSection.style.display = 'block';
             observacoesSection.style.display = 'block';
-            footerButtons.style.display = 'flex'; // Exibe o footer com os botões
+            footerButtons.style.display = 'flex';
         } else {
-            // Usuário deslogado
             authStatus.textContent = 'Por favor, faça login para acessar a O.S.';
-            accessAuthBtn.style.display = 'inline-block'; // Mostra o botão "Acessar"
-            logoutBtn.style.display = 'none'; // Esconde o botão "Sair"
+            accessAuthBtn.style.display = 'inline-block';
+            logoutBtn.style.display = 'none';
 
-            // Esconde as seções da O.S.
             clientDataSection.style.display = 'none';
             aparelhoProblemaSection.style.display = 'none';
             garantiaSection.style.display = 'none';
             observacoesSection.style.display = 'none';
-            footerButtons.style.display = 'none'; // Esconde o footer
+            footerButtons.style.display = 'none';
         }
     }
 
-    // Abre o modal de autenticação
     accessAuthBtn.addEventListener('click', () => {
-        authModal.style.display = 'flex'; // Usa flex para centralizar
-        // Limpa os campos do modal ao abrir
+        authModal.style.display = 'flex';
         authEmailInput.value = '';
         authPasswordInput.value = '';
     });
 
-    // Fecha o modal de autenticação pelo botão 'X'
     closeAuthModalBtn.addEventListener('click', () => {
         authModal.style.display = 'none';
     });
 
-    // Fecha o modal de autenticação clicando fora dele
     window.addEventListener('click', (event) => {
         if (event.target == authModal) {
             authModal.style.display = 'none';
         }
     });
 
-    // Evento de registro (dentro do modal de autenticação)
     registerBtn.addEventListener('click', async () => {
         const email = authEmailInput.value;
         const password = authPasswordInput.value;
         try {
             await auth.createUserWithEmailAndPassword(email, password);
             alert('Usuário cadastrado e logado com sucesso!');
-            authModal.style.display = 'none'; // Fecha o modal após o cadastro/login
+            authModal.style.display = 'none';
         } catch (error) {
             console.error("Erro ao cadastrar:", error.code, error.message);
             alert(`Erro ao cadastrar: ${error.message}`);
         }
     });
 
-    // Evento de login (dentro do modal de autenticação)
     loginBtn.addEventListener('click', async () => {
         const email = authEmailInput.value;
         const password = authPasswordInput.value;
         try {
             await auth.signInWithEmailAndPassword(email, password);
             alert('Login realizado com sucesso!');
-            authModal.style.display = 'none'; // Fecha o modal após o login
+            authModal.style.display = 'none';
         } catch (error) {
             console.error("Erro ao fazer login:", error.code, error.message);
             alert(`Erro ao fazer login: ${error.message}`);
         }
     });
 
-    // Evento de logout
     logoutBtn.addEventListener('click', async () => {
         try {
             await auth.signOut();
             alert('Logout realizado com sucesso!');
-            // Limpa os campos da O.S. após o logout
             clienteNomeInput.value = '';
             resetClientFields(true);
             document.getElementById('aparelho-marca-modelo').value = '';
@@ -176,13 +162,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Listener para mudanças no estado da autenticação
-    // Esta função é chamada na inicialização e em qualquer mudança de estado (login/logout)
     auth.onAuthStateChanged(updateUI);
 
     // --- Lógica de Autopreenchimento de Cliente (Firebase) ---
 
-    // Função para limpar e (re)habilitar/desabilitar campos do cliente no formulário principal
     function resetClientFields(readonly = false) {
         clienteCnpjInput.value = '';
         clienteContatoInput.value = '';
@@ -192,100 +175,106 @@ document.addEventListener('DOMContentLoaded', () => {
         clienteEnderecoInput.readOnly = readonly;
     }
 
-    // Evento para buscar cliente ao sair do campo "Nome da Empresa"
+    // APRIMORAMENTO DA BUSCA DO CLIENTE
     clienteNomeInput.addEventListener('blur', async () => {
-        const clienteNome = clienteNomeInput.value.trim();
-        if (!auth.currentUser) { // Verifica se há usuário logado
+        const clienteNomeDigitado = clienteNomeInput.value.trim(); // O nome como o usuário digitou
+        const normalizedSearchName = clienteNomeDigitado.toLowerCase(); // Nome normalizado para busca
+
+        if (!auth.currentUser) {
             alert('Por favor, faça login para buscar informações de clientes.');
             resetClientFields(true);
             return;
         }
 
-        if (clienteNome) {
+        if (clienteNomeDigitado) {
             try {
-                const docRef = db.collection('clientes').doc(clienteNome.toLowerCase());
-                const doc = await docRef.get();
+                // Realiza a busca pelo campo 'normalizedName'
+                const snapshot = await db.collection('clientes')
+                                         .where('normalizedName', '==', normalizedSearchName)
+                                         .limit(1) // Pega apenas o primeiro resultado, assumindo nomes únicos
+                                         .get();
 
-                if (doc.exists) {
+                if (!snapshot.empty) {
+                    const doc = snapshot.docs[0]; // Pega o primeiro documento encontrado
                     const data = doc.data();
                     clienteCnpjInput.value = data.cnpj || '';
                     clienteContatoInput.value = data.contato || '';
                     clienteEnderecoInput.value = data.endereco || '';
-                    resetClientFields(true); // Deixa os campos como somente leitura
-                    console.log(`Cliente "${clienteNome}" encontrado e dados preenchidos.`);
+                    resetClientFields(true);
+                    console.log(`Cliente "${clienteNomeDigitado}" encontrado e dados preenchidos.`);
                 } else {
                     resetClientFields(true); // Limpa e mantém como readonly
-                    console.log(`Cliente "${clienteNome}" não encontrado. Use "Adicionar Novo Cliente".`);
-                    alert(`Cliente "${clienteNome}" não encontrado. Por favor, adicione-o através do botão "Adicionar Novo Cliente".`);
+                    console.log(`Cliente "${clienteNomeDigitado}" não encontrado. Use "Adicionar Novo Cliente".`);
+                    alert(`Cliente "${clienteNomeDigitado}" não encontrado. Por favor, adicione-o através do botão "Adicionar Novo Cliente".`);
                 }
             } catch (error) {
                 console.error("Erro ao buscar cliente:", error);
-                // Permite ao usuário editar se o erro for por outro motivo que não a autenticação
-                resetClientFields(false);
+                resetClientFields(false); // Permite edição em caso de erro na busca
                 alert("Erro ao buscar cliente. Verifique o console para mais detalhes. As regras de segurança podem estar impedindo o acesso.");
             }
         } else {
-            resetClientFields(true); // Se o campo de nome estiver vazio, limpa e deixa readonly
+            resetClientFields(true);
         }
     });
 
     // --- Lógica do Modal "Adicionar Novo Cliente" ---
 
-    // Abre o modal
     addClientBtn.addEventListener('click', () => {
-        if (!auth.currentUser) { // Verifica se há usuário logado
+        if (!auth.currentUser) {
             alert('Por favor, faça login para adicionar um novo cliente.');
             return;
         }
-        addClientModal.style.display = 'flex'; // Usa flex para centralizar
-        // Limpa os campos do modal ao abrir
+        addClientModal.style.display = 'flex';
         modalClienteNome.value = '';
         modalClienteCnpj.value = '';
         modalClienteContato.value = '';
         modalClienteEndereco.value = '';
     });
 
-    // Fecha o modal pelo botão 'X'
     closeAddClientModalBtn.addEventListener('click', () => {
         addClientModal.style.display = 'none';
     });
 
-    // Fecha o modal clicando fora dele
     window.addEventListener('click', (event) => {
         if (event.target == addClientModal) {
             addClientModal.style.display = 'none';
         }
     });
 
-    // Salva o novo cliente no Firebase e fecha o modal
+    // APRIMORAMENTO DO SALVAMENTO DO CLIENTE (Adicionando normalizedName)
     saveClientModalBtn.addEventListener('click', async () => {
-        if (!auth.currentUser) { // Verifica se há usuário logado
+        if (!auth.currentUser) {
             alert('Você precisa estar logado para salvar um cliente.');
             return;
         }
 
-        const nome = modalClienteNome.value.trim();
+        const nomeOriginal = modalClienteNome.value.trim(); // Nome como o usuário digitou no modal
+        const normalizedNameForSave = nomeOriginal.toLowerCase(); // Nome normalizado para o campo de busca
+
         const cnpj = modalClienteCnpj.value.trim();
         const contato = modalClienteContato.value.trim();
         const endereco = modalClienteEndereco.value.trim();
 
-        if (!nome) {
+        if (!nomeOriginal) {
             alert('O "Nome da Empresa" é obrigatório!');
             return;
         }
 
         try {
-            await db.collection('clientes').doc(nome.toLowerCase()).set({
-                nome: nome,
+            // Usa o nome normalizado como ID do documento para manter a consistência ou pode ser um ID aleatório
+            // Manter o nome normalizado como ID ainda ajuda em algumas operações, mas o campo 'normalizedName' é a chave para a busca.
+            await db.collection('clientes').doc(normalizedNameForSave).set({
+                nome: nomeOriginal, // Salva o nome original, com a capitalização do usuário
+                normalizedName: normalizedNameForSave, // NOVO CAMPO para busca
                 cnpj: cnpj,
                 contato: contato,
                 endereco: endereco,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                addedBy: auth.currentUser.email // Opcional: Registra quem adicionou o cliente
+                addedBy: auth.currentUser.email
             });
-            alert(`Cliente "${nome}" salvo com sucesso!`);
-            addClientModal.style.display = 'none'; // Fecha o modal
-            clienteNomeInput.value = nome; // Preenche o campo principal com o nome
+            alert(`Cliente "${nomeOriginal}" salvo com sucesso!`);
+            addClientModal.style.display = 'none';
+            clienteNomeInput.value = nomeOriginal; // Preenche o campo principal com o nome original
             clienteNomeInput.dispatchEvent(new Event('blur')); // Dispara o evento blur para autopreencher os outros campos
         } catch (error) {
             console.error("Erro ao salvar cliente:", error);
