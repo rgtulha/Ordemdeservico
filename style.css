@@ -22,7 +22,7 @@ body {
     margin-bottom: 30px;
     border-bottom: 2px solid #e9ecef;
     padding-bottom: 20px;
-    background-color: #EAEAEA; /* NOVA COR DO CABEÇALHO (cinza claro) */
+    background-color: #FFFFFF; /* NOVA COR DO CABEÇALHO (branco) */
     border-radius: 10px 10px 0 0; /* Borda arredondada no topo */
     padding-top: 20px;
 }
@@ -60,7 +60,7 @@ body {
 
 /* Estilo para o número da O.S. */
 .os-main-title {
-    color: #2b2d42; /* NOVA COR DA FONTE NO CABEÇALHO (escuro) */
+    color: #2b2d42; /* COR DA FONTE NO CABEÇALHO (escuro para contraste com branco) */
     font-size: 1.4em; /* Fonte ajustada para caber na linha */
     margin: 0;
     font-weight: 700;
@@ -70,7 +70,7 @@ body {
 /* Detalhes da empresa */
 .company-details-header {
     font-size: 0.75em; /* Fonte ajustada para caber na linha */
-    color: #2b2d42; /* NOVA COR DA FONTE NO CABEÇALHO (escuro) */
+    color: #2b2d42; /* COR DA FONTE NO CABEÇALHO (escuro para contraste com branco) */
 }
 .company-details-header p {
     margin: 0;
@@ -84,7 +84,7 @@ body {
 /* Estilo para o texto de garantia adicionado */
 .warranty-note {
     font-style: italic;
-    color: #666;
+    color: #2b2d42; /* NOVA COR DA FRASE DE GARANTIA */
     font-size: 0.9em;
     margin-top: 10px;
     padding-top: 10px;
@@ -380,7 +380,7 @@ a:hover {
         border-radius: 0;
     }
     .header {
-        background-color: #EAEAEA !important; /* COR DO CABEÇALHO NA IMPRESSÃO */
+        background-color: #FFFFFF !important; /* COR DO CABEÇALHO NA IMPRESSÃO */
         border-bottom: 1px solid #ccc;
         padding-bottom: 2mm; /* Reduz padding */
         margin-bottom: 8mm; /* Reduz margem */
@@ -468,6 +468,7 @@ a:hover {
         font-size: 0.7em; /* Reduz fonte */
         margin-top: 4mm;
         padding-top: 4mm;
+        color: #2b2d42 !important; /* Garante a cor na impressão */
     }
     /* Evitar quebras de página dentro de seções importantes */
     .section {
