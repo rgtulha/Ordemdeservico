@@ -2,8 +2,8 @@ body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: #f8f9fa; /* Fundo mais claro */
-    color: #2b2d42; /* Cor principal do texto */
+    background-color: #f8f9fa;
+    color: #2b2d42;
     line-height: 1.6;
 }
 .container {
@@ -16,25 +16,40 @@ body {
 }
 .header {
     display: flex;
-    flex-direction: column;
-    align-items: center; /* Centraliza os itens do cabeçalho */
+    flex-direction: column; /* Coloca os elementos em coluna (linha superior, depois logo) */
+    align-items: center; /* Centraliza todo o conteúdo do cabeçalho */
     margin-bottom: 30px;
     border-bottom: 2px solid #e9ecef;
     padding-bottom: 20px;
-    position: relative; /* Para posicionar elementos absolutamente dentro */
 }
 
-/* Wrapper para os detalhes da empresa no canto superior direito */
-.company-details-header-wrapper {
-    width: 100%; /* Ocupa a largura total */
+/* Nova linha superior do cabeçalho: O.S. (esquerda) e Detalhes da Empresa (direita) */
+.header-top-info-row {
+    width: 100%; /* Ocupa toda a largura do cabeçalho */
     display: flex;
-    justify-content: flex-end; /* Alinha o conteúdo à direita */
-    margin-bottom: 10px; /* Espaço abaixo dos detalhes da empresa */
+    justify-content: space-between; /* Espaço entre os itens (OS e detalhes da empresa) */
+    align-items: flex-start; /* Alinha os itens ao topo */
+    margin-bottom: 20px; /* Espaço entre esta linha e a logo abaixo */
 }
+
+/* Estilo para o número da O.S. (agora no canto superior esquerdo) */
+.os-main-title {
+    color: #D17400;
+    font-size: 1.8em; /* Ajustado para caber no canto */
+    margin: 0;
+    font-weight: 700;
+    white-space: nowrap;
+    text-align: left; /* Garante alinhamento à esquerda */
+    flex-shrink: 0; /* Não permite que este item encolha */
+}
+
+/* Detalhes da empresa (agora no canto superior direito) */
 .company-details-header {
     font-size: 0.85em;
     color: #555;
-    text-align: right;
+    text-align: right; /* Alinha o texto à direita */
+    flex-grow: 1; /* Permite que ocupe o espaço restante */
+    margin-left: 20px; /* Espaço entre o OS e os detalhes da empresa */
 }
 .company-details-header p {
     margin: 0;
@@ -42,31 +57,25 @@ body {
     word-break: break-word;
 }
 .company-details-header a {
-    color: #D17400; /* Cor do link */
+    color: #D17400;
 }
 
-/* Novo container para a logo e o título da O.S. (será centralizado) */
-.header-main-branding-os {
+/* Container para a logo (centralizada) */
+.header-logo-container {
+    width: 100%;
     display: flex;
-    align-items: center; /* Alinha verticalmente a logo e o texto da O.S. */
-    gap: 20px; /* Espaço entre a logo e o texto */
-    margin-bottom: 15px; /* Espaço abaixo deste bloco */
+    justify-content: center; /* Centraliza a logo horizontalmente */
+    margin-bottom: 15px; /* Espaço abaixo da logo */
 }
 
-.logo-main-header { /* Nova classe para a logo no cabeçalho principal */
-    max-width: 300px; /* Logo maior: 300px */
+/* Estilo para a logo principal (maior) */
+.logo-main-header {
+    max-width: 350px; /* Logo maior */
     height: auto;
     object-fit: contain;
 }
 
-.os-main-title {
-    color: #D17400; /* Cor do título principal */
-    font-size: 2.5em; /* Título maior */
-    margin: 0; /* Remove margem padrão */
-    font-weight: 700;
-    white-space: nowrap; /* Evita quebra de linha no título da O.S. */
-}
-
+/* O restante dos estilos permanece igual */
 .section {
     border: 1px solid #dee2e6;
     border-radius: 8px;
@@ -76,11 +85,11 @@ body {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 h2 {
-    color: #D17400; /* Cor dos subtítulos */
+    color: #D17400;
     font-size: 1.6em;
     margin-top: 0;
     margin-bottom: 20px;
-    border-bottom: 1px solid rgba(43, 45, 66, 0.2); /* Borda sutil com base na cor da paleta */
+    border-bottom: 1px solid rgba(43, 45, 66, 0.2);
     padding-bottom: 10px;
     font-weight: 700;
 }
@@ -89,38 +98,38 @@ h2 {
 }
 .input-group-row {
     display: flex;
-    gap: 20px; /* Espaço entre os itens na mesma linha */
+    gap: 20px;
     margin-bottom: 18px;
 }
 .input-group-row .flex-item {
-    flex: 1; /* Faz com que os itens ocupem o mesmo espaço */
+    flex: 1;
 }
 .input-group label {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
-    color: #2b2d42; /* Cor da label */
+    color: #2b2d42;
     font-size: 0.95em;
 }
 .input-group input[type="text"],
 .input-group textarea,
 .input-group select {
-    width: calc(100% - 24px); /* Ajusta para padding e borda */
+    width: calc(100% - 24px);
     padding: 12px;
     border: 1px solid #ced4da;
     border-radius: 5px;
     font-size: 1em;
     box-sizing: border-box;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    color: #2b2d42; /* Cor do texto dentro dos inputs */
-    background-color: #fff; /* Fundo dos inputs */
+    color: #2b2d42;
+    background-color: #fff;
 }
 .input-group input[type="text"]:focus,
 .input-group textarea:focus,
 .input-group select:focus {
-    border-color: #D17400; /* Cor da borda ao focar */
+    border-color: #D17400;
     outline: none;
-    box-shadow: 0 0 0 0.2rem rgba(209, 116, 0, 0.25); /* Sombra ao focar */
+    box-shadow: 0 0 0 0.2rem rgba(209, 116, 0, 0.25);
 }
 textarea {
     resize: vertical;
@@ -128,20 +137,20 @@ textarea {
 }
 hr {
     border: 0;
-    border-top: 1px dashed rgba(43, 45, 66, 0.2); /* Linha divisória com cor da paleta */
+    border-top: 1px dashed rgba(43, 45, 66, 0.2);
     margin: 30px 0;
 }
 p strong {
-    color: #D17400; /* Cor para negrito */
+    color: #D17400;
 }
 a {
-    color: #D17400; /* Cor do link */
+    color: #D17400;
     text-decoration: none;
 }
 a:hover {
     text-decoration: underline;
 }
-.checkbox-group { /* Mantido para caso precise de checkbox no futuro, mas não está sendo usado diretamente */
+.checkbox-group {
     margin-bottom: 15px;
     display: flex;
     align-items: center;
@@ -149,7 +158,7 @@ a:hover {
 .checkbox-group input[type="checkbox"] {
     margin-right: 12px;
     transform: scale(1.3);
-    accent-color: #D17400; /* Cor do checkbox */
+    accent-color: #D17400;
 }
 .checkbox-group label {
     color: #2b2d42;
@@ -157,27 +166,26 @@ a:hover {
     cursor: pointer;
 }
 .quadro4 p {
-    background-color: rgba(209, 116, 0, 0.08); /* Fundo sutil com base na cor da paleta */
-    border-left: 6px solid #D17400; /* Borda com a cor principal da paleta */
+    background-color: rgba(209, 116, 0, 0.08);
+    border-left: 6px solid #D17400;
     padding: 18px;
     margin-bottom: 15px;
     border-radius: 6px;
     font-size: 0.95em;
-    color: #2b2d42; /* Cor do texto no quadro de observações */
+    color: #2b2d42;
 }
 
-/* Estilos para os novos botões de ação no rodapé */
+/* Estilos para os botões de ação no rodapé */
 .action-buttons-footer {
     display: flex;
-    justify-content: center; /* Centraliza os botões */
-    gap: 15px; /* Espaçamento entre os botões */
+    justify-content: center;
+    gap: 15px;
     padding: 20px;
-    margin-top: 20px; /* Espaçamento acima do rodapé */
-    background-color: #f1f3f5; /* Um fundo suave para o rodapé */
+    margin-top: 20px;
+    background-color: #f1f3f5;
     border-top: 1px solid #e9ecef;
-    border-radius: 0 0 10px 10px; /* Arredonda apenas os cantos inferiores */
+    border-radius: 0 0 10px 10px;
 }
-
 .action-btn {
     padding: 12px 25px;
     border: none;
@@ -185,36 +193,31 @@ a:hover {
     font-size: 1em;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    color: #ffffff; /* Cor do texto padrão para os botões */
+    color: #ffffff;
     font-weight: bold;
 }
-
 .action-btn:hover {
-    transform: translateY(-2px); /* Pequeno efeito de elevação */
+    transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 .print-btn {
-    background-color: #D17400; /* Cor da Supporta */
+    background-color: #D17400;
 }
 .print-btn:hover {
     background-color: #e08e1a;
 }
-
 .whatsapp-btn {
-    background-color: #25D366; /* Cor do WhatsApp */
+    background-color: #25D366;
 }
 .whatsapp-btn:hover {
     background-color: #1DA851;
 }
-
 .email-btn {
-    background-color: #007BFF; /* Azul para Email */
+    background-color: #007BFF;
 }
 .email-btn:hover {
     background-color: #0056b3;
 }
-
 
 /* --- ESTILOS DE IMPRESSÃO (media print) --- */
 @media print {
@@ -236,38 +239,37 @@ a:hover {
         border-bottom: 1px solid #ccc;
         padding-bottom: 10px;
         margin-bottom: 20px;
-        flex-direction: column; /* Manter em coluna */
-        align-items: center; /* Centralizar na impressão */
+        flex-direction: column; /* Em coluna na impressão */
+        align-items: center; /* Centraliza */
     }
-    .company-details-header-wrapper { /* Novo */
+    .header-top-info-row { /* Mantém a disposição lado a lado na impressão */
         width: 100%;
         display: flex;
-        justify-content: flex-end; /* Alinhar à direita */
+        justify-content: space-between;
+        align-items: flex-start;
         margin-bottom: 10px;
     }
+    .os-main-title {
+        font-size: 1.4em; /* Ajusta tamanho para impressão */
+        color: #000;
+        flex-shrink: 0;
+    }
     .company-details-header {
-        font-size: 0.75em;
+        font-size: 0.7em;
         color: #333;
         text-align: right;
+        margin-left: 10px; /* Reduz espaço para impressão */
     }
     .company-details-header p {
         line-height: 1.2;
     }
-    .header-main-branding-os { /* Novo */
-        margin-bottom: 15px;
-        gap: 10px; /* Reduzir o espaço na impressão */
+    .header-logo-container { /* Centraliza a logo na impressão */
+        margin-bottom: 10px;
     }
-    .logo-main-header { /* Nova classe */
-        max-width: 180px; /* Ajusta logo para impressão, um pouco menor que na tela */
-        margin-right: 0; /* Remove margem extra */
+    .logo-main-header {
+        max-width: 200px; /* Ajusta tamanho da logo para impressão */
     }
-    .os-main-title {
-        font-size: 1.8em;
-        margin-top: 0;
-        color: #000;
-        white-space: nowrap; /* Garante que não quebre */
-    }
-    .primary-btn, .action-buttons-footer { /* Esconde a nova seção de botões na impressão */
+    .action-buttons-footer { /* Esconde os botões na impressão */
         display: none;
     }
     .section {
