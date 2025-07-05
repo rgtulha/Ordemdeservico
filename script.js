@@ -13,11 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Substitua PELAS SUAS CREDENCIAIS DO FIREBASE
     const firebaseConfig = {
         apiKey: "AIzaSyCmUoU3I9VXjL7YbT95EfUSBnxX3ZzXTII",
-        authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+        authDomain: "ordemservico-6ddca.firebaseapp.com",
         projectId: "ordemservico-6ddca",
-        storageBucket: "YOUR_PROJECT_ID.appspot.com",
-        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-        appId: "YOUR_APP_ID"
+        storageBucket: "ordemservico-6ddca.firebasestorage.app",
+        messagingSenderId: "377095307784",
+        appId: "1:377095307784:web:4ce3007e49657bf3a607bd"
     };
 
     // Inicializa o Firebase
