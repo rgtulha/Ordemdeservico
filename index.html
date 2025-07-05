@@ -10,8 +10,8 @@
 <body>
     <div class="container">
         <header class="header">
-            <div class="header-top-row">
-                <img src="https://rgtulha.github.io/Ordemdeservico/logo-nova.png" alt="Logo Supporta Tecnologia" class="logo">
+            <!-- Dados da empresa Supporta Tecnologia (top-right) -->
+            <div class="company-details-header-wrapper">
                 <div class="company-details-header">
                     <p><strong>Supporta Tecnologia LTDA.</strong></p>
                     <p>CNPJ: 45.258.581/0001-02</p>
@@ -20,7 +20,12 @@
                     <p>Site: <a href="https://site.supporta.tec.br" >https://site.supporta.tec.br</a></p>
                 </div>
             </div>
-            <h1 class="os-main-title">Ordem de Serviço nº <span id="os-number-display">__________</span></h1>
+
+            <!-- Logo centralizada e título da O.S. ao lado -->
+            <div class="header-main-branding-os">
+                <img src="https://rgtulha.github.io/Ordemdeservico/logo-nova.png" alt="Logo Supporta Tecnologia" class="logo-main-header">
+                <h1 class="os-main-title">O.S. nº <span id="os-number-display">__________</span></h1>
+            </div>
         </header>
 
         <!-- Quadro 1: Dados do Cliente -->
@@ -68,13 +73,6 @@
         <!-- Quadro 3: Opções de Garantia -->
         <section class="section quadro3">
             <h2>Garantia</h2>
-            <!-- Este item foi removido -->
-            <!--
-            <div class="checkbox-group">
-                <input type="checkbox" id="garantia-servico-90" name="garantia-servico-90">
-                <label for="garantia-servico-90">Garantia de 90 dias serviço de manutenção</label>
-            </div>
-            -->
             <div class="input-group">
                 <label for="garantia-peca">Garantia da Peça:</label>
                 <select id="garantia-peca" name="garantia-peca">
