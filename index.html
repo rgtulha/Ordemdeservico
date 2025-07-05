@@ -11,14 +11,13 @@
 <body>
     <div class="container">
         <header class="header">
-            <!-- Container central para a logo -->
-            <div class="header-logo-container">
+            <div class="header-left">
+                <h1 class="os-main-title">O.S. nº <span id="os-number-display">__________</span></h1>
+            </div>
+            <div class="header-center">
                 <img src="https://rgtulha.github.io/Ordemdeservico/logo-nova.png" alt="Logo Supporta Tecnologia" class="logo-main-header">
             </div>
-
-            <!-- Linha de informações abaixo da logo: O.S. à esquerda, Detalhes da Empresa à direita -->
-            <div class="header-info-line">
-                <h1 class="os-main-title">O.S. nº <span id="os-number-display">__________</span></h1>
+            <div class="header-right">
                 <div class="company-details-header">
                     <p><strong>Supporta Tecnologia LTDA.</strong></p>
                     <p>CNPJ: 45.258.581/0001-02</p>
@@ -31,7 +30,10 @@
 
         <!-- Quadro 1: Dados do Cliente -->
         <section class="section quadro1">
-            <h2>Dados Cliente</h2>
+            <div class="section-header-with-button">
+                <h2>Dados Cliente</h2>
+                <button id="addClientBtn" class="section-action-btn">Adicionar Novo Cliente</button>
+            </div>
             <div class="input-group-row">
                 <div class="input-group">
                     <label for="cliente-nome">Nome da Empresa:</label>
@@ -60,6 +62,11 @@
             <div class="input-group">
                 <label for="aparelho-marca-modelo">Marca e Modelo do Aparelho:</label>
                 <input type="text" id="aparelho-marca-modelo" name="aparelho-marca-modelo" placeholder="Ex: Notebook Dell Inspiron 15, Impressora HP LaserJet">
+            </div>
+            <!-- NOVO CAMPO: IMEI -->
+            <div class="input-group">
+                <label for="aparelho-imei">IMEI:</label>
+                <input type="text" id="aparelho-imei" name="aparelho-imei" placeholder="IMEI do aparelho (opcional)">
             </div>
             <div class="input-group">
                 <label for="observacoes-cliente">Observações do Cliente:</label>
@@ -102,6 +109,9 @@
 
     </div> <!-- Fim do div.container -->
 
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
