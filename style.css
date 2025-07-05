@@ -16,29 +16,25 @@ body {
 }
 .header {
     display: flex;
-    flex-direction: column; /* Itens em coluna */
-    align-items: flex-start; /* Alinha tudo à esquerda */
+    flex-direction: column;
+    align-items: center; /* Centraliza os itens do cabeçalho */
     margin-bottom: 30px;
-    border-bottom: 2px solid #e9ecef; /* Linha divisória */
+    border-bottom: 2px solid #e9ecef;
     padding-bottom: 20px;
+    position: relative; /* Para posicionar elementos absolutamente dentro */
 }
-.header-top-row {
+
+/* Wrapper para os detalhes da empresa no canto superior direito */
+.company-details-header-wrapper {
+    width: 100%; /* Ocupa a largura total */
     display: flex;
-    align-items: center;
-    margin-bottom: 15px; /* Espaço entre a linha de cima e o título da OS */
-    width: 100%; /* Ocupa a largura total para alinhar logo e detalhes */
-    justify-content: space-between; /* Logo à esquerda, detalhes à direita */
-}
-.header .logo {
-    max-width: 250px; /* Tamanho da logo: 250px */
-    height: auto;
-    object-fit: contain;
-    margin-right: 20px; /* Espaço entre a logo e os detalhes da empresa */
+    justify-content: flex-end; /* Alinha o conteúdo à direita */
+    margin-bottom: 10px; /* Espaço abaixo dos detalhes da empresa */
 }
 .company-details-header {
     font-size: 0.85em;
     color: #555;
-    text-align: right; /* Alinha os detalhes da empresa à direita */
+    text-align: right;
 }
 .company-details-header p {
     margin: 0;
@@ -48,20 +44,28 @@ body {
 .company-details-header a {
     color: #D17400; /* Cor do link */
 }
-.os-main-title {
-    color: #D17400; /* Cor do título principal */
-    font-size: 2.2em;
-    margin: 0;
-    font-weight: 700;
-    width: 100%; /* Ocupa a largura total para centralização ou alinhamento */
-    text-align: center; /* Centraliza o título da OS */
-    margin-bottom: 15px; /* Espaço entre o título e o botão */
-}
-/* Estilo do botão de gerar OS (removido, mas mantendo a classe vazia caso queira adicionar novamente) */
-.primary-btn {
-    /* Removido: display: none; etc. */
+
+/* Novo container para a logo e o título da O.S. (será centralizado) */
+.header-main-branding-os {
+    display: flex;
+    align-items: center; /* Alinha verticalmente a logo e o texto da O.S. */
+    gap: 20px; /* Espaço entre a logo e o texto */
+    margin-bottom: 15px; /* Espaço abaixo deste bloco */
 }
 
+.logo-main-header { /* Nova classe para a logo no cabeçalho principal */
+    max-width: 300px; /* Logo maior: 300px */
+    height: auto;
+    object-fit: contain;
+}
+
+.os-main-title {
+    color: #D17400; /* Cor do título principal */
+    font-size: 2.5em; /* Título maior */
+    margin: 0; /* Remove margem padrão */
+    font-weight: 700;
+    white-space: nowrap; /* Evita quebra de linha no título da O.S. */
+}
 
 .section {
     border: 1px solid #dee2e6;
@@ -100,7 +104,7 @@ h2 {
 }
 .input-group input[type="text"],
 .input-group textarea,
-.input-group select { /* Adicionado 'select' */
+.input-group select {
     width: calc(100% - 24px); /* Ajusta para padding e borda */
     padding: 12px;
     border: 1px solid #ced4da;
@@ -120,7 +124,7 @@ h2 {
 }
 textarea {
     resize: vertical;
-    min-height: 120px; /* Aumentado um pouco mais */
+    min-height: 120px;
 }
 hr {
     border: 0;
@@ -137,7 +141,7 @@ a {
 a:hover {
     text-decoration: underline;
 }
-.checkbox-group {
+.checkbox-group { /* Mantido para caso precise de checkbox no futuro, mas não está sendo usado diretamente */
     margin-bottom: 15px;
     display: flex;
     align-items: center;
@@ -167,62 +171,64 @@ a:hover {
     body {
         background-color: #fff;
         padding: 0;
-        /* Garante que cores de fundo sejam impressas */
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
-        color: #000; /* Força texto preto para impressão */
+        color: #000;
     }
     .container {
-        box-shadow: none; /* Remove sombras */
-        margin: 0; /* Remove margem */
-        padding: 15mm; /* Adiciona padding para margens da página */
+        box-shadow: none;
+        margin: 0;
+        padding: 15mm;
         width: 100%;
         border-radius: 0;
     }
     .header {
-        border-bottom: 1px solid #ccc; /* Linha mais fina */
+        border-bottom: 1px solid #ccc;
         padding-bottom: 10px;
         margin-bottom: 20px;
-        flex-direction: row; /* Volta a alinhar logo e dados da empresa lado a lado */
-        align-items: flex-end; /* Alinha ao fundo para dados da empresa */
+        flex-direction: column; /* Manter em coluna */
+        align-items: center; /* Centralizar na impressão */
     }
-    .header-top-row {
-        flex-grow: 1; /* Permite que a linha superior ocupe espaço */
-        justify-content: space-between; /* Mantém logo e detalhes espaçados */
-        align-items: flex-end; /* Alinha ao fundo da logo */
-        margin-bottom: 0; /* Remove margem para não ter espaço extra */
-    }
-    .header .logo {
-        max-width: 150px; /* Ajusta logo para impressão */
-        margin-right: 10px; /* Reduz espaço */
+    .company-details-header-wrapper { /* Novo */
+        width: 100%;
+        display: flex;
+        justify-content: flex-end; /* Alinhar à direita */
+        margin-bottom: 10px;
     }
     .company-details-header {
-        font-size: 0.75em; /* Fonte um pouco menor */
+        font-size: 0.75em;
         color: #333;
         text-align: right;
     }
     .company-details-header p {
-        line-height: 1.2; /* Espaçamento menor */
+        line-height: 1.2;
+    }
+    .header-main-branding-os { /* Novo */
+        margin-bottom: 15px;
+        gap: 10px; /* Reduzir o espaço na impressão */
+    }
+    .logo-main-header { /* Nova classe */
+        max-width: 180px; /* Ajusta logo para impressão, um pouco menor que na tela */
+        margin-right: 0; /* Remove margem extra */
     }
     .os-main-title {
-        font-size: 1.8em; /* Título menor */
-        margin-top: 15px; /* Adiciona espaço acima do título */
-        color: #000; /* Força preto */
-        text-align: left; /* Alinha o título da OS à esquerda na impressão */
-        width: auto; /* Permite que o título ocupe apenas o espaço necessário */
+        font-size: 1.8em;
+        margin-top: 0;
+        color: #000;
+        white-space: nowrap; /* Garante que não quebre */
     }
     .primary-btn {
-        display: none; /* Esconde o botão "Gerar Nova OS" na impressão */
+        display: none;
     }
     .section {
-        border: 1px solid #eee; /* Borda mais suave */
-        box-shadow: none; /* Remove sombras */
-        margin-bottom: 15px; /* Espaçamento menor entre seções */
+        border: 1px solid #eee;
+        box-shadow: none;
+        margin-bottom: 15px;
         padding: 15px;
     }
     h2 {
-        color: #000; /* Força subtítulos pretos */
-        border-bottom: 1px dashed #ddd; /* Borda tracejada */
+        color: #000;
+        border-bottom: 1px dashed #ddd;
         font-size: 1.4em;
         margin-bottom: 10px;
         padding-bottom: 5px;
@@ -230,46 +236,41 @@ a:hover {
     .input-group input[type="text"],
     .input-group textarea,
     .input-group select {
-        border: none; /* Remove a borda padrão do input */
-        border-bottom: 1px dashed #999; /* Adiciona uma linha tracejada para indicar o campo */
+        border: none;
+        border-bottom: 1px dashed #999;
         padding: 5px 0;
         border-radius: 0;
         box-shadow: none;
         background-color: transparent;
-        /* Garante que os valores preenchidos sejam impressos */
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
-        color: #000; /* Garante que o texto dos inputs seja preto */
+        color: #000;
     }
     textarea {
-        min-height: 80px; /* Ajusta altura para impressão */
+        min-height: 80px;
     }
     hr {
         border-top: 1px dashed #ccc;
         margin: 20px 0;
     }
     p strong {
-        color: #000; /* Força negrito preto */
+        color: #000;
     }
     a {
-        color: #000; /* Links pretos na impressão */
+        color: #000;
         text-decoration: none;
     }
-    /* Opcional: Mostrar URL de links impressos */
-    /* a[href]:after {
-        content: " (" attr(href) ")";
-    } */
     .checkbox-group input[type="checkbox"] {
-        transform: scale(1); /* Volta ao tamanho normal */
-        accent-color: #000; /* Checkbox preto */
+        transform: scale(1);
+        accent-color: #000;
     }
     .checkbox-group label {
-        color: #000; /* Label do checkbox preto */
+        color: #000;
     }
     .quadro4 p {
-        background-color: #f0f0f0; /* Fundo cinza claro */
-        border-left-color: #999; /* Borda cinza */
-        color: #000; /* Texto preto */
+        background-color: #f0f0f0;
+        border-left-color: #999;
+        color: #000;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
     }
