@@ -97,6 +97,9 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    /* Flex-wrap para permitir que os botões quebrem a linha em telas menores */
+    flex-wrap: wrap; 
+    gap: 10px; /* Espaçamento entre os itens */
 }
 .section-header-with-button h2 {
     margin-bottom: 0; /* Remove margem inferior padrão */
@@ -290,6 +293,14 @@ a:hover {
     .logo-main-header {
         max-width: 200px; /* Ajusta o tamanho da logo em telas menores */
     }
+    /* Quebra de linha para os botões da seção de cliente em telas menores */
+    .section-header-with-button {
+        flex-direction: column;
+        align-items: flex-start; /* Alinha os itens à esquerda na coluna */
+    }
+    .section-header-with-button h2 {
+        margin-bottom: 10px; /* Adiciona um pouco de espaço abaixo do título */
+    }
 }
 
 
@@ -370,7 +381,7 @@ a:hover {
     flex: 1; /* Faz com que os botões ocupem o espaço disponível */
 }
 
-/* --- NOVOS ESTILOS PARA AUTOCOMPLETE --- */
+/* --- ESTILOS PARA AUTOCOMPLETE --- */
 .suggestions-container {
     position: absolute; /* Para flutuar sobre o conteúdo */
     width: calc(100% - 24px); /* Largura do input - padding */
@@ -406,6 +417,56 @@ a:hover {
 
 .suggestions-list li:hover {
     background-color: #f1f1f1;
+}
+
+/* --- NOVOS ESTILOS PARA A LISTA DE CLIENTES NO MODAL --- */
+.clients-table-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.clients-table-row:last-child {
+    border-bottom: none;
+}
+
+.clients-table-row:hover {
+    background-color: #f8f8f8;
+}
+
+.clients-table-row .client-name-display {
+    flex-grow: 1;
+    font-weight: bold;
+    color: #2b2d42;
+}
+
+.clients-table-row .client-actions button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    font-size: 0.85em;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.clients-table-row .client-actions .edit-btn {
+    background-color: #17a2b8; /* Info blue */
+    color: white;
+    border: none;
+}
+.clients-table-row .client-actions .edit-btn:hover {
+    background-color: #138496;
+}
+
+.clients-table-row .client-actions .delete-btn {
+    background-color: #dc3545; /* Danger red */
+    color: white;
+    border: none;
+}
+.clients-table-row .client-actions .delete-btn:hover {
+    background-color: #c82333;
 }
 
 
