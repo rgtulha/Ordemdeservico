@@ -38,6 +38,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const observacoesSection = document.getElementById('observacoes-section');
     const footerButtons = document.getElementById('footer-buttons');
 
+    // NOVO: Elementos para a sugestão de pesquisa
+    const suggestionsContainer = document.getElementById('suggestions-container');
+    const suggestionsList = document.getElementById('suggestions-list');
+
+    // Variável para o debounce da busca
+    let searchTimeout;
+
     // --- Configuração Firebase ---
     const firebaseConfig = {
         apiKey: "AIzaSyCmUoU3I9VXjL7YbT95EfUSBnxX3ZzXTII",
@@ -114,8 +121,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.addEventListener('click', (event) => {
+        // Fecha o modal de autenticação clicando fora dele
         if (event.target == authModal) {
             authModal.style.display = 'none';
+        }
+        // Fecha as sugestões de busca se clicar fora do input ou da lista
+        if (!clienteNomeInput.contains(event.target) && !suggestionsContainer.contains(event.target)) {
+            suggestionsContainer.style.display = 'none';
         }
     });
 
@@ -175,47 +187,70 @@ document.addEventListener('DOMContentLoaded', () => {
         clienteEnderecoInput.readOnly = readonly;
     }
 
-    // APRIMORAMENTO DA BUSCA DO CLIENTE
-    clienteNomeInput.addEventListener('blur', async () => {
-        const clienteNomeDigitado = clienteNomeInput.value.trim(); // O nome como o usuário digitou
-        const normalizedSearchName = clienteNomeDigitado.toLowerCase(); // Nome normalizado para busca
+    // NOVA LÓGICA DE BUSCA COM DEBOUNCE E SUGESTÕES
+    clienteNomeInput.addEventListener('input', () => {
+        clearTimeout(searchTimeout); // Limpa o timeout anterior, se houver
+        const searchText = clienteNomeInput.value.trim();
 
+        if (searchText.length > 0) {
+            searchTimeout = setTimeout(() => {
+                searchClients(searchText);
+            }, 300); // Debounce de 300ms
+        } else {
+            suggestionsContainer.style.display = 'none'; // Esconde as sugestões se o campo estiver vazio
+            resetClientFields(true); // Limpa os campos se o texto for removido
+        }
+    });
+
+    async function searchClients(searchText) {
         if (!auth.currentUser) {
-            alert('Por favor, faça login para buscar informações de clientes.');
-            resetClientFields(true);
+            console.log('Não há usuário logado para buscar clientes.');
+            suggestionsContainer.style.display = 'none';
             return;
         }
 
-        if (clienteNomeDigitado) {
-            try {
-                // Realiza a busca pelo campo 'normalizedName'
-                const snapshot = await db.collection('clientes')
-                                         .where('normalizedName', '==', normalizedSearchName)
-                                         .limit(1) // Pega apenas o primeiro resultado, assumindo nomes únicos
-                                         .get();
+        const normalizedSearchText = searchText.toLowerCase();
+        try {
+            // Busca por nomes que começam com o texto digitado
+            const snapshot = await db.collection('clientes')
+                                     .where('normalizedName', '>=', normalizedSearchText)
+                                     .where('normalizedName', '<=', normalizedSearchText + '\uf8ff') // Truque para "starts with"
+                                     .limit(5) // Limita o número de sugestões
+                                     .get();
 
-                if (!snapshot.empty) {
-                    const doc = snapshot.docs[0]; // Pega o primeiro documento encontrado
-                    const data = doc.data();
-                    clienteCnpjInput.value = data.cnpj || '';
-                    clienteContatoInput.value = data.contato || '';
-                    clienteEnderecoInput.value = data.endereco || '';
-                    resetClientFields(true);
-                    console.log(`Cliente "${clienteNomeDigitado}" encontrado e dados preenchidos.`);
-                } else {
-                    resetClientFields(true); // Limpa e mantém como readonly
-                    console.log(`Cliente "${clienteNomeDigitado}" não encontrado. Use "Adicionar Novo Cliente".`);
-                    alert(`Cliente "${clienteNomeDigitado}" não encontrado. Por favor, adicione-o através do botão "Adicionar Novo Cliente".`);
-                }
-            } catch (error) {
-                console.error("Erro ao buscar cliente:", error);
-                resetClientFields(false); // Permite edição em caso de erro na busca
-                alert("Erro ao buscar cliente. Verifique o console para mais detalhes. As regras de segurança podem estar impedindo o acesso.");
-            }
-        } else {
-            resetClientFields(true);
+            displaySuggestions(snapshot.docs.map(doc => doc.data()));
+        } catch (error) {
+            console.error("Erro ao buscar clientes:", error);
+            suggestionsContainer.style.display = 'none';
         }
-    });
+    }
+
+    function displaySuggestions(clients) {
+        suggestionsList.innerHTML = ''; // Limpa as sugestões anteriores
+        if (clients.length > 0) {
+            clients.forEach(client => {
+                const li = document.createElement('li');
+                li.textContent = client.nome; // Exibe o nome original (com capitalização)
+                li.addEventListener('click', () => {
+                    clienteNomeInput.value = client.nome; // Preenche o input com o nome original
+                    populateClientFields(client); // Preenche os outros campos
+                    suggestionsContainer.style.display = 'none'; // Esconde as sugestões
+                });
+                suggestionsList.appendChild(li);
+            });
+            suggestionsContainer.style.display = 'block'; // Mostra o contêiner de sugestões
+        } else {
+            suggestionsContainer.style.display = 'none'; // Esconde se não houver resultados
+        }
+    }
+
+    // Função para preencher os campos do cliente (reutilizável)
+    function populateClientFields(clientData) {
+        clienteCnpjInput.value = clientData.cnpj || '';
+        clienteContatoInput.value = clientData.contato || '';
+        clienteEnderecoInput.value = clientData.endereco || '';
+        resetClientFields(true); // Deixa os campos como somente leitura
+    }
 
     // --- Lógica do Modal "Adicionar Novo Cliente" ---
 
@@ -241,15 +276,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // APRIMORAMENTO DO SALVAMENTO DO CLIENTE (Adicionando normalizedName)
+    // APRIMORAMENTO DO SALVAMENTO DO CLIENTE (Mantendo normalizedName)
     saveClientModalBtn.addEventListener('click', async () => {
         if (!auth.currentUser) {
             alert('Você precisa estar logado para salvar um cliente.');
             return;
         }
 
-        const nomeOriginal = modalClienteNome.value.trim(); // Nome como o usuário digitou no modal
-        const normalizedNameForSave = nomeOriginal.toLowerCase(); // Nome normalizado para o campo de busca
+        const nomeOriginal = modalClienteNome.value.trim();
+        const normalizedNameForSave = nomeOriginal.toLowerCase();
 
         const cnpj = modalClienteCnpj.value.trim();
         const contato = modalClienteContato.value.trim();
@@ -261,11 +296,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            // Usa o nome normalizado como ID do documento para manter a consistência ou pode ser um ID aleatório
-            // Manter o nome normalizado como ID ainda ajuda em algumas operações, mas o campo 'normalizedName' é a chave para a busca.
-            await db.collection('clientes').doc(normalizedNameForSave).set({
-                nome: nomeOriginal, // Salva o nome original, com a capitalização do usuário
-                normalizedName: normalizedNameForSave, // NOVO CAMPO para busca
+            await db.collection('clientes').doc(normalizedNameForSave).set({ // Usa normalizedName como ID
+                nome: nomeOriginal,
+                normalizedName: normalizedNameForSave, // Campo para busca
                 cnpj: cnpj,
                 contato: contato,
                 endereco: endereco,
@@ -274,8 +307,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             alert(`Cliente "${nomeOriginal}" salvo com sucesso!`);
             addClientModal.style.display = 'none';
-            clienteNomeInput.value = nomeOriginal; // Preenche o campo principal com o nome original
-            clienteNomeInput.dispatchEvent(new Event('blur')); // Dispara o evento blur para autopreencher os outros campos
+            clienteNomeInput.value = nomeOriginal;
+            populateClientFields({ nome: nomeOriginal, cnpj: cnpj, contato: contato, endereco: endereco }); // Preenche o principal
         } catch (error) {
             console.error("Erro ao salvar cliente:", error);
             alert("Erro ao salvar cliente. Verifique o console para mais detalhes. Certifique-se de estar logado e com permissão.");
