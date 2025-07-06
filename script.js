@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('observacoes-cliente').value = '';
             document.getElementById('problema-tecnico').value = '';
             document.getElementById('garantia-peca').value = '';
-            valorTotalInput.value = ''; // NOVO: Limpa o campo de valor total
+            valorTotalInput.value = ''; // Limpa o campo de valor total
         } catch (error) {
             console.error("Erro ao fazer logout:", error);
             alert(`Erro ao fazer logout: ${error.message}`);
