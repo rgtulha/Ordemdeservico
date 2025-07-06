@@ -91,21 +91,28 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${formattedDate}${randomSuffix}`;
     };
 
-    const resetClientFields = (readonly = false) => {
+    // NOVO: Função para limpar os campos do cliente no formulário principal
+    const clearClientFields = () => {
+        clienteNomeInput.value = '';
         clienteCnpjInput.value = '';
         clienteContatoInput.value = '';
         clienteEnderecoInput.value = '';
+    };
+
+    // NOVO: Função para definir o estado somente leitura dos campos do cliente (CNPJ, Contato, Endereço)
+    const setClientFieldsReadonly = (readonly = false) => {
         clienteCnpjInput.readOnly = readonly;
         clienteContatoInput.readOnly = readonly;
         clienteEnderecoInput.readOnly = readonly;
     };
-
+    
+    // Função para preencher os campos do cliente (reutilizável)
     const populateClientFields = (clientData) => {
-        console.log('TRACE: Dados recebidos em populateClientFields:', clientData); // NOVO TRACE
+        console.log('TRACE: Dados recebidos em populateClientFields:', clientData);
         clienteCnpjInput.value = clientData.cnpj || '';
         clienteContatoInput.value = clientData.contato || '';
         clienteEnderecoInput.value = clientData.endereco || '';
-        resetClientFields(true); // Deixa os campos como somente leitura
+        setClientFieldsReadonly(true); // Define como somente leitura APÓS o preenchimento
     };
 
     // --- Lógica Principal da Aplicação ---
@@ -151,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // FUNÇÃO PARA FECHAR QUALQUER MODAL
     const closeAllModals = () => {
         authModal.classList.remove('active');
-        listClientsModal.classList.remove('active'); // Agora só temos auth e listClients
+        listClientsModal.classList.remove('active');
     };
 
     // Event Listeners para abrir modais
@@ -172,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Event Listeners para fechar modais
-    [closeAuthModalBtn, closeListClientsModalBtn].forEach(btn => { // Removido closeAddClientModalBtn
+    [closeAuthModalBtn, closeListClientsModalBtn].forEach(btn => {
         btn.addEventListener('click', closeAllModals);
     });
 
@@ -198,10 +205,14 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             await auth.signOut();
             alert('Logout realizado com sucesso!');
-            // Limpa formulário
-            document.querySelector('form')?.reset(); 
-            clienteNomeInput.value = '';
-            resetClientFields(true);
+            clearClientFields(); // Limpa todos os campos do cliente
+            setClientFieldsReadonly(true); // Deixa-os readonly
+            // Limpa outros campos da O.S. (não relacionados a cliente)
+            document.getElementById('aparelho-marca-modelo').value = '';
+            document.getElementById('aparelho-imei').value = '';
+            document.getElementById('observacoes-cliente').value = '';
+            document.getElementById('problema-tecnico').value = '';
+            document.getElementById('garantia-peca').value = '';
         } catch (error) {
             console.error("Erro ao fazer logout:", error);
             alert(`Erro ao fazer logout: ${error.message}`);
@@ -275,9 +286,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const searchText = clienteNomeInput.value.trim();
         if (searchText.length > 0) {
             searchTimeout = setTimeout(() => searchClients(searchText), 300);
+            setClientFieldsReadonly(false); // Permite edição se estiver digitando um novo nome
         } else {
             suggestionsContainer.style.display = 'none';
-            resetClientFields(true);
+            clearClientFields(); // Limpa todos os campos
+            setClientFieldsReadonly(true); // Torna readonly novamente
         }
     });
 
@@ -313,13 +326,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             snapshot.forEach(doc => {
                 const client = doc.data();
-                console.log('TRACE: Cliente carregado do Firebase:', client); // NOVO TRACE: Verifique se CNPJ, Contato, Endereco estão aqui
+                console.log('TRACE: Cliente carregado do Firebase:', client);
                 const li = document.createElement('li');
                 li.className = 'clients-table-row';
                 // Armazena todos os dados no dataset para fácil acesso
                 li.dataset.id = doc.id;
                 li.dataset.nome = client.nome;
-                li.dataset.cnpj = client.cnpj || ''; // Garante que seja string vazia se undefined/null
+                li.dataset.cnpj = client.cnpj || '';
                 li.dataset.contato = client.contato || '';
                 li.dataset.endereco = client.endereco || '';
 
@@ -363,7 +376,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // FUNÇÃO PARA SELECIONAR CLIENTE E PREENCHER FORMULÁRIO PRINCIPAL
     const selectClientAndFillForm = (clientData) => {
-        console.log('TRACE: Dados do cliente recebidos para seleção:', clientData); // NOVO TRACE
+        console.log('TRACE: Dados do cliente recebidos para seleção:', clientData);
         clienteNomeInput.value = clientData.nome;
         populateClientFields(clientData);
         closeAllModals(); // Fecha o modal após a seleção
