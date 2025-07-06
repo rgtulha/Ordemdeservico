@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const populateClientFields = (clientData) => {
-        // console.log('Dados recebidos para popular o formulário principal:', clientData); // Log para depuração
+        console.log('TRACE: Dados recebidos em populateClientFields:', clientData); // NOVO TRACE
         clienteCnpjInput.value = clientData.cnpj || '';
         clienteContatoInput.value = clientData.contato || '';
         clienteEnderecoInput.value = clientData.endereco || '';
@@ -313,12 +313,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             snapshot.forEach(doc => {
                 const client = doc.data();
+                console.log('TRACE: Cliente carregado do Firebase:', client); // NOVO TRACE: Verifique se CNPJ, Contato, Endereco estão aqui
                 const li = document.createElement('li');
                 li.className = 'clients-table-row';
                 // Armazena todos os dados no dataset para fácil acesso
                 li.dataset.id = doc.id;
                 li.dataset.nome = client.nome;
-                li.dataset.cnpj = client.cnpj || '';
+                li.dataset.cnpj = client.cnpj || ''; // Garante que seja string vazia se undefined/null
                 li.dataset.contato = client.contato || '';
                 li.dataset.endereco = client.endereco || '';
 
@@ -362,7 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // FUNÇÃO PARA SELECIONAR CLIENTE E PREENCHER FORMULÁRIO PRINCIPAL
     const selectClientAndFillForm = (clientData) => {
-        // console.log('Dados do cliente selecionado:', clientData); // Log para depuração
+        console.log('TRACE: Dados do cliente recebidos para seleção:', clientData); // NOVO TRACE
         clienteNomeInput.value = clientData.nome;
         populateClientFields(clientData);
         closeAllModals(); // Fecha o modal após a seleção
