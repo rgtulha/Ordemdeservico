@@ -221,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     registerBtn.addEventListener('click', async () => {
         const email = authEmailInput.value;
-        const password = authPasswordInput.value;
+        const password = authAuthPasswordInput.value;
         try {
             await auth.createUserWithEmailAndPassword(email, password);
             alert('Usuário cadastrado e logado com sucesso!');
