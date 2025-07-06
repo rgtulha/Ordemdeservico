@@ -68,6 +68,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const db = firebase.firestore();
     const auth = firebase.auth();
 
+    function generateOsNumber() {
+        const now = new Date();
+        const day = String(now.getDate()).padStart(2, '0');
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const year = String(now.getFullYear()).slice(-2);
+        const randomSuffix = Math.floor(100 + Math.random() * 900);
+        return `${day}${month}${year}${randomSuffix}`;
+    }
+
+    const osNumber = generateOsNumber();
+    if (osNumberDisplay) {
+        osNumberDisplay.textContent = osNumber;
+        document.title = `SUPPORTA O.S: ${osNumber}`;
+    }
+
     function populateClientFields(clientData) {
         clienteNomeInput.value = clientData.nome || '';
         clienteCnpjInput.value = clientData.cnpj || '';
