@@ -79,11 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function loadClientsList(searchTerm = '') {
-        if (!auth.currentUser) {
-            clientsTable.innerHTML = '<li>Faça login para ver a lista de clientes.</li>';
-            return;
-        }
-
         clientsTable.innerHTML = '<li>Carregando clientes...</li>';
         try {
             let query = db.collection('clientes').orderBy('normalizedName');
@@ -148,10 +143,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     listClientsBtn.addEventListener('click', () => {
-        if (!auth.currentUser) {
-            alert('Por favor, faça login para gerenciar clientes.');
-            return;
-        }
         listClientsModal.style.display = 'flex';
         clientListArea.style.display = 'block';
         clientEditArea.style.display = 'none';
