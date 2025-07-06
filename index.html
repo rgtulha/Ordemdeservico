@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SUPPORTA O.S: __________</title>
     <link rel="icon" href="https://rgtulha.github.io/Ordemdeservico/favicon.ico" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Nova fonte: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -39,7 +40,6 @@
         <section class="section quadro1" id="client-data-section" style="display: none;">
             <div class="section-header-with-button">
                 <h2>Dados Cliente</h2>
-                <!-- Botão "Adicionar Novo Cliente" removido daqui -->
                 <button id="listClientsBtn" class="section-action-btn">Gerenciar Clientes</button>
             </div>
             <div class="input-group">
@@ -67,7 +67,7 @@
             </div>
         </section>
 
-        <!-- Os outros quadros também só serão exibidos para usuários autenticados -->
+        <!-- Quadro 2: Detalhes do Aparelho e Problema -->
         <section class="section quadro2" id="aparelho-problema-section" style="display: none;">
             <h2>Detalhes do Aparelho e Problema</h2>
             <div class="input-group">
@@ -88,6 +88,16 @@
             </div>
         </section>
 
+        <!-- NOVO: Quadro 5: Valor Total do Serviço -->
+        <section class="section quadro5" id="total-value-section" style="display: none;">
+            <h2>Valor Total do Serviço</h2>
+            <div class="input-group">
+                <label for="valor-total">Valor Total:</label>
+                <input type="text" id="valor-total" name="valor-total" placeholder="R$ 0,00">
+            </div>
+        </section>
+
+        <!-- Quadro 3: Garantia -->
         <section class="section quadro3" id="garantia-section" style="display: none;">
             <h2>Garantia</h2>
             <div class="input-group">
@@ -101,6 +111,7 @@
             <p class="warranty-note"><strong>90 dias de garantia no reparo de placas e componentes.</strong></p>
         </section>
 
+        <!-- Quadro 4: Observações Importantes -->
         <section class="section quadro4" id="observacoes-section" style="display: none;">
             <h2>Observações Importantes</h2>
             <p>A Supporta tecnologia não se responsabiliza sobre a perda de dados, deste modo sempre faça o backup dos dados.</p>
