@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Seções principais
     const clientDataSection = document.getElementById('client-data-section');
     const aparelhoProblemaSection = document.getElementById('aparelho-problema-section');
+    const totalValueSection = document.getElementById('total-value-section'); // NOVO: Seletor para a seção de valor total
     const garantiaSection = document.getElementById('garantia-section');
     const observacoesSection = document.getElementById('observacoes-section');
     const footerButtons = document.getElementById('footer-buttons');
@@ -30,6 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const clienteEnderecoInput = document.getElementById('cliente-endereco');
     const suggestionsContainer = document.getElementById('suggestions-container');
     const suggestionsList = document.getElementById('suggestions-list');
+
+    // NOVO: Valor Total do Serviço
+    const valorTotalInput = document.getElementById('valor-total');
 
     // Modal Listar/Gerenciar Clientes (Unificado)
     const listClientsBtn = document.getElementById('listClientsBtn');
@@ -91,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${formattedDate}${randomSuffix}`;
     };
 
-    // NOVO: Função para limpar os campos do cliente no formulário principal
+    // Função para limpar os campos do cliente no formulário principal
     const clearClientFields = () => {
         clienteNomeInput.value = '';
         clienteCnpjInput.value = '';
@@ -99,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clienteEnderecoInput.value = '';
     };
 
-    // NOVO: Função para definir o estado somente leitura dos campos do cliente (CNPJ, Contato, Endereço)
+    // Função para definir o estado somente leitura dos campos do cliente (CNPJ, Contato, Endereço)
     const setClientFieldsReadonly = (readonly = false) => {
         clienteCnpjInput.readOnly = readonly;
         clienteContatoInput.readOnly = readonly;
@@ -129,6 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const sections = [
             clientDataSection,
             aparelhoProblemaSection,
+            totalValueSection, // Inclui a nova seção de valor total
             garantiaSection,
             observacoesSection,
             footerButtons,
@@ -207,12 +212,13 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Logout realizado com sucesso!');
             clearClientFields(); // Limpa todos os campos do cliente
             setClientFieldsReadonly(true); // Deixa-os readonly
-            // Limpa outros campos da O.S. (não relacionados a cliente)
+            // Limpa outros campos da O.S.
             document.getElementById('aparelho-marca-modelo').value = '';
             document.getElementById('aparelho-imei').value = '';
             document.getElementById('observacoes-cliente').value = '';
             document.getElementById('problema-tecnico').value = '';
             document.getElementById('garantia-peca').value = '';
+            valorTotalInput.value = ''; // NOVO: Limpa o campo de valor total
         } catch (error) {
             console.error("Erro ao fazer logout:", error);
             alert(`Erro ao fazer logout: ${error.message}`);
@@ -221,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     registerBtn.addEventListener('click', async () => {
         const email = authEmailInput.value;
-        const password = authAuthPasswordInput.value;
+        const password = authPasswordInput.value;
         try {
             await auth.createUserWithEmailAndPassword(email, password);
             alert('Usuário cadastrado e logado com sucesso!');
