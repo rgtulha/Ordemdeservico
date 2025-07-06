@@ -31,17 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const suggestionsContainer = document.getElementById('suggestions-container');
     const suggestionsList = document.getElementById('suggestions-list');
 
-    // Modal Adicionar Cliente
-    const addClientBtn = document.getElementById('addClientBtn');
-    const addClientModal = document.getElementById('addClientModal');
-    const closeAddClientModalBtn = addClientModal.querySelector('.close-button');
-    const modalClienteNome = document.getElementById('modal-cliente-nome');
-    const modalClienteCnpj = document.getElementById('modal-cliente-cnpj');
-    const modalClienteContato = document.getElementById('modal-cliente-contato');
-    const modalClienteEndereco = document.getElementById('modal-cliente-endereco');
-    const saveClientModalBtn = document.getElementById('saveClientModalBtn');
-
-    // Modal Listar/Gerenciar Clientes
+    // Modal Listar/Gerenciar Clientes (Unificado)
     const listClientsBtn = document.getElementById('listClientsBtn');
     const listClientsModal = document.getElementById('listClientsModal');
     const closeListClientsModalBtn = listClientsModal.querySelector('.close-button');
@@ -49,7 +39,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const clientsTable = document.getElementById('clients-table');
     const clientListArea = document.getElementById('client-list-area');
 
-    // Área de Edição (dentro do Modal Listar)
+    // Área para ADICIONAR NOVO Cliente (dentro do Modal Listar/Gerenciar)
+    const addNewClientFromListBtn = document.getElementById('addNewClientFromListBtn');
+    const clientAddArea = document.getElementById('client-add-area');
+    const addModalClienteNome = document.getElementById('add-modal-cliente-nome');
+    const addModalClienteCnpj = document.getElementById('add-modal-cliente-cnpj');
+    const addModalClienteContato = document.getElementById('add-modal-cliente-contato');
+    const addModalClienteEndereco = document.getElementById('add-modal-cliente-endereco');
+    const saveNewClientBtn = document.getElementById('saveNewClientBtn');
+    const cancelAddClientBtn = document.getElementById('cancelAddClientBtn');
+
+    // Área de Edição (dentro do Modal Listar/Gerenciar)
     const clientEditArea = document.getElementById('client-edit-area');
     const editModalClienteNome = document.getElementById('edit-modal-cliente-nome');
     const editModalClienteCnpj = document.getElementById('edit-modal-cliente-cnpj');
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Variáveis de controle
     let searchTimeout;
     let listSearchTimeout;
-    let currentClientBeingEdited = null;
+    let currentClientBeingEdited = null; // Para armazenar o normalizedName do cliente sendo editado
 
     // --- Configuração e Inicialização do Firebase ---
     const firebaseConfig = {
@@ -101,10 +101,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const populateClientFields = (clientData) => {
+        // console.log('Dados recebidos para popular o formulário principal:', clientData); // Log para depuração
         clienteCnpjInput.value = clientData.cnpj || '';
         clienteContatoInput.value = clientData.contato || '';
         clienteEnderecoInput.value = clientData.endereco || '';
-        resetClientFields(true);
+        resetClientFields(true); // Deixa os campos como somente leitura
     };
 
     // --- Lógica Principal da Aplicação ---
@@ -143,15 +144,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // FUNÇÃO PARA ABRIR QUALQUER MODAL
     const openModal = (modalElement) => {
         modalElement.classList.add('active');
-        // Opcional: focar no primeiro input do modal
+        // Opcional: focar no primeiro input do modal (se houver)
         modalElement.querySelector('input, select, textarea')?.focus();
     };
 
     // FUNÇÃO PARA FECHAR QUALQUER MODAL
     const closeAllModals = () => {
         authModal.classList.remove('active');
-        addClientModal.classList.remove('active');
-        listClientsModal.classList.remove('active');
+        listClientsModal.classList.remove('active'); // Agora só temos auth e listClients
     };
 
     // Event Listeners para abrir modais
@@ -161,32 +161,24 @@ document.addEventListener('DOMContentLoaded', () => {
         authPasswordInput.value = '';
     });
 
-    addClientBtn.addEventListener('click', () => {
-        if (!auth.currentUser) return alert('Faça login para adicionar um cliente.');
-        openModal(addClientModal);
-        modalClienteNome.value = '';
-        modalClienteCnpj.value = '';
-        modalClienteContato.value = '';
-        modalClienteEndereco.value = '';
-    });
-
     listClientsBtn.addEventListener('click', () => {
         if (!auth.currentUser) return alert('Faça login para gerenciar clientes.');
         openModal(listClientsModal);
-        clientListArea.style.display = 'block';
-        clientEditArea.style.display = 'none';
+        clientListArea.style.display = 'block'; // Garante que a lista esteja visível por padrão
+        clientAddArea.style.display = 'none'; // Esconde a área de adicionar
+        clientEditArea.style.display = 'none'; // Esconde a área de edição
         clientListSearchInput.value = '';
         loadClientsList();
     });
 
     // Event Listeners para fechar modais
-    [closeAddClientModalBtn, closeAuthModalBtn, closeListClientsModalBtn].forEach(btn => {
+    [closeAuthModalBtn, closeListClientsModalBtn].forEach(btn => { // Removido closeAddClientModalBtn
         btn.addEventListener('click', closeAllModals);
     });
 
     window.addEventListener('click', (event) => {
         // Fechar modais ao clicar fora
-        if (event.target === addClientModal || event.target === authModal || event.target === listClientsModal) {
+        if (event.target === authModal || event.target === listClientsModal) {
             closeAllModals();
         }
         // Esconder sugestões de busca de cliente
@@ -206,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             await auth.signOut();
             alert('Logout realizado com sucesso!');
-            // Limpa formulário (se houver um form com reset() nativo)
+            // Limpa formulário
             document.querySelector('form')?.reset(); 
             clienteNomeInput.value = '';
             resetClientFields(true);
@@ -289,36 +281,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Lógica do Modal "Adicionar Novo Cliente" ---
-    saveClientModalBtn.addEventListener('click', async () => {
-        if (!auth.currentUser) return alert('Você precisa estar logado.');
-        const nomeOriginal = modalClienteNome.value.trim();
-        if (!nomeOriginal) return alert('O "Nome da Empresa" é obrigatório!');
-        
-        const normalizedName = nomeOriginal.toLowerCase();
-        const clientData = {
-            nome: nomeOriginal,
-            normalizedName: normalizedName,
-            cnpj: modalClienteCnpj.value.trim(),
-            contato: modalClienteContato.value.trim(),
-            endereco: modalClienteEndereco.value.trim(),
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            addedBy: auth.currentUser.email
-        };
+    // --- Lógica do Modal "Gerenciar Clientes" (Listar, Adicionar, Editar) ---
 
-        try {
-            await db.collection('clientes').doc(normalizedName).set(clientData);
-            alert(`Cliente "${nomeOriginal}" salvo com sucesso!`);
-            closeAllModals(); // Fecha o modal após salvar
-            clienteNomeInput.value = nomeOriginal;
-            populateClientFields(clientData);
-        } catch (error) {
-            console.error("Erro ao salvar cliente:", error);
-            alert("Erro ao salvar cliente.");
-        }
-    });
-
-    // --- LÓGICA CORRIGIDA: Modal "Gerenciar Clientes" ---
     clientListSearchInput.addEventListener('input', () => {
         clearTimeout(listSearchTimeout);
         const searchTerm = clientListSearchInput.value.trim();
@@ -381,7 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clientsTable.querySelectorAll('.clients-table-row').forEach(row => {
             const clientId = row.dataset.id;
             
-            // AÇÃO DE SELECIONAR (NOVO)
+            // AÇÃO DE SELECIONAR
             row.querySelector('.select-btn').addEventListener('click', () => {
                 selectClientAndFillForm(row.dataset);
             });
@@ -398,75 +362,154 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // FUNÇÃO PARA SELECIONAR CLIENTE E PREENCHER FORMULÁRIO PRINCIPAL
     const selectClientAndFillForm = (clientData) => {
+        // console.log('Dados do cliente selecionado:', clientData); // Log para depuração
         clienteNomeInput.value = clientData.nome;
         populateClientFields(clientData);
         closeAllModals(); // Fecha o modal após a seleção
     };
 
+    // --- Lógica para ADICIONAR NOVO Cliente (dentro do Modal Gerenciar) ---
+    addNewClientFromListBtn.addEventListener('click', () => {
+        clientListArea.style.display = 'none'; // Esconde a lista
+        clientEditArea.style.display = 'none'; // Esconde a edição
+        clientAddArea.style.display = 'block'; // Mostra a área de adicionar
+        // Limpa os campos da área de adicionar
+        addModalClienteNome.value = '';
+        addModalClienteCnpj.value = '';
+        addModalClienteContato.value = '';
+        addModalClienteEndereco.value = '';
+        addModalClienteNome.focus(); // Foca no primeiro campo
+    });
+
+    saveNewClientBtn.addEventListener('click', async () => {
+        if (!auth.currentUser) return alert('Você precisa estar logado para salvar um cliente.');
+        
+        const nomeOriginal = addModalClienteNome.value.trim();
+        if (!nomeOriginal) return alert('O "Nome da Empresa" é obrigatório!');
+        
+        const normalizedName = nomeOriginal.toLowerCase();
+        const clientData = {
+            nome: nomeOriginal,
+            normalizedName: normalizedName,
+            cnpj: addModalClienteCnpj.value.trim(),
+            contato: addModalClienteContato.value.trim(),
+            endereco: addModalClienteEndereco.value.trim(),
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            addedBy: auth.currentUser.email
+        };
+
+        try {
+            await db.collection('clientes').doc(normalizedName).set(clientData);
+            alert(`Cliente "${nomeOriginal}" salvo com sucesso!`);
+            
+            // Retorna para a lista e recarrega
+            clientAddArea.style.display = 'none';
+            clientListArea.style.display = 'block';
+            loadClientsList();
+        } catch (error) {
+            console.error("Erro ao salvar cliente:", error);
+            alert("Erro ao salvar cliente. Verifique o console para mais detalhes. Certifique-se de estar logado e com permissão.");
+        }
+    });
+
+    cancelAddClientBtn.addEventListener('click', () => {
+        clientAddArea.style.display = 'none';
+        clientListArea.style.display = 'block'; // Retorna para a lista
+    });
+
+
+    // --- Lógica para EDITAR Cliente (dentro do Modal Gerenciar) ---
     const editClient = (clientId, clientData) => {
         currentClientBeingEdited = clientId;
         editModalClienteNome.value = clientData.nome;
         editModalClienteCnpj.value = clientData.cnpj;
         editModalClienteContato.value = clientData.contato;
         editModalClienteEndereco.value = clientData.endereco;
-        clientListArea.style.display = 'none';
-        clientEditArea.style.display = 'block';
-    };
-
-    const deleteClient = async (clientId) => {
-        if (!confirm(`Tem certeza que deseja excluir o cliente "${clientId}"? Esta ação não pode ser desfeita.`)) return;
-        try {
-            await db.collection('clientes').doc(clientId).delete();
-            alert('Cliente excluído com sucesso!');
-            loadClientsList(); // Recarrega a lista
-        } catch (error) {
-            console.error("Erro ao excluir cliente:", error);
-            alert("Erro ao excluir cliente.");
-        }
+        
+        clientListArea.style.display = 'none'; // Esconde a lista
+        clientAddArea.style.display = 'none'; // Esconde a área de adicionar
+        clientEditArea.style.display = 'block'; // Mostra o formulário de edição
+        editModalClienteNome.focus(); // Foca no primeiro campo
     };
 
     updateClientModalBtn.addEventListener('click', async () => {
-        if (!currentClientBeingEdited) return;
+        if (!auth.currentUser || !currentClientBeingEdited) {
+            alert('Erro: Nenhum cliente selecionado para atualização ou você não está logado.');
+            return;
+        }
 
+        const originalNormalizedName = currentClientBeingEdited;
         const newNome = editModalClienteNome.value.trim();
-        if (!newNome) return alert('O nome é obrigatório.');
-
         const newNormalizedName = newNome.toLowerCase();
+        const newCnpj = editModalClienteCnpj.value.trim();
+        const newContato = editModalClienteContato.value.trim();
+        const newEndereco = editModalClienteEndereco.value.trim();
+
+        if (!newNome) {
+            alert('O "Nome da Empresa" é obrigatório!');
+            return;
+        }
+
         const clientUpdateData = {
             nome: newNome,
             normalizedName: newNormalizedName,
-            cnpj: editModalClienteCnpj.value.trim(),
-            contato: editModalClienteContato.value.trim(),
-            endereco: editModalClienteEndereco.value.trim(),
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            cnpj: newCnpj,
+            contato: newContato,
+            endereco: newEndereco,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Atualiza o timestamp de modificação
+            addedBy: auth.currentUser.email // Mantém quem adicionou ou atualiza para o atual logado
         };
 
         try {
-            // Se o nome (e normalizedName) mudou, precisamos apagar o antigo e criar um novo.
-            if (currentClientBeingEdited !== newNormalizedName) {
+            if (originalNormalizedName !== newNormalizedName) {
+                // Se o nome (e, portanto, o normalizedName) foi alterado,
+                // cria um novo documento com o novo ID e deleta o antigo.
                 const batch = db.batch();
-                const newDocRef = db.collection('clientes').doc(newNormalizedName);
-                batch.set(newDocRef, clientUpdateData);
-                const oldDocRef = db.collection('clientes').doc(currentClientBeingEdited);
-                batch.delete(oldDocRef);
+                batch.set(db.collection('clientes').doc(newNormalizedName), clientUpdateData);
+                batch.delete(db.collection('clientes').doc(originalNormalizedName));
                 await batch.commit();
+                alert(`Cliente "${newNome}" atualizado e movido com sucesso!`);
             } else {
-                await db.collection('clientes').doc(currentClientBeingEdited).update(clientUpdateData);
+                // Se o nome não foi alterado, apenas atualiza o documento existente
+                await db.collection('clientes').doc(originalNormalizedName).update(clientUpdateData);
+                alert(`Cliente "${newNome}" atualizado com sucesso!`);
             }
-            alert('Cliente atualizado com sucesso!');
+
+            // Volta para a lista e recarrega
             clientEditArea.style.display = 'none';
             clientListArea.style.display = 'block';
+            currentClientBeingEdited = null; // Reseta a variável de controle
             loadClientsList();
+
         } catch (error) {
             console.error("Erro ao atualizar cliente:", error);
-            alert("Erro ao atualizar cliente.");
+            alert("Erro ao atualizar cliente. Verifique o console para mais detalhes.");
         }
     });
 
     cancelEditClientBtn.addEventListener('click', () => {
         clientEditArea.style.display = 'none';
         clientListArea.style.display = 'block';
-        currentClientBeingEdited = null;
+        currentClientBeingEdited = null; // Reseta a variável de controle
     });
 
+
+    // --- Lógica para EXCLUIR Cliente (dentro do Modal Gerenciar) ---
+    const deleteClient = async (clientId) => {
+        if (!auth.currentUser) {
+            alert('Faça login para excluir clientes.');
+            return;
+        }
+
+        if (confirm(`Tem certeza que deseja excluir o cliente "${clientId}"? Esta ação não pode ser desfeita.`)) {
+            try {
+                await db.collection('clientes').doc(clientId).delete();
+                alert('Cliente excluído com sucesso!');
+                loadClientsList(); // Recarrega a lista após a exclusão
+            } catch (error) {
+                console.error("Erro ao excluir cliente:", error);
+                alert("Erro ao excluir cliente. Verifique o console para mais detalhes.");
+            }
+        }
+    };
 });
