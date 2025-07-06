@@ -39,9 +39,8 @@
         <section class="section quadro1" id="client-data-section" style="display: none;">
             <div class="section-header-with-button">
                 <h2>Dados Cliente</h2>
-                <button id="addClientBtn" class="section-action-btn">Adicionar Novo Cliente</button>
-                <!-- NOVO BOTÃO -->
-                <button id="listClientsBtn" class="section-action-btn">Listar Clientes</button>
+                <!-- Botão "Adicionar Novo Cliente" removido daqui -->
+                <button id="listClientsBtn" class="section-action-btn">Gerenciar Clientes</button>
             </div>
             <div class="input-group">
                 <label for="cliente-nome">Nome da Empresa:</label>
@@ -118,31 +117,6 @@
 
     </div> <!-- Fim do div.container -->
 
-    <!-- Modal para Adicionar Novo Cliente -->
-    <div id="addClientModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h3>Adicionar Novo Cliente</h3>
-            <div class="input-group">
-                <label for="modal-cliente-nome">Nome da Empresa:</label>
-                <input type="text" id="modal-cliente-nome" name="modal-cliente-nome" placeholder="Nome da empresa" required>
-            </div>
-            <div class="input-group">
-                <label for="modal-cliente-cnpj">CNPJ:</label>
-                <input type="text" id="modal-cliente-cnpj" name="modal-cliente-cnpj" placeholder="00.000.000/0000-00">
-            </div>
-            <div class="input-group">
-                <label for="modal-cliente-contato">Contato:</label>
-                <input type="text" id="modal-cliente-contato" name="modal-cliente-contato" placeholder="(XX) XXXXX-XXXX">
-            </div>
-            <div class="input-group">
-                <label for="modal-cliente-endereco">Endereço:</label>
-                <input type="text" id="modal-cliente-endereco" name="modal-cliente-endereco" placeholder="Endereço completo">
-            </div>
-            <button id="saveClientModalBtn" class="section-action-btn" style="margin-top: 20px;">Salvar Cliente</button>
-        </div>
-    </div>
-
     <!-- Modal para Autenticação (Login/Cadastro) -->
     <div id="authModal" class="modal">
         <div class="modal-content">
@@ -163,20 +137,47 @@
         </div>
     </div>
 
-    <!-- NOVO MODAL PARA LISTAR E EDITAR CLIENTES -->
+    <!-- NOVO MODAL PARA LISTAR, ADICIONAR E EDITAR CLIENTES (Unificado) -->
     <div id="listClientsModal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
             <h3>Gerenciar Clientes</h3>
+
+            <!-- Área de Listagem de Clientes -->
             <div id="client-list-area">
-                <input type="text" id="client-list-search" placeholder="Pesquisar cliente por nome..." style="width: calc(100% - 24px); padding: 10px; margin-bottom: 15px; border: 1px solid #ced4da; border-radius: 5px;">
-                <ul id="clients-table" class="suggestions-list" style="max-height: 300px; overflow-y: auto; border: 1px solid #eee; border-radius: 5px;">
+                <input type="text" id="client-list-search" placeholder="Pesquisar cliente por nome...">
+                <ul id="clients-table" class="suggestions-list">
                     <!-- Clientes serão listados aqui -->
                     <li>Carregando clientes...</li>
                 </ul>
+                <button id="addNewClientFromListBtn" class="section-action-btn" style="margin-top: 20px;">Adicionar Novo Cliente</button>
             </div>
 
-            <div id="client-edit-area" style="display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">
+            <!-- Área para ADICIONAR NOVO Cliente (Inicialmente oculta) -->
+            <div id="client-add-area" style="display: none;">
+                <h4>Adicionar Novo Cliente</h4>
+                <div class="input-group">
+                    <label for="add-modal-cliente-nome">Nome da Empresa:</label>
+                    <input type="text" id="add-modal-cliente-nome" placeholder="Nome da empresa" required>
+                </div>
+                <div class="input-group">
+                    <label for="add-modal-cliente-cnpj">CNPJ:</label>
+                    <input type="text" id="add-modal-cliente-cnpj" placeholder="00.000.000/0000-00">
+                </div>
+                <div class="input-group">
+                    <label for="add-modal-cliente-contato">Contato:</label>
+                    <input type="text" id="add-modal-cliente-contato" placeholder="(XX) XXXXX-XXXX">
+                </div>
+                <div class="input-group">
+                    <label for="add-modal-cliente-endereco">Endereço:</label>
+                    <input type="text" id="add-modal-cliente-endereco" placeholder="Endereço completo">
+                </div>
+                <button id="saveNewClientBtn" class="section-action-btn" style="margin-top: 15px;">Salvar Cliente</button>
+                <button id="cancelAddClientBtn" class="section-action-btn cancel-btn" style="margin-top: 15px;">Cancelar</button>
+            </div>
+
+            <!-- Área para EDITAR Cliente (Inicialmente oculta) -->
+            <div id="client-edit-area" style="display: none;">
                 <h4>Editar Cliente</h4>
                 <div class="input-group">
                     <label for="edit-modal-cliente-nome">Nome da Empresa:</label>
@@ -195,11 +196,10 @@
                     <input type="text" id="edit-modal-cliente-endereco" placeholder="Endereço completo">
                 </div>
                 <button id="updateClientModalBtn" class="section-action-btn" style="margin-top: 15px;">Salvar Alterações</button>
-                <button id="cancelEditClientBtn" class="section-action-btn" style="margin-top: 15px; background-color: #dc3545;">Cancelar</button>
+                <button id="cancelEditClientBtn" class="section-action-btn cancel-btn" style="margin-top: 15px;">Cancelar</button>
             </div>
         </div>
     </div>
-
 
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
