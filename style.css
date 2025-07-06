@@ -472,21 +472,50 @@ body {
         box-sizing: border-box !important;
     }
 
-    /* Header */
+    /* Header layout for print */
     .header {
-        margin-bottom: 5mm !important; /* Margem mais compacta */
+        display: flex !important;
+        flex-direction: row !important; /* Force side-by-side */
+        justify-content: space-between !important; /* Distribute space */
+        align-items: flex-start !important; /* Align items to the top to save vertical space */
+        margin-bottom: 5mm !important;
         padding-bottom: 5mm !important;
-        border-bottom: 0.5px solid #ccc !important; /* Linha mais fina */
+        border-bottom: 0.5px solid #ccc !important;
     }
+    .header-left {
+        width: 30% !important; /* Give it a fixed proportion */
+        text-align: left !important;
+    }
+    .header-center {
+        width: 40% !important; /* Give it a fixed proportion */
+        flex-grow: 0 !important; /* Prevent excessive growing */
+        text-align: center !important;
+    }
+    .header-right {
+        width: 30% !important; /* Give it a fixed proportion */
+        text-align: right !important;
+    }
+
+    /* Adjust content within header for print */
     .os-main-title {
-        font-size: 1.4em !important; /* Levemente menor */
+        font-size: 1.2em !important; /* OS number smaller */
+        line-height: 1.1 !important;
     }
     .logo-main-header {
-        max-width: 200px !important; /* Reduzir logo na impressão */
+        max-width: 100% !important; /* Ensure logo scales down to its container */
+        height: auto !important;
     }
     .company-details-header {
-        font-size: 0.65em !important; /* Detalhes da empresa menores */
-        line-height: 1.1 !important; /* Linhas mais próximas */
+        font-size: 0.65em !important; /* Company details smaller */
+        line-height: 1.1 !important;
+        margin: 0 !important; /* Remove any default margins */
+        padding: 0 !important; /* Remove any default paddings */
+    }
+    .company-details-header p {
+        margin: 0 !important; /* Ensure no margin between paragraphs in company details */
+    }
+    .company-details-header a {
+        font-size: 1em !important; /* Maintain link size relative to parent */
     }
 
     /* Seções */
