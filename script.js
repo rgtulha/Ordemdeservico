@@ -450,7 +450,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clientAddArea.style.display = 'none'; // Esconde a área de adicionar
         clientEditArea.style.display = 'block'; // Mostra o formulário de edição
         editModalClienteNome.focus(); // Foca no primeiro campo
-    };
+    });
 
     updateClientModalBtn.addEventListener('click', async () => {
         if (!auth.currentUser || !currentClientBeingEdited) {
