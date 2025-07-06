@@ -166,6 +166,15 @@ body {
     transform: translateY(0);
 }
 
+.section-action-btn.cancel-btn { /* Estilo para o novo botão 'Cancelar' */
+    background-color: #6c757d; /* Cinza */
+}
+
+.section-action-btn.cancel-btn:hover {
+    background-color: #5a6268;
+}
+
+
 .button-icon {
     width: 20px;
     height: 20px;
@@ -315,6 +324,7 @@ body {
     max-height: 350px; /* Altura máxima para a área de scroll */
     overflow-y: auto;
     background-color: #fff;
+    margin-top: 15px; /* Espaço para o campo de busca */
 }
 
 .clients-table-row {
@@ -387,7 +397,14 @@ body {
 
 /* Campo de pesquisa dentro do modal de lista de clientes */
 #client-list-search {
-    margin-bottom: 15px;
+    margin-bottom: 0; /* Ajuste, pois a lista agora tem margin-top */
+}
+
+/* Estilos para as áreas de Adicionar/Editar cliente dentro do modal */
+#client-add-area, #client-edit-area {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
 }
 
 /* Responsividade Básica */
