@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('SCRIPT: DOMContentLoaded event fired. Starting script execution.');
+
     // --- Seletores de Elementos do DOM ---
 
     // Cabeçalho e OS
@@ -8,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Seções principais
     const clientDataSection = document.getElementById('client-data-section');
     const aparelhoProblemaSection = document.getElementById('aparelho-problema-section');
-    const totalValueSection = document.getElementById('total-value-section'); // NOVO: Seletor para a seção de valor total
+    const totalValueSection = document.getElementById('total-value-section');
     const garantiaSection = document.getElementById('garantia-section');
     const observacoesSection = document.getElementById('observacoes-section');
     const footerButtons = document.getElementById('footer-buttons');
@@ -67,19 +69,46 @@ document.addEventListener('DOMContentLoaded', () => {
     let listSearchTimeout;
     let currentClientBeingEdited = null; // Para armazenar o normalizedName do cliente sendo editado
 
+    console.log('SCRIPT: All DOM elements selected.');
+
     // --- Configuração e Inicialização do Firebase ---
+    // ATENÇÃO: SUBSTITUA ESSAS CHAVES PELAS DO SEU PROJETO FIREBASE!
     const firebaseConfig = {
-        apiKey: "AIzaSyCmUoU3I9VXjL7YbT95EfUSBnxX3ZzXTII",
-        authDomain: "ordemservico-6ddca.firebaseapp.com",
-        projectId: "ordemservico-6ddca",
-        storageBucket: "ordemservico-6ddca.appspot.com",
-        messagingSenderId: "377095307784",
-        appId: "1:377095307784:web:4ce3007e49657bf3a607bd"
+        apiKey: "AIzaSyCmUoU3I9VXjL7YbT95EfUSBnxX3ZzXTII", // SEU API KEY
+        authDomain: "ordemservico-6ddca.firebaseapp.com", // SEU AUTH DOMAIN
+        projectId: "ordemservico-6ddca", // SEU PROJECT ID
+        storageBucket: "ordemservico-6ddca.appspot.com", // SEU STORAGE BUCKET
+        messagingSenderId: "377095307784", // SEU MESSAGING SENDER ID
+        appId: "1:377095307784:web:4ce3007e49657bf3a607bd" // SEU APP ID
     };
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    const auth = firebase.auth();
+    try {
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+        console.log('SCRIPT: Firebase initialized successfully.');
+    } catch (error) {
+        console.error('SCRIPT ERROR: Failed to initialize Firebase.', error);
+        alert('Erro crítico: Falha ao inicializar o Firebase. Verifique suas credenciais no script.js e o console para detalhes.');
+        return; // Impede que o restante do script seja executado se o Firebase não inicializar
+    }
+    
+    // As variáveis db e auth agora precisam ser declaradas globalmente ou passadas.
+    // Para simplificar, vou redeclarar as que usam 'const' acima e remover o 'const' aqui.
+    // Ou, uma abordagem mais limpa seria:
+    const db = firebase.firestore(); // Garantir que são const fora do try-catch
+    const auth = firebase.auth();    // se o try-catch for só para o initializeApp.
+
+    // Isso é uma medida de segurança caso o try-catch acima não retorne.
+    // Se o initializeApp falhar e não der return, as variáveis db e auth não existirão.
+    // Assumindo que o `return` acima funciona, o código continua.
+    // Para garantir, o melhor seria:
+    // let db;
+    // let auth;
+    // try { firebase.initializeApp(...) db = firebase.firestore(); auth = firebase.auth(); } catch(...)
+
+    // Por simplicidade, vou manter como está e contar com o `return`.
+
 
     // --- Funções Auxiliares ---
     const formatDateAsDDMMYY = (date) => {
@@ -120,24 +149,37 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- Lógica Principal da Aplicação ---
-
+    console.log('SCRIPT: Generating OS number and setting print button listener.');
     // Geração da O.S. ao carregar
     const initialOsNumber = generateOsNumber();
-    osNumberDisplay.textContent = initialOsNumber;
-    document.title = `SUPPORTA O.S: ${initialOsNumber}`;
+    if (osNumberDisplay) {
+        osNumberDisplay.textContent = initialOsNumber;
+        document.title = `SUPPORTA O.S: ${initialOsNumber}`;
+        console.log(`SCRIPT: OS number generated: ${initialOsNumber}`);
+    } else {
+        console.error('SCRIPT ERROR: osNumberDisplay element not found!');
+    }
 
-    printBtn.addEventListener('click', () => window.print());
+    if (printBtn) {
+        printBtn.addEventListener('click', () => window.print());
+        console.log('SCRIPT: Print button listener attached.');
+    } else {
+        console.error('SCRIPT ERROR: printBtn element not found!');
+    }
+
 
     // --- Lógica de Autenticação ---
     const updateUI = (user) => {
+        console.log('SCRIPT: updateUI called. User:', user ? user.email : 'null');
         const sections = [
             clientDataSection,
             aparelhoProblemaSection,
-            totalValueSection, // Inclui a nova seção de valor total
+            totalValueSection,
             garantiaSection,
             observacoesSection,
             footerButtons,
         ];
+
         if (user) {
             authStatus.textContent = `Logado como: ${user.email}`;
             accessAuthBtn.style.display = 'none';
@@ -151,50 +193,72 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Este listener só deve ser anexado após a inicialização bem-sucedida do Firebase
     auth.onAuthStateChanged(updateUI);
+    console.log('SCRIPT: Firebase auth state listener attached.');
 
     // FUNÇÃO PARA ABRIR QUALQUER MODAL
     const openModal = (modalElement) => {
-        modalElement.classList.add('active');
-        // Opcional: focar no primeiro input do modal (se houver)
-        modalElement.querySelector('input, select, textarea')?.focus();
+        if (modalElement) {
+            modalElement.classList.add('active');
+            modalElement.querySelector('input, select, textarea')?.focus();
+            console.log(`SCRIPT: Modal '${modalElement.id}' opened.`);
+        } else {
+            console.error('SCRIPT ERROR: Attempted to open a null modal element.');
+        }
     };
 
     // FUNÇÃO PARA FECHAR QUALQUER MODAL
     const closeAllModals = () => {
-        authModal.classList.remove('active');
-        listClientsModal.classList.remove('active');
+        if (authModal) authModal.classList.remove('active');
+        if (listClientsModal) listClientsModal.classList.remove('active');
+        console.log('SCRIPT: All modals closed.');
     };
 
     // Event Listeners para abrir modais
-    accessAuthBtn.addEventListener('click', () => {
-        openModal(authModal);
-        authEmailInput.value = '';
-        authPasswordInput.value = '';
-    });
+    if (accessAuthBtn) {
+        accessAuthBtn.addEventListener('click', () => {
+            console.log('SCRIPT: Access Auth Button clicked.');
+            openModal(authModal);
+            if (authEmailInput) authEmailInput.value = '';
+            if (authPasswordInput) authPasswordInput.value = '';
+        });
+    } else {
+        console.error('SCRIPT ERROR: accessAuthBtn element not found!');
+    }
 
-    listClientsBtn.addEventListener('click', () => {
-        if (!auth.currentUser) return alert('Faça login para gerenciar clientes.');
-        openModal(listClientsModal);
-        clientListArea.style.display = 'block'; // Garante que a lista esteja visível por padrão
-        clientAddArea.style.display = 'none'; // Esconde a área de adicionar
-        clientEditArea.style.display = 'none'; // Esconde a área de edição
-        clientListSearchInput.value = '';
-        loadClientsList();
-    });
+    if (listClientsBtn) {
+        listClientsBtn.addEventListener('click', () => {
+            if (!auth.currentUser) return alert('Faça login para gerenciar clientes.');
+            console.log('SCRIPT: List Clients Button clicked.');
+            openModal(listClientsModal);
+            if (clientListArea) clientListArea.style.display = 'block';
+            if (clientAddArea) clientAddArea.style.display = 'none';
+            if (clientEditArea) clientEditArea.style.display = 'none';
+            if (clientListSearchInput) clientListSearchInput.value = '';
+            loadClientsList();
+        });
+    } else {
+        console.error('SCRIPT ERROR: listClientsBtn element not found!');
+    }
 
     // Event Listeners para fechar modais
-    [closeAuthModalBtn, closeListClientsModalBtn].forEach(btn => {
-        btn.addEventListener('click', closeAllModals);
-    });
+    if (closeAuthModalBtn) {
+        closeAuthModalBtn.addEventListener('click', closeAllModals);
+    } else {
+        console.error('SCRIPT ERROR: closeAuthModalBtn element not found!');
+    }
+    if (closeListClientsModalBtn) {
+        closeListClientsModalBtn.addEventListener('click', closeAllModals);
+    } else {
+        console.error('SCRIPT ERROR: closeListClientsModalBtn element not found!');
+    }
 
     window.addEventListener('click', (event) => {
-        // Fechar modais ao clicar fora
-        if (event.target === authModal || event.target === listClientsModal) {
+        if (authModal && event.target === authModal || listClientsModal && event.target === listClientsModal) {
             closeAllModals();
         }
-        // Esconder sugestões de busca de cliente
-        if (!clienteNomeInput.contains(event.target) && !suggestionsContainer.contains(event.target)) {
+        if (clienteNomeInput && suggestionsContainer && !clienteNomeInput.contains(event.target) && !suggestionsContainer.contains(event.target)) {
             suggestionsContainer.style.display = 'none';
         }
     });
@@ -205,52 +269,64 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await auth.signOut();
+                alert('Logout realizado com sucesso!');
+                clearClientFields();
+                setClientFieldsReadonly(true);
+                document.getElementById('aparelho-marca-modelo').value = '';
+                document.getElementById('aparelho-imei').value = '';
+                document.getElementById('observacoes-cliente').value = '';
+                document.getElementById('problema-tecnico').value = '';
+                document.getElementById('garantia-peca').value = '';
+                valorTotalInput.value = '';
+                console.log('SCRIPT: Logout successful.');
+            } catch (error) {
+                console.error("SCRIPT ERROR: Erro ao fazer logout:", error);
+                alert(`Erro ao fazer logout: ${error.message}`);
+            }
+        });
+    } else {
+        console.error('SCRIPT ERROR: logoutBtn element not found!');
+    }
 
-    logoutBtn.addEventListener('click', async () => {
-        try {
-            await auth.signOut();
-            alert('Logout realizado com sucesso!');
-            clearClientFields(); // Limpa todos os campos do cliente
-            setClientFieldsReadonly(true); // Deixa-os readonly
-            // Limpa outros campos da O.S.
-            document.getElementById('aparelho-marca-modelo').value = '';
-            document.getElementById('aparelho-imei').value = '';
-            document.getElementById('observacoes-cliente').value = '';
-            document.getElementById('problema-tecnico').value = '';
-            document.getElementById('garantia-peca').value = '';
-            valorTotalInput.value = ''; // Limpa o campo de valor total
-        } catch (error) {
-            console.error("Erro ao fazer logout:", error);
-            alert(`Erro ao fazer logout: ${error.message}`);
-        }
-    });
+    if (registerBtn) {
+        registerBtn.addEventListener('click', async () => {
+            const email = authEmailInput.value;
+            const password = authPasswordInput.value;
+            try {
+                await auth.createUserWithEmailAndPassword(email, password);
+                alert('Usuário cadastrado e logado com sucesso!');
+                closeAllModals();
+                console.log('SCRIPT: User registered and logged in.');
+            } catch (error) {
+                console.error("SCRIPT ERROR: Erro ao cadastrar:", error);
+                alert(`Erro ao cadastrar: ${error.message}`);
+            }
+        });
+    } else {
+        console.error('SCRIPT ERROR: registerBtn element not found!');
+    }
 
-    registerBtn.addEventListener('click', async () => {
-        const email = authEmailInput.value;
-        const password = authPasswordInput.value;
-        try {
-            await auth.createUserWithEmailAndPassword(email, password);
-            alert('Usuário cadastrado e logado com sucesso!');
-            closeAllModals(); // Fecha o modal após o cadastro
-        } catch (error) {
-            console.error("Erro ao cadastrar:", error);
-            alert(`Erro ao cadastrar: ${error.message}`);
-        }
-    });
-
-    loginBtn.addEventListener('click', async () => {
-        const email = authEmailInput.value;
-        const password = authPasswordInput.value;
-        try {
-            await auth.signInWithEmailAndPassword(email, password);
-            alert('Login realizado com sucesso!');
-            closeAllModals(); // Fecha o modal após o login
-        } catch (error) {
-            console.error("Erro ao fazer login:", error);
-            alert(`Erro ao fazer login: ${error.message}`);
-        }
-    });
-
+    if (loginBtn) {
+        loginBtn.addEventListener('click', async () => {
+            const email = authEmailInput.value;
+            const password = authPasswordInput.value;
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                alert('Login realizado com sucesso!');
+                closeAllModals();
+                console.log('SCRIPT: User logged in.');
+            } catch (error) {
+                console.error("SCRIPT ERROR: Erro ao fazer login:", error);
+                alert(`Erro ao fazer login: ${error.message}`);
+            }
+        });
+    } else {
+        console.error('SCRIPT ERROR: loginBtn element not found!');
+    }
 
     // --- Lógica de Busca de Cliente (Campo Principal) ---
     const searchClients = async (searchText) => {
@@ -259,74 +335,85 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const snapshot = await db.collection('clientes')
                 .where('normalizedName', '>=', normalizedSearchText)
-                .where('normalizedName', '<=', normalizedSearchText + '\uf8ff')
+                .where('normalizedName', '<=', normalizedSearchText + '\uF8FF')
                 .limit(5)
                 .get();
             displaySuggestions(snapshot.docs.map(doc => doc.data()));
         } catch (error) {
-            console.error("Erro ao buscar clientes:", error);
+            console.error("SCRIPT ERROR: Erro ao buscar clientes:", error);
         }
     };
 
     const displaySuggestions = (clients) => {
-        suggestionsList.innerHTML = '';
-        if (clients.length > 0) {
-            clients.forEach(client => {
-                const li = document.createElement('li');
-                li.textContent = client.nome;
-                li.addEventListener('click', () => {
-                    clienteNomeInput.value = client.nome;
-                    populateClientFields(client);
-                    suggestionsContainer.style.display = 'none';
+        if (suggestionsList) {
+            suggestionsList.innerHTML = '';
+            if (clients.length > 0) {
+                clients.forEach(client => {
+                    const li = document.createElement('li');
+                    li.textContent = client.nome;
+                    li.addEventListener('click', () => {
+                        if (clienteNomeInput) clienteNomeInput.value = client.nome;
+                        populateClientFields(client);
+                        if (suggestionsContainer) suggestionsContainer.style.display = 'none';
+                    });
+                    suggestionsList.appendChild(li);
                 });
-                suggestionsList.appendChild(li);
-            });
-            suggestionsContainer.style.display = 'block';
+                if (suggestionsContainer) suggestionsContainer.style.display = 'block';
+            } else {
+                if (suggestionsContainer) suggestionsContainer.style.display = 'none';
+            }
         } else {
-            suggestionsContainer.style.display = 'none';
+            console.error('SCRIPT ERROR: suggestionsList element not found in displaySuggestions!');
         }
     };
 
-    clienteNomeInput.addEventListener('input', () => {
-        clearTimeout(searchTimeout);
-        const searchText = clienteNomeInput.value.trim();
-        if (searchText.length > 0) {
-            searchTimeout = setTimeout(() => searchClients(searchText), 300);
-            setClientFieldsReadonly(false); // Permite edição se estiver digitando um novo nome
-        } else {
-            suggestionsContainer.style.display = 'none';
-            clearClientFields(); // Limpa todos os campos
-            setClientFieldsReadonly(true); // Torna readonly novamente
-        }
-    });
+    if (clienteNomeInput) {
+        clienteNomeInput.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            const searchText = clienteNomeInput.value.trim();
+            if (searchText.length > 0) {
+                searchTimeout = setTimeout(() => searchClients(searchText), 300);
+                setClientFieldsReadonly(false);
+            } else {
+                if (suggestionsContainer) suggestionsContainer.style.display = 'none';
+                clearClientFields();
+                setClientFieldsReadonly(true);
+            }
+        });
+    } else {
+        console.error('SCRIPT ERROR: clienteNomeInput element not found!');
+    }
 
     // --- Lógica do Modal "Gerenciar Clientes" (Listar, Adicionar, Editar) ---
-
-    clientListSearchInput.addEventListener('input', () => {
-        clearTimeout(listSearchTimeout);
-        const searchTerm = clientListSearchInput.value.trim();
-        listSearchTimeout = setTimeout(() => loadClientsList(searchTerm), 300);
-    });
+    if (clientListSearchInput) {
+        clientListSearchInput.addEventListener('input', () => {
+            clearTimeout(listSearchTimeout);
+            const searchTerm = clientListSearchInput.value.trim();
+            listSearchTimeout = setTimeout(() => loadClientsList(searchTerm), 300);
+        });
+    } else {
+        console.error('SCRIPT ERROR: clientListSearchInput element not found!');
+    }
 
     const loadClientsList = async (searchTerm = '') => {
         if (!auth.currentUser) {
-            clientsTable.innerHTML = '<li>Faça login para ver os clientes.</li>';
+            if (clientsTable) clientsTable.innerHTML = '<li>Faça login para ver os clientes.</li>';
             return;
         }
 
-        clientsTable.innerHTML = '<li>Carregando...</li>';
+        if (clientsTable) clientsTable.innerHTML = '<li>Carregando...</li>';
         try {
             let query = db.collection('clientes').orderBy('normalizedName');
             if (searchTerm) {
                 const normalizedTerm = searchTerm.toLowerCase();
                 query = query.where('normalizedName', '>=', normalizedTerm)
-                             .where('normalizedName', '<=', normalizedTerm + '\uf8ff');
+                             .where('normalizedName', '<=', normalizedTerm + '\uF8FF');
             }
             const snapshot = await query.get();
-            clientsTable.innerHTML = '';
+            if (clientsTable) clientsTable.innerHTML = '';
 
             if (snapshot.empty) {
-                clientsTable.innerHTML = '<li>Nenhum cliente encontrado.</li>';
+                if (clientsTable) clientsTable.innerHTML = '<li>Nenhum cliente encontrado.</li>';
                 return;
             }
 
@@ -335,7 +422,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('TRACE: Cliente carregado do Firebase:', client);
                 const li = document.createElement('li');
                 li.className = 'clients-table-row';
-                // Armazena todos os dados no dataset para fácil acesso
                 li.dataset.id = doc.id;
                 li.dataset.nome = client.nome;
                 li.dataset.cnpj = client.cnpj || '';
@@ -349,170 +435,183 @@ document.addEventListener('DOMContentLoaded', () => {
                         <button class="edit-btn">Editar</button>
                         <button class="delete-btn">Excluir</button>
                     </div>`;
-                clientsTable.appendChild(li);
+                if (clientsTable) clientsTable.appendChild(li);
             });
 
-            // Adiciona os event listeners após a criação dos elementos
             addEventListenersToClientList();
 
         } catch (error) {
-            console.error("Erro ao carregar lista de clientes:", error);
-            clientsTable.innerHTML = '<li>Erro ao carregar clientes.</li>';
+            console.error("SCRIPT ERROR: Erro ao carregar lista de clientes:", error);
+            if (clientsTable) clientsTable.innerHTML = '<li>Erro ao carregar clientes.</li>';
         }
     };
 
     const addEventListenersToClientList = () => {
-        clientsTable.querySelectorAll('.clients-table-row').forEach(row => {
-            const clientId = row.dataset.id;
-            
-            // AÇÃO DE SELECIONAR
-            row.querySelector('.select-btn').addEventListener('click', () => {
-                selectClientAndFillForm(row.dataset);
+        if (clientsTable) {
+            clientsTable.querySelectorAll('.clients-table-row').forEach(row => {
+                const clientId = row.dataset.id;
+                
+                row.querySelector('.select-btn')?.addEventListener('click', () => {
+                    selectClientAndFillForm(row.dataset);
+                });
+                row.querySelector('.edit-btn')?.addEventListener('click', () => {
+                    editClient(clientId, row.dataset);
+                });
+                row.querySelector('.delete-btn')?.addEventListener('click', () => {
+                    deleteClient(clientId);
+                });
             });
-            // AÇÃO DE EDITAR
-            row.querySelector('.edit-btn').addEventListener('click', () => {
-                editClient(clientId, row.dataset);
-            });
-            // AÇÃO DE EXCLUIR
-            row.querySelector('.delete-btn').addEventListener('click', () => {
-                deleteClient(clientId);
-            });
-        });
+        } else {
+            console.error('SCRIPT ERROR: clientsTable element not found in addEventListenersToClientList!');
+        }
     };
 
     // FUNÇÃO PARA SELECIONAR CLIENTE E PREENCHER FORMULÁRIO PRINCIPAL
     const selectClientAndFillForm = (clientData) => {
         console.log('TRACE: Dados do cliente recebidos para seleção:', clientData);
-        clienteNomeInput.value = clientData.nome;
+        if (clienteNomeInput) clienteNomeInput.value = clientData.nome;
         populateClientFields(clientData);
-        closeAllModals(); // Fecha o modal após a seleção
+        closeAllModals();
     };
 
     // --- Lógica para ADICIONAR NOVO Cliente (dentro do Modal Gerenciar) ---
-    addNewClientFromListBtn.addEventListener('click', () => {
-        clientListArea.style.display = 'none'; // Esconde a lista
-        clientEditArea.style.display = 'none'; // Esconde a edição
-        clientAddArea.style.display = 'block'; // Mostra a área de adicionar
-        // Limpa os campos da área de adicionar
-        addModalClienteNome.value = '';
-        addModalClienteCnpj.value = '';
-        addModalClienteContato.value = '';
-        addModalClienteEndereco.value = '';
-        addModalClienteNome.focus(); // Foca no primeiro campo
-    });
+    if (addNewClientFromListBtn) {
+        addNewClientFromListBtn.addEventListener('click', () => {
+            if (clientListArea) clientListArea.style.display = 'none';
+            if (clientEditArea) clientEditArea.style.display = 'none';
+            if (clientAddArea) clientAddArea.style.display = 'block';
+            if (addModalClienteNome) addModalClienteNome.value = '';
+            if (addModalClienteCnpj) addModalClienteCnpj.value = '';
+            if (addModalClienteContato) addModalClienteContato.value = '';
+            if (addModalClienteEndereco) addModalClienteEndereco.value = '';
+            if (addModalClienteNome) addModalClienteNome.focus();
+        });
+    } else {
+        console.error('SCRIPT ERROR: addNewClientFromListBtn element not found!');
+    }
 
-    saveNewClientBtn.addEventListener('click', async () => {
-        if (!auth.currentUser) return alert('Você precisa estar logado para salvar um cliente.');
-        
-        const nomeOriginal = addModalClienteNome.value.trim();
-        if (!nomeOriginal) return alert('O "Nome da Empresa" é obrigatório!');
-        
-        const normalizedName = nomeOriginal.toLowerCase();
-        const clientData = {
-            nome: nomeOriginal,
-            normalizedName: normalizedName,
-            cnpj: addModalClienteCnpj.value.trim(),
-            contato: addModalClienteContato.value.trim(),
-            endereco: addModalClienteEndereco.value.trim(),
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            addedBy: auth.currentUser.email
-        };
-
-        try {
-            await db.collection('clientes').doc(normalizedName).set(clientData);
-            alert(`Cliente "${nomeOriginal}" salvo com sucesso!`);
+    if (saveNewClientBtn) {
+        saveNewClientBtn.addEventListener('click', async () => {
+            if (!auth.currentUser) return alert('Você precisa estar logado para salvar um cliente.');
             
-            // Retorna para a lista e recarrega
-            clientAddArea.style.display = 'none';
-            clientListArea.style.display = 'block';
-            loadClientsList();
-        } catch (error) {
-            console.error("Erro ao salvar cliente:", error);
-            alert("Erro ao salvar cliente. Verifique o console para mais detalhes. Certifique-se de estar logado e com permissão.");
-        }
-    });
+            const nomeOriginal = addModalClienteNome.value.trim();
+            if (!nomeOriginal) return alert('O "Nome da Empresa" é obrigatório!');
+            
+            const normalizedName = nomeOriginal.toLowerCase();
+            const clientData = {
+                nome: nomeOriginal,
+                normalizedName: normalizedName,
+                cnpj: addModalClienteCnpj.value.trim(),
+                contato: addModalClienteContato.value.trim(),
+                endereco: addModalClienteEndereco.value.trim(),
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                addedBy: auth.currentUser.email
+            };
 
-    cancelAddClientBtn.addEventListener('click', () => {
-        clientAddArea.style.display = 'none';
-        clientListArea.style.display = 'block'; // Retorna para a lista
-    });
+            try {
+                await db.collection('clientes').doc(normalizedName).set(clientData);
+                alert(`Cliente "${nomeOriginal}" salvo com sucesso!`);
+                
+                if (clientAddArea) clientAddArea.style.display = 'none';
+                if (clientListArea) clientListArea.style.display = 'block';
+                loadClientsList();
+            } catch (error) {
+                console.error("SCRIPT ERROR: Erro ao salvar cliente:", error);
+                alert("Erro ao salvar cliente. Verifique o console para mais detalhes. Certifique-se de estar logado e com permissão.");
+            }
+        });
+    } else {
+        console.error('SCRIPT ERROR: saveNewClientBtn element not found!');
+    }
+
+    if (cancelAddClientBtn) {
+        cancelAddClientBtn.addEventListener('click', () => {
+            if (clientAddArea) clientAddArea.style.display = 'none';
+            if (clientListArea) clientListArea.style.display = 'block';
+        });
+    } else {
+        console.error('SCRIPT ERROR: cancelAddClientBtn element not found!');
+    }
 
 
     // --- Lógica para EDITAR Cliente (dentro do Modal Gerenciar) ---
     const editClient = (clientId, clientData) => {
         currentClientBeingEdited = clientId;
-        editModalClienteNome.value = clientData.nome;
-        editModalClienteCnpj.value = clientData.cnpj;
-        editModalClienteContato.value = clientData.contato;
-        editModalClienteEndereco.value = clientData.endereco;
+        if (editModalClienteNome) editModalClienteNome.value = clientData.nome;
+        if (editModalClienteCnpj) editModalClienteCnpj.value = clientData.cnpj;
+        if (editModalClienteContato) editModalClienteContato.value = clientData.contato;
+        if (editModalClienteEndereco) editModalClienteEndereco.value = clientData.endereco;
         
-        clientListArea.style.display = 'none'; // Esconde a lista
-        clientAddArea.style.display = 'none'; // Esconde a área de adicionar
-        clientEditArea.style.display = 'block'; // Mostra o formulário de edição
-        editModalClienteNome.focus(); // Foca no primeiro campo
-    });
+        if (clientListArea) clientListArea.style.display = 'none';
+        if (clientAddArea) clientAddArea.style.display = 'none';
+        if (clientEditArea) clientEditArea.style.display = 'block';
+        if (editModalClienteNome) editModalClienteNome.focus();
+    };
 
-    updateClientModalBtn.addEventListener('click', async () => {
-        if (!auth.currentUser || !currentClientBeingEdited) {
-            alert('Erro: Nenhum cliente selecionado para atualização ou você não está logado.');
-            return;
-        }
-
-        const originalNormalizedName = currentClientBeingEdited;
-        const newNome = editModalClienteNome.value.trim();
-        const newNormalizedName = newNome.toLowerCase();
-        const newCnpj = editModalClienteCnpj.value.trim();
-        const newContato = editModalClienteContato.value.trim();
-        const newEndereco = editModalClienteEndereco.value.trim();
-
-        if (!newNome) {
-            alert('O "Nome da Empresa" é obrigatório!');
-            return;
-        }
-
-        const clientUpdateData = {
-            nome: newNome,
-            normalizedName: newNormalizedName,
-            cnpj: newCnpj,
-            contato: newContato,
-            endereco: newEndereco,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(), // Atualiza o timestamp de modificação
-            addedBy: auth.currentUser.email // Mantém quem adicionou ou atualiza para o atual logado
-        };
-
-        try {
-            if (originalNormalizedName !== newNormalizedName) {
-                // Se o nome (e, portanto, o normalizedName) foi alterado,
-                // cria um novo documento com o novo ID e deleta o antigo.
-                const batch = db.batch();
-                batch.set(db.collection('clientes').doc(newNormalizedName), clientUpdateData);
-                batch.delete(db.collection('clientes').doc(originalNormalizedName));
-                await batch.commit();
-                alert(`Cliente "${newNome}" atualizado e movido com sucesso!`);
-            } else {
-                // Se o nome não foi alterado, apenas atualiza o documento existente
-                await db.collection('clientes').doc(originalNormalizedName).update(clientUpdateData);
-                alert(`Cliente "${newNome}" atualizado com sucesso!`);
+    if (updateClientModalBtn) {
+        updateClientModalBtn.addEventListener('click', async () => {
+            if (!auth.currentUser || !currentClientBeingEdited) {
+                alert('Erro: Nenhum cliente selecionado para atualização ou você não está logado.');
+                return;
             }
 
-            // Volta para a lista e recarrega
-            clientEditArea.style.display = 'none';
-            clientListArea.style.display = 'block';
-            currentClientBeingEdited = null; // Reseta a variável de controle
-            loadClientsList();
+            const originalNormalizedName = currentClientBeingEdited;
+            const newNome = editModalClienteNome.value.trim();
+            const newNormalizedName = newNome.toLowerCase();
+            const newCnpj = editModalClienteCnpj.value.trim();
+            const newContato = editModalClienteContato.value.trim();
+            const newEndereco = editModalClienteEndereco.value.trim();
 
-        } catch (error) {
-            console.error("Erro ao atualizar cliente:", error);
-            alert("Erro ao atualizar cliente. Verifique o console para mais detalhes.");
-        }
-    });
+            if (!newNome) {
+                alert('O "Nome da Empresa" é obrigatório!');
+                return;
+            }
 
-    cancelEditClientBtn.addEventListener('click', () => {
-        clientEditArea.style.display = 'none';
-        clientListArea.style.display = 'block';
-        currentClientBeingEdited = null; // Reseta a variável de controle
-    });
+            const clientUpdateData = {
+                nome: newNome,
+                normalizedName: newNormalizedName,
+                cnpj: newCnpj,
+                contato: newContato,
+                endereco: newEndereco,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                addedBy: auth.currentUser.email
+            };
 
+            try {
+                if (originalNormalizedName !== newNormalizedName) {
+                    const batch = db.batch();
+                    batch.set(db.collection('clientes').doc(newNormalizedName), clientUpdateData);
+                    batch.delete(db.collection('clientes').doc(originalNormalizedName));
+                    await batch.commit();
+                    alert(`Cliente "${newNome}" atualizado e movido com sucesso!`);
+                } else {
+                    await db.collection('clientes').doc(originalNormalizedName).update(clientUpdateData);
+                    alert(`Cliente "${newNome}" atualizado com sucesso!`);
+                }
+
+                if (clientEditArea) clientEditArea.style.display = 'none';
+                if (clientListArea) clientListArea.style.display = 'block';
+                currentClientBeingEdited = null;
+                loadClientsList();
+
+            } catch (error) {
+                console.error("SCRIPT ERROR: Erro ao atualizar cliente:", error);
+                alert("Erro ao atualizar cliente. Verifique o console para mais detalhes.");
+            }
+        });
+    } else {
+        console.error('SCRIPT ERROR: updateClientModalBtn element not found!');
+    }
+
+    if (cancelEditClientBtn) {
+        cancelEditClientBtn.addEventListener('click', () => {
+            if (clientEditArea) clientEditArea.style.display = 'none';
+            if (clientListArea) clientListArea.style.display = 'block';
+            currentClientBeingEdited = null;
+        });
+    } else {
+        console.error('SCRIPT ERROR: cancelEditClientBtn element not found!');
+    }
 
     // --- Lógica para EXCLUIR Cliente (dentro do Modal Gerenciar) ---
     const deleteClient = async (clientId) => {
@@ -525,11 +624,13 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 await db.collection('clientes').doc(clientId).delete();
                 alert('Cliente excluído com sucesso!');
-                loadClientsList(); // Recarrega a lista após a exclusão
+                loadClientsList();
             } catch (error) {
-                console.error("Erro ao excluir cliente:", error);
+                console.error("SCRIPT ERROR: Erro ao excluir cliente:", error);
                 alert("Erro ao excluir cliente. Verifique o console para mais detalhes.");
             }
         }
     };
+
+    console.log('SCRIPT: All event listeners attached.');
 });
