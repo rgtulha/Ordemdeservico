@@ -454,28 +454,38 @@ body {
 
 /* Otimização para Impressão */
 @media print {
+    /* CRITICAL: PAGE MARGINS CONTROL */
+    @page {
+        margin: 2mm !important; /* Forces minimal 2mm margins on all sides of the page */
+        size: A4 portrait; /* Explicitly set to A4 and portrait orientation */
+    }
+
     /* AGGRESSIVE GLOBAL RESET FOR PRINT */
     * {
         margin: 0 !important;
         padding: 0 !important;
         box-sizing: border-box !important;
-        -webkit-print-color-adjust: exact !important;
+        -webkit-print-color-adjust: exact !important; /* Ensures colors are printed as seen */
         print-color-adjust: exact !important;
     }
 
-    body {
+    html, body {
+        width: 100% !important; /* Takes full available width within @page margins */
+        height: auto !important; /* Allows content to define height naturally */
+        margin: 0 !important; /* Ensures no body margins */
+        padding: 0 !important;
         font-family: 'Poppins', sans-serif !important;
-        font-size: 8.5pt !important; /* Aumentado */
-        line-height: 1.2 !important; /* Aumentado ligeiramente */
+        font-size: 8.5pt !important; /* Requested font size for readability */
+        line-height: 1.2 !important; /* Optimized line spacing */
         color: #000 !important;
         background-color: #fff !important;
     }
 
     .container {
-        width: 210mm !important; /* A4 width */
-        min-height: 297mm !important; /* A4 height */
-        margin: 0 auto !important; /* Center on page */
-        padding: 5mm !important; /* Mantido */
+        width: 100% !important; /* Fills 100% of the body's width */
+        min-height: calc(297mm - 4mm) !important; /* A4 height (297mm) minus top/bottom @page margins (2mm each) */
+        margin: 0 auto !important; /* Center container */
+        padding: 2mm !important; /* Minimal internal padding for the container */
         box-shadow: none !important;
         border: none !important;
     }
@@ -486,12 +496,12 @@ body {
         flex-direction: row !important;
         justify-content: space-between !important;
         align-items: flex-start !important;
-        margin-bottom: 4mm !important;
-        padding-bottom: 4mm !important;
+        margin-bottom: 3mm !important; /* Reduced margin */
+        padding-bottom: 3mm !important; /* Reduced padding */
         border-bottom: 0.5px solid #ccc !important;
     }
     .header-left, .header-center, .header-right {
-        width: 33% !important;
+        width: 33.33% !important; /* Precise one-third distribution */
         flex: 1 !important;
         text-align: center !important;
     }
@@ -499,16 +509,15 @@ body {
     .header-right { text-align: right !important; }
 
     .os-main-title {
-        font-size: 1.1em !important; /* Aumentado */
+        font-size: 1.1em !important;
         line-height: 1.1 !important;
-        margin: 0 !important;
     }
     .logo-main-header {
-        max-width: 90% !important;
+        max-width: 95% !important; /* Scale down logo to fit more */
         height: auto !important;
     }
     .company-details-header {
-        font-size: 0.7em !important; /* Aumentado */
+        font-size: 0.7em !important;
         line-height: 1.1 !important;
     }
     .company-details-header p {
@@ -519,31 +528,30 @@ body {
         color: #000 !important;
     }
 
-
     /* Sections */
     .section {
-        padding: 6px !important; /* Aumentado */
-        margin-bottom: 6px !important; /* Aumentado */
-        border: 1px solid #ddd !important;
+        padding: 3mm !important; /* Minimal padding for sections */
+        margin-bottom: 3mm !important; /* Minimal margin between sections */
+        border: 1px solid #ddd !important; /* Light border for clarity */
         border-radius: 3px !important;
         box-shadow: none !important;
         background-color: #fcfcfc !important;
-        page-break-inside: avoid !important;
+        page-break-inside: avoid !important; /* CRITICAL: Prevents content breaking across pages */
     }
     .section h2 {
-        font-size: 1.3em !important; /* Aumentado */
+        font-size: 1.25em !important; /* Section titles size */
         padding-bottom: 2px !important;
-        margin-bottom: 3px !important;
+        margin-bottom: 2px !important;
         border-bottom: 0.5px dashed #ccc !important;
         color: #000 !important;
     }
 
     /* Input groups and elements */
     .input-group {
-        margin-bottom: 3px !important; /* Aumentado */
+        margin-bottom: 2mm !important; /* Very small margin between input groups */
     }
     .input-group label {
-        font-size: 0.9em !important; /* Aumentado */
+        font-size: 0.85em !important; /* Label font size */
         margin-bottom: 0px !important;
         color: #000 !important;
         font-weight: normal !important;
@@ -553,11 +561,11 @@ body {
     input[type="password"],
     textarea,
     select {
-        width: 100% !important;
-        padding: 1px 2px !important; /* Aumentado ligeiramente */
-        font-size: 0.95em !important; /* Aumentado */
+        width: 100% !important; /* Ensures inputs fill their available width */
+        padding: 1px 2px !important; /* Minimal padding */
+        font-size: 0.9em !important; /* Input text size */
         height: auto !important;
-        min-height: unset !important;
+        min-height: 15px !important; /* Allows aggressive vertical compression if needed */
         border: none !important;
         box-shadow: none !important;
         background-color: transparent !important;
@@ -565,20 +573,20 @@ body {
         line-height: 1.1 !important;
     }
     textarea {
-        min-height: 25px !important; /* Aumentado */
+        min-height: 20px !important; /* Slightly increased for readability of multi-line text */
     }
-    
+
     /* Specific section element overrides */
     .warranty-note {
-        font-size: 0.9em !important; /* Aumentado */
+        font-size: 0.85em !important;
         line-height: 1.1 !important;
-        margin-top: 3px !important;
-        padding-top: 3px !important;
+        margin-top: 2mm !important;
+        padding-top: 2mm !important;
         border-top: 0.5px dashed #ccc !important;
     }
-    
+
     p {
-        font-size: 0.9em !important; /* Aumentado */
+        font-size: 0.85em !important;
         line-height: 1.1 !important;
     }
 
@@ -604,8 +612,8 @@ body {
         display: block !important;
         visibility: visible !important;
     }
-    
-    /* Ensure no extra space at the end */
+
+    /* Ensure no extra space at the end of the container */
     .container > *:last-child {
         margin-bottom: 0 !important;
     }
