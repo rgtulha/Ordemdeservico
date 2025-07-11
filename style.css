@@ -454,133 +454,148 @@ body {
 
 /* Otimização para Impressão */
 @media print {
-    /* Geral */
-    body {
-        font-size: 8.5pt !important; /* Fonte mais compacta */
-        line-height: 1.2 !important; /* Espaçamento entre linhas reduzido */
-        -webkit-print-color-adjust: exact !important; /* Garante impressão de cores */
+    /* AGGRESSIVE GLOBAL RESET FOR PRINT */
+    * {
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+        -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
     }
+
+    body {
+        font-family: 'Poppins', sans-serif !important;
+        font-size: 7.5pt !important; /* Even smaller font */
+        line-height: 1.1 !important; /* Tighter line height */
+        color: #000 !important;
+        background-color: #fff !important; /* Ensure white background */
+    }
+
     .container {
-        padding: 5mm !important; /* Redução drástica do padding geral */
-        margin: 0 !important;
+        width: 210mm !important; /* A4 width */
+        min-height: 297mm !important; /* A4 height */
+        margin: 0 auto !important; /* Center on page */
+        padding: 5mm !important; /* Keep a minimal edge padding */
         box-shadow: none !important;
         border: none !important;
-        max-width: 100% !important;
-        width: 210mm !important; /* Largura padrão A4 */
-        min-height: 297mm !important; /* Altura padrão A4 */
-        box-sizing: border-box !important;
     }
 
-    /* Header layout for print */
+    /* Header adjustments */
     .header {
         display: flex !important;
-        flex-direction: row !important; /* Force side-by-side */
-        justify-content: space-between !important; /* Distribute space */
-        align-items: flex-start !important; /* Align items to the top to save vertical space */
-        margin-bottom: 5mm !important;
-        padding-bottom: 5mm !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: flex-start !important;
+        margin-bottom: 4mm !important; /* Reduced margin */
+        padding-bottom: 4mm !important; /* Reduced padding */
         border-bottom: 0.5px solid #ccc !important;
     }
-    .header-left {
-        width: 30% !important; /* Give it a fixed proportion */
-        text-align: left !important;
+    .header-left, .header-center, .header-right {
+        width: 33% !important; /* Equal distribution for simplicity */
+        flex: 1 !important; /* Allow flexibility within the 33% */
+        text-align: center !important; /* Center the content within its div */
     }
-    .header-center {
-        width: 40% !important; /* Give it a fixed proportion */
-        flex-grow: 0 !important; /* Prevent excessive growing */
-        text-align: center !important;
-    }
-    .header-right {
-        width: 30% !important; /* Give it a fixed proportion */
-        text-align: right !important;
-    }
+    .header-left { text-align: left !important; }
+    .header-right { text-align: right !important; }
 
-    /* Adjust content within header for print */
     .os-main-title {
-        font-size: 1.2em !important; /* OS number smaller */
-        line-height: 1.1 !important;
+        font-size: 1em !important; /* Adjust if too small */
+        line-height: 1 !important;
+        margin: 0 !important;
     }
     .logo-main-header {
-        max-width: 100% !important; /* Ensure logo scales down to its container */
+        max-width: 90% !important; /* Scale down logo more aggressively */
         height: auto !important;
     }
     .company-details-header {
-        font-size: 0.65em !important; /* Company details smaller */
-        line-height: 1.1 !important;
-        margin: 0 !important; /* Remove any default margins */
-        padding: 0 !important; /* Remove any default paddings */
+        font-size: 0.6em !important; /* Make company details very small */
+        line-height: 1 !important;
     }
     .company-details-header p {
-        margin: 0 !important; /* Ensure no margin between paragraphs in company details */
+        margin: 0 !important;
     }
     .company-details-header a {
-        font-size: 1em !important; /* Maintain link size relative to parent */
+        font-size: 1em !important;
+        color: #000 !important; /* Ensure link color is black for print */
     }
 
-    /* Seções */
+
+    /* Sections */
     .section {
-        padding: 6px !important; /* Padding de seção reduzido */
-        margin-bottom: 6px !important; /* Margem entre seções reduzida */
-        border: none !important; /* Remove bordas para economizar espaço */
+        padding: 4px !important; /* Minimal padding */
+        margin-bottom: 4px !important; /* Minimal margin between sections */
+        border: 1px solid #ddd !important; /* Re-add light border for clarity, but very thin */
+        border-radius: 3px !important; /* Smaller border radius */
         box-shadow: none !important;
-        background-color: transparent !important;
-        page-break-inside: avoid; /* Tenta evitar quebras dentro da seção */
+        background-color: #fcfcfc !important; /* Maintain slight background difference */
+        page-break-inside: avoid !important; /* Crucial for preventing breaks */
     }
     .section h2 {
-        padding-bottom: 3px !important;
-        margin-bottom: 5px !important;
+        font-size: 1.2em !important; /* Smaller section titles */
+        padding-bottom: 2px !important;
+        margin-bottom: 3px !important;
         border-bottom: 0.5px dashed #ccc !important;
-        font-size: 1.3em !important; /* Títulos de seção menores */
         color: #000 !important;
     }
 
-    /* Inputs e Textareas */
+    /* Input groups and elements */
     .input-group {
-        margin-bottom: 3px !important; /* Margem entre grupos de input reduzida */
+        margin-bottom: 2px !important; /* Very small margin between input groups */
     }
     .input-group label {
-        margin-bottom: 1px !important;
-        font-size: 0.85em !important; /* Labels menores */
+        font-size: 0.8em !important; /* Smaller labels */
+        margin-bottom: 0px !important; /* No margin below label */
         color: #000 !important;
+        font-weight: normal !important; /* Less bold labels */
     }
     input[type="text"],
     input[type="email"],
     input[type="password"],
     textarea,
     select {
-        padding: 1px 2px !important; /* Padding mínimo nos inputs */
-        font-size: 0.9em !important; /* Fonte dos inputs menor */
+        width: 100% !important; /* Ensure full width */
+        padding: 0px 1px !important; /* Minimal padding */
+        font-size: 0.85em !important; /* Input text size */
         height: auto !important;
-        min-height: unset !important; /* Permite compressão máxima da altura */
-        border: none !important; /* Remove bordas para economia de espaço */
+        min-height: unset !important;
+        border: none !important; /* No borders for inputs */
         box-shadow: none !important;
         background-color: transparent !important;
         color: #000 !important;
+        line-height: 1.1 !important; /* Tighter line height for input text */
     }
     textarea {
-        min-height: 25px !important; /* Min-height para textareas na impressão */
+        min-height: 20px !important; /* Adjusted min-height for textareas */
+    }
+    
+    /* Specific section element overrides */
+    .warranty-note {
+        font-size: 0.8em !important;
+        line-height: 1.1 !important;
+        margin-top: 3px !important;
+        padding-top: 3px !important;
+        border-top: 0.5px dashed #ccc !important;
+    }
+    
+    p {
+        font-size: 0.8em !important;
+        line-height: 1.1 !important;
     }
 
-    /* Textos Gerais */
-    p, strong, .warranty-note {
-        font-size: 0.85em !important; /* Textos de parágrafo menores */
-        line-height: 1.2 !important; /* Linhas mais próximas */
-        color: #000 !important;
-    }
-
-    /* Esconder elementos desnecessários na impressão */
+    /* Hide unnecessary elements for print */
     .section-action-btn,
     .action-btn,
     .auth-access-buttons,
     .modal,
     #footer-buttons,
     .suggestions-container,
-    #client-list-search {
+    #client-list-search,
+    .section-header-with-button .section-action-btn, /* Specific button in header */
+    .close-button {
         display: none !important;
     }
 
-    /* Garante que apenas as seções relevantes sejam visíveis */
+    /* Ensure specific sections are visible (even if hidden by JS) */
     #client-data-section,
     #aparelho-problema-section,
     #total-value-section,
@@ -588,5 +603,10 @@ body {
     #observacoes-section {
         display: block !important;
         visibility: visible !important;
+    }
+    
+    /* Ensure no extra space at the end */
+    .container > *:last-child {
+        margin-bottom: 0 !important;
     }
 }
