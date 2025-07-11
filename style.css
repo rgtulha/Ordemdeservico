@@ -465,17 +465,17 @@ body {
 
     body {
         font-family: 'Poppins', sans-serif !important;
-        font-size: 7.5pt !important; /* Even smaller font */
-        line-height: 1.1 !important; /* Tighter line height */
+        font-size: 8.5pt !important; /* Aumentado */
+        line-height: 1.2 !important; /* Aumentado ligeiramente */
         color: #000 !important;
-        background-color: #fff !important; /* Ensure white background */
+        background-color: #fff !important;
     }
 
     .container {
         width: 210mm !important; /* A4 width */
         min-height: 297mm !important; /* A4 height */
         margin: 0 auto !important; /* Center on page */
-        padding: 5mm !important; /* Keep a minimal edge padding */
+        padding: 5mm !important; /* Mantido */
         box-shadow: none !important;
         border: none !important;
     }
@@ -486,52 +486,52 @@ body {
         flex-direction: row !important;
         justify-content: space-between !important;
         align-items: flex-start !important;
-        margin-bottom: 4mm !important; /* Reduced margin */
-        padding-bottom: 4mm !important; /* Reduced padding */
+        margin-bottom: 4mm !important;
+        padding-bottom: 4mm !important;
         border-bottom: 0.5px solid #ccc !important;
     }
     .header-left, .header-center, .header-right {
-        width: 33% !important; /* Equal distribution for simplicity */
-        flex: 1 !important; /* Allow flexibility within the 33% */
-        text-align: center !important; /* Center the content within its div */
+        width: 33% !important;
+        flex: 1 !important;
+        text-align: center !important;
     }
     .header-left { text-align: left !important; }
     .header-right { text-align: right !important; }
 
     .os-main-title {
-        font-size: 1em !important; /* Adjust if too small */
-        line-height: 1 !important;
+        font-size: 1.1em !important; /* Aumentado */
+        line-height: 1.1 !important;
         margin: 0 !important;
     }
     .logo-main-header {
-        max-width: 90% !important; /* Scale down logo more aggressively */
+        max-width: 90% !important;
         height: auto !important;
     }
     .company-details-header {
-        font-size: 0.6em !important; /* Make company details very small */
-        line-height: 1 !important;
+        font-size: 0.7em !important; /* Aumentado */
+        line-height: 1.1 !important;
     }
     .company-details-header p {
         margin: 0 !important;
     }
     .company-details-header a {
         font-size: 1em !important;
-        color: #000 !important; /* Ensure link color is black for print */
+        color: #000 !important;
     }
 
 
     /* Sections */
     .section {
-        padding: 4px !important; /* Minimal padding */
-        margin-bottom: 4px !important; /* Minimal margin between sections */
-        border: 1px solid #ddd !important; /* Re-add light border for clarity, but very thin */
-        border-radius: 3px !important; /* Smaller border radius */
+        padding: 6px !important; /* Aumentado */
+        margin-bottom: 6px !important; /* Aumentado */
+        border: 1px solid #ddd !important;
+        border-radius: 3px !important;
         box-shadow: none !important;
-        background-color: #fcfcfc !important; /* Maintain slight background difference */
-        page-break-inside: avoid !important; /* Crucial for preventing breaks */
+        background-color: #fcfcfc !important;
+        page-break-inside: avoid !important;
     }
     .section h2 {
-        font-size: 1.2em !important; /* Smaller section titles */
+        font-size: 1.3em !important; /* Aumentado */
         padding-bottom: 2px !important;
         margin-bottom: 3px !important;
         border-bottom: 0.5px dashed #ccc !important;
@@ -540,37 +540,37 @@ body {
 
     /* Input groups and elements */
     .input-group {
-        margin-bottom: 2px !important; /* Very small margin between input groups */
+        margin-bottom: 3px !important; /* Aumentado */
     }
     .input-group label {
-        font-size: 0.8em !important; /* Smaller labels */
-        margin-bottom: 0px !important; /* No margin below label */
+        font-size: 0.9em !important; /* Aumentado */
+        margin-bottom: 0px !important;
         color: #000 !important;
-        font-weight: normal !important; /* Less bold labels */
+        font-weight: normal !important;
     }
     input[type="text"],
     input[type="email"],
     input[type="password"],
     textarea,
     select {
-        width: 100% !important; /* Ensure full width */
-        padding: 0px 1px !important; /* Minimal padding */
-        font-size: 0.85em !important; /* Input text size */
+        width: 100% !important;
+        padding: 1px 2px !important; /* Aumentado ligeiramente */
+        font-size: 0.95em !important; /* Aumentado */
         height: auto !important;
         min-height: unset !important;
-        border: none !important; /* No borders for inputs */
+        border: none !important;
         box-shadow: none !important;
         background-color: transparent !important;
         color: #000 !important;
-        line-height: 1.1 !important; /* Tighter line height for input text */
+        line-height: 1.1 !important;
     }
     textarea {
-        min-height: 20px !important; /* Adjusted min-height for textareas */
+        min-height: 25px !important; /* Aumentado */
     }
     
     /* Specific section element overrides */
     .warranty-note {
-        font-size: 0.8em !important;
+        font-size: 0.9em !important; /* Aumentado */
         line-height: 1.1 !important;
         margin-top: 3px !important;
         padding-top: 3px !important;
@@ -578,7 +578,7 @@ body {
     }
     
     p {
-        font-size: 0.8em !important;
+        font-size: 0.9em !important; /* Aumentado */
         line-height: 1.1 !important;
     }
 
@@ -590,7 +590,7 @@ body {
     #footer-buttons,
     .suggestions-container,
     #client-list-search,
-    .section-header-with-button .section-action-btn, /* Specific button in header */
+    .section-header-with-button .section-action-btn,
     .close-button {
         display: none !important;
     }
