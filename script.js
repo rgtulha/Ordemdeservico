@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Cabeçalho e OS
     const osNumberDisplay = document.getElementById('os-number-display');
+    const currentDateDisplay = document.getElementById('current-date-display'); // NOVO: Referência para o elemento da data
     const printBtn = document.getElementById('printBtn');
 
     // Seções principais
@@ -96,13 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // As variáveis db e auth agora precisam ser declaradas globalmente ou passadas.
     // Para simplificar, vou redeclarar as que usam 'const' acima e remover o 'const' aqui.
     // Ou, uma abordagem mais limpa seria:
-    const db = firebase.firestore(); // Garantir que são const fora do try-catch
-    const auth = firebase.auth();    // se o try-catch for só para o initializeApp.
-
-    // Isso é uma medida de segurança caso o try-catch acima não retorne.
-    // Se o initializeApp falhar e não der return, as variáveis db e auth não existirão.
-    // Assumindo que o `return` acima funciona, o código continua.
-    // Para garantir, o melhor seria:
     // let db;
     // let auth;
     // try { firebase.initializeApp(...) db = firebase.firestore(); auth = firebase.auth(); } catch(...)
@@ -116,6 +110,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const year = String(date.getFullYear()).slice(-2);
         return `${day}${month}${year}`;
+    };
+
+    // NOVO: Função para formatar a data como DD/MM/YYYY
+    const formatDateAsDDMMYYYY = (date) => {
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = String(date.getFullYear());
+        return `${day}/${month}/${year}`;
     };
 
     const generateOsNumber = () => {
@@ -158,6 +160,15 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(`SCRIPT: OS number generated: ${initialOsNumber}`);
     } else {
         console.error('SCRIPT ERROR: osNumberDisplay element not found!');
+    }
+
+    // NOVO: Exibir a data atual
+    if (currentDateDisplay) {
+        const today = new Date();
+        currentDateDisplay.textContent = `Data: ${formatDateAsDDMMYYYY(today)}`;
+        console.log(`SCRIPT: Current date displayed: ${formatDateAsDDMMYYYY(today)}`);
+    } else {
+        console.error('SCRIPT ERROR: currentDateDisplay element not found!');
     }
 
     if (printBtn) {
