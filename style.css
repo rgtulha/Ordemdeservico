@@ -33,6 +33,14 @@ body {
     margin: 0;
 }
 
+/* NOVO: Estilo para a exibição da data da O.S. */
+.os-date-display {
+    font-size: 0.9em; /* Tamanho da fonte ligeiramente menor que o da O.S. */
+    color: #666; /* Cor cinza para a data */
+    margin-top: 5px; /* Espaço acima da data */
+    margin-bottom: 0; /* Remove margem inferior padrão de parágrafo */
+}
+
 .header-center {
     flex-grow: 1;
     text-align: center;
@@ -512,6 +520,13 @@ body {
         font-size: 1.1em !important;
         line-height: 1.1 !important;
     }
+
+    /* NOVO: Ajustes para o novo elemento de data na impressão */
+    .os-date-display {
+        font-size: 0.8em !important; /* Tamanho menor para impressão */
+        margin-top: 1mm !important; /* Ajuste a margem para impressão */
+    }
+
     .logo-main-header {
         max-width: 95% !important; /* Scale down logo to fit more */
         height: auto !important;
