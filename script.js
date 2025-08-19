@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Cabeçalho e OS
     const osNumberDisplay = document.getElementById('os-number-display');
-    const currentDateDisplay = document.getElementById('current-date-display'); // NOVO: Referência para o elemento da data
+    const currentDateDisplay = document.getElementById('current-date-display');
     const printBtn = document.getElementById('printBtn');
 
     // Seções principais
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const suggestionsContainer = document.getElementById('suggestions-container');
     const suggestionsList = document.getElementById('suggestions-list');
 
-    // NOVO: Valor Total do Serviço
+    // Valor Total do Serviço
     const valorTotalInput = document.getElementById('valor-total');
 
     // Modal Listar/Gerenciar Clientes (Unificado)
@@ -83,26 +83,20 @@ document.addEventListener('DOMContentLoaded', () => {
         appId: "1:377095307784:web:4ce3007e49657bf3a607bd" // SEU APP ID
     };
 
+    // CORRIGIDO: Declarar db e auth fora do try-catch para garantir o escopo global
+    let db;
+    let auth;
+
     try {
         firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
+        db = firebase.firestore(); // Atribuir às variáveis globais
+        auth = firebase.auth();    // Atribuir às variáveis globais
         console.log('SCRIPT: Firebase initialized successfully.');
     } catch (error) {
         console.error('SCRIPT ERROR: Failed to initialize Firebase.', error);
         alert('Erro crítico: Falha ao inicializar o Firebase. Verifique suas credenciais no script.js e o console para detalhes.');
         return; // Impede que o restante do script seja executado se o Firebase não inicializar
     }
-    
-    // As variáveis db e auth agora precisam ser declaradas globalmente ou passadas.
-    // Para simplificar, vou redeclarar as que usam 'const' acima e remover o 'const' aqui.
-    // Ou, uma abordagem mais limpa seria:
-    // let db;
-    // let auth;
-    // try { firebase.initializeApp(...) db = firebase.firestore(); auth = firebase.auth(); } catch(...)
-
-    // Por simplicidade, vou manter como está e contar com o `return`.
-
 
     // --- Funções Auxiliares ---
     const formatDateAsDDMMYY = (date) => {
@@ -112,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${day}${month}${year}`;
     };
 
-    // NOVO: Função para formatar a data como DD/MM/YYYY
+    // ATUALIZADO: Função para formatar a data como DD/MM/YYYY (sem a palavra "Data:")
     const formatDateAsDDMMYYYY = (date) => {
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -162,10 +156,10 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('SCRIPT ERROR: osNumberDisplay element not found!');
     }
 
-    // NOVO: Exibir a data atual
+    // ATUALIZADO: Exibir a data atual (sem a palavra "Data:")
     if (currentDateDisplay) {
         const today = new Date();
-        currentDateDisplay.textContent = `Data: ${formatDateAsDDMMYYYY(today)}`;
+        currentDateDisplay.textContent = formatDateAsDDMMYYYY(today);
         console.log(`SCRIPT: Current date displayed: ${formatDateAsDDMMYYYY(today)}`);
     } else {
         console.error('SCRIPT ERROR: currentDateDisplay element not found!');
@@ -205,6 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Este listener só deve ser anexado após a inicialização bem-sucedida do Firebase
+    // E agora funciona corretamente devido ao escopo de `auth`
     auth.onAuthStateChanged(updateUI);
     console.log('SCRIPT: Firebase auth state listener attached.');
 
@@ -477,7 +472,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // FUNÇÃO PARA SELECIONAR CLIENTE E PREENCHER FORMULÁRIO PRINCIPAL
+    // FUNÇÃO PARA SELEcionar CLIENTE E PREENCHER FORMULÁRIO PRINCIPAL
     const selectClientAndFillForm = (clientData) => {
         console.log('TRACE: Dados do cliente recebidos para seleção:', clientData);
         if (clienteNomeInput) clienteNomeInput.value = clientData.nome;
@@ -526,7 +521,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (clientAddArea) clientAddArea.style.display = 'none';
                 if (clientListArea) clientListArea.style.display = 'block';
                 loadClientsList();
-            } catch (error) {
+            }
+             catch (error) {
                 console.error("SCRIPT ERROR: Erro ao salvar cliente:", error);
                 alert("Erro ao salvar cliente. Verifique o console para mais detalhes. Certifique-se de estar logado e com permissão.");
             }
