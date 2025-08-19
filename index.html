@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SUPPORTA O.S: __________</title>
-    <link rel="icon" href="/favicon.ico" type="image/x-icon"> <!-- Caminho do favicon alterado -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <!-- Nova fonte: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -14,9 +14,11 @@
         <header class="header">
             <div class="header-left">
                 <h1 class="os-main-title">O.S. nº <span id="os-number-display">__________</span></h1>
+                <!-- NOVO: Elemento para exibir a data atual -->
+                <p id="current-date-display" class="os-date-display"></p>
             </div>
             <div class="header-center">
-                <img src="/logo-nova.png" alt="Logo Supporta Tecnologia" class="logo-main-header"> <!-- Caminho da logo alterado -->
+                <img src="/logo-nova.png" alt="Logo Supporta Tecnologia" class="logo-main-header">
             </div>
             <div class="header-right">
                 <div class="company-details-header">
@@ -93,7 +95,7 @@
             <h2>Valor Total do Serviço</h2>
             <div class="input-group">
                 <label for="valor-total">Valor Total:</label>
-                <input type="text" id="valor-total" name="valor-total" placeholder="R$ 0,00">
+                <input type="text" id="valor-total" name="valor-total" placeholder="R\$ 0,00">
             </div>
         </section>
 
