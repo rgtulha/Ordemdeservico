@@ -1,89 +1,223 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SUPPORTA O.S.</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUPPORTA O.S: __________</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <!-- Nova fonte: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Seção de Login -->
-  <main id="loginSection" class="container container--small">
-    <h1 class="app-title">SUPPORTA - Acesso</h1>
+    <div class="container">
+        <header class="header">
+            <div class="header-left">
+                <h1 class="os-main-title">O.S. nº <span id="os-number-display">__________</span></h1>
+                <!-- Elemento para exibir a data atual -->
+                <p id="current-date-display" class="os-date-display"></p>
+            </div>
+            <div class="header-center">
+                <img src="/logo-nova.png" alt="Logo Supporta Tecnologia" class="logo-main-header">
+            </div>
+            <div class="header-right">
+                <div class="company-details-header">
+                    <p><strong>Supporta Tecnologia LTDA.</strong></p>
+                    <p>CNPJ: 45.258.581/0001-02</p>
+                    <p>Contato: (62) 98179-5686</p>
+                    <p>Av. Portugal, 1148, Sala C2501.<br>Setor Marista, CEP: 74.150-030</p>
+                    <p>Site: <a href="https://site.supporta.tec.br" target="_blank">https://site.supporta.tec.br</a></p>
+                </div>
+            </div>
+        </header>
 
-    <div class="form-group">
-      <label for="email">E-mail</label>
-      <input id="email" type="email" placeholder="seu-email@empresa.com" autocomplete="username" />
+        <!-- Botões de Acesso/Logout visíveis sempre que necessário -->
+        <section class="section auth-access-buttons" style="text-align: center;">
+            <button id="accessAuthBtn" class="section-action-btn">Acessar</button>
+            <button id="logoutBtn" class="section-action-btn" style="display: none;">Sair</button>
+            <p id="auth-status" style="margin-top: 15px; font-weight: bold;"></p>
+        </section>
+
+        <!-- Quadro 1: Dados do Cliente -->
+        <section class="section quadro1" id="client-data-section" style="display: none;">
+            <div class="section-header-with-button">
+                <h2>Dados Cliente</h2>
+                <button id="listClientsBtn" class="section-action-btn">Gerenciar Clientes</button>
+            </div>
+            <div class="input-group">
+                <label for="cliente-nome">Nome da Empresa:</label>
+                <input type="text" id="cliente-nome" name="cliente-nome" placeholder="Nome da empresa do cliente">
+                <!-- Contêiner para as sugestões de pesquisa -->
+                <div id="suggestions-container" class="suggestions-container" style="display: none;">
+                    <ul id="suggestions-list" class="suggestions-list">
+                        <!-- Sugestões serão inseridas aqui via JavaScript -->
+                    </ul>
+                </div>
+            </div>
+            <!-- Estes campos serão preenchidos automaticamente e serão somente leitura -->
+            <div class="input-group">
+                <label for="cliente-cnpj">CNPJ:</label>
+                <input type="text" id="cliente-cnpj" name="cliente-cnpj" placeholder="00.000.000/0000-00" readonly>
+            </div>
+            <div class="input-group">
+                <label for="cliente-contato">Contato:</label>
+                <input type="text" id="cliente-contato" name="cliente-contato" placeholder="(XX) XXXXX-XXXX" readonly>
+            </div>
+            <div class="input-group">
+                <label for="cliente-endereco">Endereço:</label>
+                <input type="text" id="cliente-endereco" name="cliente-endereco" placeholder="Endereço completo do cliente" readonly>
+            </div>
+        </section>
+
+        <!-- Quadro 2: Detalhes do Aparelho e Problema -->
+        <section class="section quadro2" id="aparelho-problema-section" style="display: none;">
+            <h2>Detalhes do Aparelho e Problema</h2>
+            <div class="input-group">
+                <label for="aparelho-marca-modelo">Marca e Modelo do Aparelho:</label>
+                <input type="text" id="aparelho-marca-modelo" name="aparelho-marca-modelo" placeholder="Ex: Notebook Dell Inspiron 15, Impressora HP LaserJet">
+            </div>
+            <div class="input-group">
+                <label for="aparelho-imei">IMEI/N° de série:</label>
+                <input type="text" id="aparelho-imei" name="aparelho-imei" placeholder="IMEI/N° de série ">
+            </div>
+            <div class="input-group">
+                <label for="observacoes-cliente">Observações do Cliente:</label>
+                <textarea id="observacoes-cliente" name="observacoes-cliente" rows="6" placeholder="Descreva aqui as observações e o relato do cliente sobre o problema."></textarea>
+            </div>
+            <div class="input-group">
+                <label for="problema-tecnico">Problema Identificado pelo Técnico:</label>
+                <textarea id="problema-tecnico" name="problema-tecnico" rows="6" placeholder="Descreva detalhadamente o problema diagnosticado pelo técnico e as ações tomadas."></textarea>
+            </div>
+        </section>
+
+        <!-- NOVO: Quadro 5: Valor Total do Serviço -->
+        <section class="section quadro5" id="total-value-section" style="display: none;">
+            <h2>Valor Total do Serviço</h2>
+            <div class="input-group">
+                <label for="valor-total">Valor Total:</label>
+                <input type="text" id="valor-total" name="valor-total" placeholder="R\$ 0,00">
+            </div>
+        </section>
+
+        <!-- Quadro 3: Garantia -->
+        <section class="section quadro3" id="garantia-section" style="display: none;">
+            <h2>Garantia</h2>
+            <div class="input-group">
+                <label for="garantia-peca">Garantia da Peça:</label>
+                <select id="garantia-peca" name="garantia-peca">
+                    <option value="">Selecione uma opção</option>
+                    <option value="1-ano">Garantia de 1 ano na peça</option>
+                    <option value="90-dias">Garantia de 90 dias na peça</option>
+                </select>
+            </div>
+            <p class="warranty-note"><strong>90 dias de garantia no reparo de placas e componentes.</strong></p>
+        </section>
+
+        <!-- Quadro 4: Observações Importantes -->
+        <section class="section quadro4" id="observacoes-section" style="display: none;">
+            <h2>Observações Importantes</h2>
+            <p>A Supporta tecnologia não se responsabiliza sobre a perda de dados, deste modo sempre faça o backup dos dados.</p>
+            <p>Privacidade: A Supporta tecnologia mantém sigilo e confidencialidade de todas as informações disponíveis em seu equipamento.</p>
+        </section>
+
+        <!-- Seção de botões no rodapé -->
+        <footer class="action-buttons-footer" id="footer-buttons" style="display: none;">
+            <button id="printBtn" class="action-btn">
+                <img src="https://rgtulha.github.io/Ordemdeservico/imprimir.png" alt="Imprimir" class="button-icon">
+                Imprimir O.S.
+            </button>
+        </footer>
+
+    </div> <!-- Fim do div.container -->
+
+    <!-- Modal para Autenticação (Login/Cadastro) -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Acessar O.S.</h3>
+            <div class="input-group">
+                <label for="auth-email">E-mail:</label>
+                <input type="email" id="auth-email" placeholder="seuemail@exemplo.com">
+            </div>
+            <div class="input-group">
+                <label for="auth-password">Senha:</label>
+                <input type="password" id="auth-password" placeholder="********">
+            </div>
+            <div class="auth-modal-buttons" style="display: flex; justify-content: space-around; margin-top: 20px;">
+                <button id="loginBtn" class="section-action-btn">Entrar</button>
+                <button id="registerBtn" class="section-action-btn">Cadastrar</button>
+            </div>
+        </div>
     </div>
 
-    <div class="form-group">
-      <label for="password">Senha</label>
-      <input id="password" type="password" placeholder="********" autocomplete="current-password" />
+    <!-- NOVO MODAL PARA LISTAR, ADICIONAR E EDITAR CLIENTES (Unificado) -->
+    <div id="listClientsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Gerenciar Clientes</h3>
+
+            <!-- Área de Listagem de Clientes -->
+            <div id="client-list-area">
+                <input type="text" id="client-list-search" placeholder="Pesquisar cliente por nome...">
+                <ul id="clients-table" class="suggestions-list">
+                    <!-- Clientes serão listados aqui -->
+                    <li>Carregando clientes...</li>
+                </ul>
+                <button id="addNewClientFromListBtn" class="section-action-btn" style="margin-top: 20px;">Adicionar Novo Cliente</button>
+            </div>
+
+            <!-- Área para ADICIONAR NOVO Cliente (Inicialmente oculta) -->
+            <div id="client-add-area" style="display: none;">
+                <h4>Adicionar Novo Cliente</h4>
+                <div class="input-group">
+                    <label for="add-modal-cliente-nome">Nome da Empresa:</label>
+                    <input type="text" id="add-modal-cliente-nome" placeholder="Nome da empresa" required>
+                </div>
+                <div class="input-group">
+                    <label for="add-modal-cliente-cnpj">CNPJ:</label>
+                    <input type="text" id="add-modal-cliente-cnpj" placeholder="00.000.000/0000-00">
+                </div>
+                <div class="input-group">
+                    <label for="add-modal-cliente-contato">Contato:</label>
+                    <input type="text" id="add-modal-cliente-contato" placeholder="(XX) XXXXX-XXXX">
+                </div>
+                <div class="input-group">
+                    <label for="add-modal-cliente-endereco">Endereço:</label>
+                    <input type="text" id="add-modal-cliente-endereco" placeholder="Endereço completo">
+                </div>
+                <button id="saveNewClientBtn" class="section-action-btn" style="margin-top: 15px;">Salvar Cliente</button>
+                <button id="cancelAddClientBtn" class="section-action-btn cancel-btn" style="margin-top: 15px;">Cancelar</button>
+            </div>
+
+            <!-- Área para EDITAR Cliente (Inicialmente oculta) -->
+            <div id="client-edit-area" style="display: none;">
+                <h4>Editar Cliente</h4>
+                <div class="input-group">
+                    <label for="edit-modal-cliente-nome">Nome da Empresa:</label>
+                    <input type="text" id="edit-modal-cliente-nome" placeholder="Nome da empresa">
+                </div>
+                <div class="input-group">
+                    <label for="edit-modal-cliente-cnpj">CNPJ:</label>
+                    <input type="text" id="edit-modal-cliente-cnpj" placeholder="00.000.000/0000-00">
+                </div>
+                <div class="input-group">
+                    <label for="edit-modal-cliente-contato">Contato:</label>
+                    <input type="text" id="edit-modal-cliente-contato" placeholder="(XX) XXXXX-XXXX">
+                </div>
+                <div class="input-group">
+                    <label for="edit-modal-cliente-endereco">Endereço:</label>
+                    <input type="text" id="edit-modal-cliente-endereco" placeholder="Endereço completo">
+                </div>
+                <button id="updateClientModalBtn" class="section-action-btn" style="margin-top: 15px;">Salvar Alterações</button>
+                <button id="cancelEditClientBtn" class="section-action-btn cancel-btn" style="margin-top: 15px;">Cancelar</button>
+            </div>
+        </div>
     </div>
 
-    <button id="btnLogin" class="btn btn-primary">Acessar</button>
-    <p id="loginStatus" class="status"></p>
-
-    <details class="help">
-      <summary>Problemas para acessar?</summary>
-      <ul>
-        <li>Verifique e-mail e senha.</li>
-        <li>Conexão com a internet.</li>
-        <li>Se o Firebase não estiver configurado, use a URL com ?offline=1 para entrar em modo de teste.</li>
-      </ul>
-    </details>
-  </main>
-
-  <!-- Seção do App -->
-  <div id="appSection" class="container" hidden>
-    <div class="no-print top-actions">
-      <button id="btnSave" class="btn">Salvar</button>
-      <button id="btnPrint" class="btn btn-primary">Imprimir</button>
-      <span id="saveStatus" class="status"></span>
-    </div>
-
-    <section id="printArea" class="print-area">
-      <header class="header">
-        <h2 class="os-title">
-          SUPPORTA O.S: <span id="osNumber">000000</span>
-        </h2>
-        <div id="osDate" class="os-date"></div>
-      </header>
-
-      <section class="grid grid--two">
-        <div class="field">
-          <label>Cliente</label>
-          <div id="clienteNome" class="box" contenteditable="true" spellcheck="false"></div>
-        </div>
-        <div class="field">
-          <label>Contato</label>
-          <div id="clienteContato" class="box" contenteditable="true" spellcheck="false"></div>
-        </div>
-      </section>
-
-      <section class="field">
-        <label>Observações do cliente</label>
-        <div id="obsCliente" class="box box--compact" contenteditable="true" spellcheck="false"></div>
-      </section>
-
-      <section class="field">
-        <label>Problema identificado pelo técnico</label>
-        <div id="probTecnico" class="box box--compact" contenteditable="true" spellcheck="false"></div>
-      </section>
-
-      <section class="grid grid--two signatures">
-        <div class="field">
-          <label>Assinatura do Cliente</label>
-          <div class="box box--sign"></div>
-        </div>
-        <div class="field">
-          <label>Assinatura do Técnico</label>
-          <div class="box box--sign"></div>
-        </div>
-      </section>
-    </section>
-  </div>
-
-  <script src="script.js" defer></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
